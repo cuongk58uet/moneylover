@@ -25,12 +25,17 @@ class WalletsController extends AppController {
  */
 	public function index() {
 		$user_info = $this->get_user();
-		$wallets = $this->paginate();
-		$wallets = $this->Wallet->find('all',array(
-			'recursive' => 0,
-			'conditions' => array('user_id' => $user_info['id'] )
-			));
-		$this->set('wallets', $wallets);
+		$this->Wallet->recursive = 0;
+		$this->Paginator->settings = $this->paginate;
+		$this->paginate = array(
+			'order' => array('wallet_name' => 'asc'),
+			'limit' => 10,
+			'conditions' => array('user_id' => $user_info['id'] ),
+			'paramType' => 'querystring'
+			);
+		
+		$this->set('wallets', $this->paginate());
+		
 	}
 
 /**
@@ -42,7 +47,7 @@ class WalletsController extends AppController {
  */
 	public function view($id = null) {
 		if (!$this->Wallet->exists($id)) {
-			throw new NotFoundException(__('Invalid wallet'));
+			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
 		}
 		$options = array('conditions' => array('Wallet.' . $this->Wallet->primaryKey => $id));
 		$this->set('wallet', $this->Wallet->find('first', $options));
@@ -57,13 +62,16 @@ class WalletsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Wallet->create();
 			if ($this->Wallet->save($this->request->data)) {
-				$this->Flash->success(__('The wallet has been saved.'));
+				$this->Session->setFlash('Lưu thành công.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->error(__('The wallet could not be saved. Please, try again.'));
+				$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-info'));
 			}
 		}
-		$users = $this->Wallet->User->find('list');
+		$user_info = $this->get_user();
+		$users = $this->Wallet->User->find('list',array(
+			'conditions' => array('id' => $user_info['id'])
+			));
 		$this->set(compact('users'));
 	}
 
@@ -76,14 +84,15 @@ class WalletsController extends AppController {
  */
 	public function edit($id = null) {
 		if (!$this->Wallet->exists($id)) {
-			throw new NotFoundException(__('Invalid wallet'));
+			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			//pr($this->request->data); exit;
 			if ($this->Wallet->save($this->request->data)) {
-				$this->Flash->success(__('The wallet has been saved.'));
+				$this->Session->setFlash(' Lưu thành công.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->error(__('The wallet could not be saved. Please, try again.'));
+				$this->Session->setFlash('Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		} else {
 			$options = array('conditions' => array('Wallet.' . $this->Wallet->primaryKey => $id));
@@ -103,13 +112,13 @@ class WalletsController extends AppController {
 	public function delete($id = null) {
 		$this->Wallet->id = $id;
 		if (!$this->Wallet->exists()) {
-			throw new NotFoundException(__('Invalid wallet'));
+			throw new NotFoundException(__('Không tìm thấy trang bạn yêu cầu'));
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Wallet->delete()) {
-			$this->Flash->success(__('The wallet has been deleted.'));
+			$this->Session->setFlash('Lưu thành công.', 'default', array('class' => 'alert alert-info'));
 		} else {
-			$this->Flash->error(__('The wallet could not be deleted. Please, try again.'));
+			$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}

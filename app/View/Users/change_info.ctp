@@ -10,21 +10,19 @@
           </ul>
 	</div>
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<?php echo $this->Session->flash(); ?>
 		<div class="users form">
+			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->Form->create('User',array('type' => 'file')); ?>
 			<fieldset>
 				<legend><?php echo __('Chỉnh sửa thông tin'); ?></legend>
-			<?php
-				echo $this->Form->hidden('id');
-				echo $this->Form->hidden('username');
-				echo $this->Form->hidden('password');
-				echo $this->Form->input('fullname', array('label'=>'Họ và tên','class'=>"form-control"));
-				echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>140, 'height' => 200));
-				echo $this->Form->input('avatar', array('label'=> '', 'class'=>'img-thumbnail', 'type' => 'file'));
-				echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control"));
-				echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin' , 'author' => 'Author')));
-			?>
+			
+				<?php echo $this->Form->input('fullname', array('label'=>'Họ và tên','class'=>"form-control")); ?></br>
+				<?php echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>200, 'height' => 200)); ?></br>
+				<?php echo $this->Form->input('avatar', array('label'=> 'Ảnh đại diện', 'class'=>'img-thumbnail', 'type' => 'file')); ?></br>
+				<?php echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control")); ?></br>
+				<?php echo $this->Form->input('email', array('label'=>'Email','class'=>"form-control")); ?></br>
+				<?php echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin'))); ?>
+			
 			</fieldset>
 			</br>
 			<?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>

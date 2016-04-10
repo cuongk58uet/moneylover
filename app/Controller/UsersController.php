@@ -1,5 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('File', 'Utility');
+App:: uses('BlowfishPasswordHasher' , 'Controller/Component/Auth' );
 /**
  * Users Controller
  *
@@ -16,7 +18,7 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Flash', 'Session');
+	public $components = array('Paginator', 'Flash', 'Session','Tool');
 
 /**
  * index method
@@ -24,12 +26,27 @@ class UsersController extends AppController {
  * @return void
  */
 	public function index() {
-/*		$this->User->recursive = 0;
-		$this->set('users', $this->Paginator->paginate());*/
 		$user_info = $this->get_user();
-		$this->set('data',$user_info);
-		$data = $this->User->findById($user_info['id']);
-		$this->set('user',$data);
+		$this->User->recursive = 1;
+		$this->paginate = array(
+			'Transaction' => array(
+				'order' => array('create_date' => 'desc'),
+				'limit' => 5,
+				'conditions' => array('Transaction.user_id' => $user_info['id']),
+				'paramType' => 'querystring'
+			),
+			'Wallet' => array(
+				'order' => array('wallet_name' => 'desc'),
+				'limit' => 5,
+				'conditions' => array('Wallet.user_id' => $user_info['id']),
+				'paramType' => 'querystring'
+			),
+			'conditions' => array('id' => $user_info['id'])
+			);
+		$this->Paginator->settings = $this->paginate;
+		$this->set('wallets', $this->paginate('Wallet'));
+		$this->set('transactions', $this->paginate('Transaction'));
+		//pr($this->paginate()); exit;
 	}
 
 /**
@@ -53,13 +70,25 @@ class UsersController extends AppController {
  * @return void
  */
 	public function add() {
+		$location = null;
 		if ($this->request->is('post')) {
 			$this->User->create();
+			if(!empty($this->request->data['User']['avatar']['name'])){
+				if($this->uploadFile()){
+					$location = 'img/'.$this->request->data['User']['avatar']['name'];
+					$this->request->data['User']['avatar'] = $location;
+				} else{
+					$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+					$save = fasle;
+				}
+			} else{
+				unset($this->request->data['User']['avatar']);
+			}
 			if ($this->User->save($this->request->data)) {
-				$this->Flash->success(__(' Tài khoản đã được lưu.'));
+				$this->Session->setFlash(' Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->error(__(' Tài khoản chưa được lưu. Vui lòng thử lại.'));
+				$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		}
 	}
@@ -76,17 +105,40 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('Không tìm thấy trang'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			$user_info = $this->get_user();
-			$this->User->id = $user_info['id'];
-			if ($this->User->save($this->request->data)) {
-				$this->Flash->success(__('Tài khoản đã được lưu.'));
-				return $this->redirect(array('action' => 'index'));
+			$save = true;
+			if(!empty($this->request->data['User']['avatar']['name'])){
+				if($this->uploadFile()){
+					$location = 'img/'.$this->request->data['User']['avatar']['name'];
+					$this->request->data['User']['avatar'] = $location;
+				} else{
+					$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+					$save = fasle;
+				}
+			} else{
+				unset($this->request->data['User']['avatar']);
+			}
+			//pr($this->request->data); exit;
+			if($save){
+				if ($this->User->save($this->request->data)) {
+					$this->Session->setFlash('Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
+					return $this->redirect(array('action' => 'index'));
+				}
 			} else {
-				$this->Flash->error(__('Tài khoản chưa được lưu. Vui lòng thử lại.'));
+				$this->Session->setFlash('Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		} else {
 			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
 			$this->request->data = $this->User->find('first', $options);
+		}
+	}
+
+	private function uploadFile(){
+		$file = new File($this->request->data['User']['avatar']['tmp_name']);
+		$file_name = $this->request->data['User']['avatar']['name'];
+		if($file->copy(APP.'webroot/img/'.$file_name)){
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -104,9 +156,9 @@ class UsersController extends AppController {
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->User->delete()) {
-			$this->Flash->success(__(' Tài khoản đã được xóa.'));
+			$this->Session->setFlash(' Tài khoản đã được xóa.', 'default', array('class' => 'alert alert-danger'));
 		} else {
-			$this->Flash->error(__(' Tài khoản chưa được xóa. Vui lòng thử lại'));
+			$this->Session->setFlash(' Tài khoản chưa được xóa. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
@@ -114,7 +166,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent:: beforeFilter();
 		// Allow users to register and logout.
-		$this->Auth->allow('add');
+		$this->Auth->allow('add','forgot','confirm');
 		
 	}
 
@@ -133,28 +185,132 @@ class UsersController extends AppController {
 		return $this->redirect($this->Auth->logout());
 	}
 
+	public function change_info(){
+		$user_info = $this->get_user();
+		//pr($user_info); exit;
+		$save = true;
+		$location = $user_info['avatar'];
+		if($this->request->is(array('post', 'put'))){
+			//pr($this->request->data); exit;
+			$this->User->set($this->request->data);
+			if($this->User->validates()){
+				if(!empty($this->request->data['User']['avatar']['name']) && $this->request->data['User']['avatar']['error']== 0){
+					if($this->uploadFile()){
+						$location = '/img/'.$this->request->data['User']['avatar']['name'];
+						$this->request->data['User']['avatar'] = $location;
+						//pr($this->request->data); exit;
+						$data = array(
+							'fullname' => $this->request->data['User']['fullname'],
+							'address' => $this->request->data['User']['address'],
+							'avatar' => $this->request->data['User']['avatar'],
+							'role' => $this->request->data['User']['role'],
+							);
+						} else{
+							$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+							$save = false;
+						}
+					} 
+				else{
+					$user_data = $this->User->findById($user_info['id']);
+					$current_avatar = $user_data['User']['avatar'];
+					$this->request->data['User']['avatar'] = $current_avatar;
+					$data = array(
+							'fullname' => $this->request->data['User']['fullname'],
+							'address' => $this->request->data['User']['address'],
+							'avatar' => $this->request->data['User']['avatar'],
+							'role' => $this->request->data['User']['role'],
+							);
+				}
+				
+				$this->User->id = $user_info['id'];
+				if($save){
+					if($this->User->save($data)){
+						$this->Session->setFlash('Cập nhật thành công', 'default', array('class'=>'alert alert-info'));
+						$this->redirect(array('action' => 'change_info'));
+					} else{
+						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=>'alert alert-danger'));
+						}
+				} else{
+					$this->set('errors',$this->User->validationErrors);
+				}
+			} 
+		}else{
+			$this->request->data = $this->User->findById($user_info['id']);
+		}
+	}
+
+
 	public function change_password(){
 		if($this->request->is('post')) {
 			$this->User->set($this->request->data);
 			if($this->User->validates()){
-				if(strcmp($this->request->data['User']['password'],$this->request->data['User']['confim_password']) == 0) {
+				if(strcmp($this->request->data['User']['password'],$this->request->data['User']['confirm_password']) == 0) {
 					$user_info = $this->get_user();
-					$this->User->id = $user_info['id'];
-					if($this->User->saveField('password',$this->requets->data['User']['password'])) {
-						$this->Flash->set('Đã lưu thành công');
+					// $this->User->id = $user_info['id'];
+					if($this->update_password($user_info['id'])) {
+						$this->Session->setFlash('Đã lưu thành công', 'default', array('class' => 'alert alert-info'));
 						return $this->redirect(array('action' => 'index'));
 					} else {
-						$this->Flash->set('Có lỗi xảy ra. Vui lòng thử lại');
+						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=> 'alert alert-danger'));
 					}
 
 				} else{
-					$this->Flash->set('Xác nhận mật khẩu không đúng');
+					$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
 				}
 				
 			} else{
 				//$this->set->('errors',$this->User->validationErrors);
 			}
 		}
-
 	}
+
+	public function forgot(){
+		if($this->request->is('post')){
+			$user = $this->User->findByEmail($this->request->data['User']['email']);
+			if(!empty($user)){
+				$code = $this->Tool->generate_code();
+				$link_confirm = 'http://localhost/cakephp/xac-nhan/'.$code;
+				$this->User->id = $user['User']['id'];
+				$this->User->saveField('code',$code);
+				$this->Session->setFlash('Vui lòng truy cập đường link sau để lấy lại mật khẩu - '.$link_confirm, 'default', array('class' => 'alert alert-info'));
+
+			} else{
+				$this->Session->setFlash('Email chưa được đăng kí', 'default', array('class' => 'alert alert-danger'));
+			}
+		}
+	}
+
+	public function confirm($code = null){
+		$confirm = false;
+		if(!empty($code)){
+			$user = $this->User->findByCode($code);
+			if(!empty($user)){
+				$confirm = true;
+				if($this->request->is('post')){
+					$this->User->set($this->request->data);
+					if($this->User->validates()){
+						if($this->update_password($user['User']['id'])){
+							$this->User->updateAll(array('User.code' => null), array('User.id'=>$user['User']['id']));
+							return $this->redirect(array( 'controller' => 'users', 'action' => 'login'));
+						}
+					} else{
+						$this->set('errors', $this->validationErrors);
+					}
+				}
+			}
+		}
+		$this->set('confirm', $confirm);
+	}
+
+	public function update_password($id){
+		$this->User->id = $id;
+		if($this->User->saveField('password',$this->request->data['User']['password'])) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+
 }

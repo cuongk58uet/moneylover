@@ -37,15 +37,16 @@
 	  	<div class="row">
 	  		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	  			<?php echo $this->Flash->render(); ?>
+	  			
 			</div>	
 	  		<?php echo $this->fetch('content'); ?>
 	  	</div>
   	</div>
-  	<div id="footer" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-   		<p class="text-muted credit">
-    		Development TEAM
-    	</p>
-    	<?php echo $this->element('sql_dump'); ?>
+</div>
+<div id="footer" class="footer">
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		<strong class="text-muted">Development TEAM</strong>
+		<!-- <?php echo $this->element('sql_dump'); ?> -->
 	</div>
 </div>
 <!-- Placed at the end of the document so the pages load faster -->

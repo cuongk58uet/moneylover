@@ -8,14 +8,13 @@
 			<li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $wallet['Wallet']['wallet_name']))); ?> </li>
 			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Danh sách người dùng'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Thêm người dùng'), array('controller' => 'users', 'action' => 'add')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Danh sách các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?> </li>
           </ul>
 	</div>
 
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		<?php echo $this->Session->flash(); ?>
 		<div class="wallets view">
 			<div class="panel panel-info">
 				<div class="panel-heading">
@@ -53,7 +52,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="related">
+		<div class="related">
 			<h3><?php echo __('Giao dịch liên quan'); ?></h3>
 			<?php if (!empty($wallet['Transaction'])): ?>
 				<table class="table table-striped">
@@ -75,15 +74,17 @@
 						<td><?php echo $transaction['wallet_id']; ?></td>
 						<td><?php echo $transaction['category_id']; ?></td>
 						<td class="actions">
-							<?php echo $this->Html->link(__('View'), array('controller' => 'transactions', 'action' => 'view', $transaction['id'])); ?>
-							<?php echo $this->Html->link(__('Edit'), array('controller' => 'transactions', 'action' => 'edit', $transaction['id'])); ?>
-							<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'transactions', 'action' => 'delete', $transaction['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $transaction['id']))); ?>
+							<?php echo $this->Html->link(__('Chi tiết'), array('controller' => 'transactions', 'action' => 'view', $transaction['id']), array('class' => 'btn btn-xs btn-primary')); ?>
+							<?php echo $this->Html->link(__('Sửa'), array('controller' => 'transactions', 'action' => 'edit', $transaction['id']), array('class' => 'btn btn-xs btn-primary')); ?>
+							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $transaction['id']))); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 				</table>
+			<?php else: ?>
+				<h4><strong> Bạn chưa tạo giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>
 			<?php endif; ?>
-		</div> -->
+		</div>
 	</div>
 </body>
 </html>

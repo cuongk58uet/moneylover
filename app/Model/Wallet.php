@@ -69,7 +69,7 @@ class Wallet extends AppModel {
 		'Transaction' => array(
 			'className' => 'Transaction',
 			'foreignKey' => 'wallet_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

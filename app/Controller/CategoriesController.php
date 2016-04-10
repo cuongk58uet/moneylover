@@ -16,7 +16,6 @@ class CategoriesController extends AppController {
  * @var array
  */
 	public $components = array('Paginator', 'Flash', 'Session');
-
 /**
  * index method
  *
@@ -24,7 +23,12 @@ class CategoriesController extends AppController {
  */
 	public function index() {
 		$this->Category->recursive = 0;
-		$this->set('categories', $this->Paginator->paginate());
+		$this->paginate = array(
+						'order' => array('Category.id' => 'asc'),
+						'limit' => 10
+						);
+		$this->Paginator->settings = $this->paginate;
+		$this->set('categories', $this->paginate());
 	}
 
 /**
@@ -51,10 +55,10 @@ class CategoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Category->create();
 			if ($this->Category->save($this->request->data)) {
-				$this->Flash->success(__('The category has been saved.'));
+				$this->Session->setFlash('Danh mục đã được lưu.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->error(__('The category could not be saved. Please, try again.'));
+				$this->Session->setFlash('Danh mục chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		}
 	}
@@ -72,10 +76,10 @@ class CategoriesController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Category->save($this->request->data)) {
-				$this->Flash->success(__('The category has been saved.'));
+				$this->Session->setFlash('Đã lưu thay đổi.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->error(__('The category could not be saved. Please, try again.'));
+				$this->Session->error('Thay đổi chưa được lưu. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
 			}
 		} else {
 			$options = array('conditions' => array('Category.' . $this->Category->primaryKey => $id));
@@ -97,9 +101,9 @@ class CategoriesController extends AppController {
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Category->delete()) {
-			$this->Flash->success(__('The category has been deleted.'));
+			$this->Session->success('Đã xóa danh mục.', 'default', array('class' => 'alert alert-info'));
 		} else {
-			$this->Flash->error(__('The category could not be deleted. Please, try again.'));
+			$this->Session->error('Danh mục chưa được xóa. Vui lòng thử lại', 'default', array('class' => 'alert alert-info'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}

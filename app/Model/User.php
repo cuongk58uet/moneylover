@@ -44,25 +44,37 @@ class User extends AppModel {
 				'message' => 'Mật khẩu tối thiểu 8 kí tự'
 			)
 		),
-		'confim_password' => array(
+		'confirm_password' => array(
 				'required' => array(
 					'rule' => 'notBlank' ,
 					'message' => ' Mật khẩu không được trống'),
-				/*'minlenght' => array(
-				'rule' => array('minlenght',8),
+				'minlength' => array(
+				'rule' => array('minlength',8),
 				'message' => 'Mật khẩu tối thiểu 8 kí tự'
-				)*/
+				)
+			),
+		'email' => array(
+			'required' => array(
+				'rule' => array('email'),
+				'message' => 'Email không được trống'
+				),
+			'unique' => array(
+				'rule' =>'isUnique',
+				'message' => 'Email này đã được đăng kí. Vui lòng thử lại'
+				)
 			),
 
 		'role' => array(
 			'valid' => array(
 				'rule' => array('inList' , array('admin' , 'author' )),
-				'message' => 'Please enter a valid role' ,
+				'message' => 'Vui lòng nhập giá trị' ,
 				'allowEmpty' => false)));
 
 	public function beforeSave($options = array()) {
 		if(isset($this->data['User']['password'])){
-			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+			// $this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+			$passwordHasher = new BlowfishPasswordHasher();
+			$this->data['User']['password'] = $passwordHasher->hash($this->data['User']['password']);
 		}
 		return true;
 	}
@@ -71,8 +83,15 @@ class User extends AppModel {
 		if(isset($this->data['User']['username'])){
 			$user_info = AuthComponent::user();
 			$user = $this->findById($user_info['id']);
-			if(!empty($user_info) && $this->data['User']['username'] == $user['User']['username']){
+			if((!empty($user_info)) && $this->data['User']['username'] == $user['User']['username']){
 				unset($this->data['User']['username']);
+			}
+		}
+		if(isset($this->data['User']['email'])){
+			$user_info = AuthComponent::user();
+			$user = $this->findById($user_info['id']);
+			if((!empty($user_info)) && $this->data['User']['email'] == $user['User']['email']){
+				unset($this->data['User']['email']);
 			}
 		}
 		return true;
@@ -86,7 +105,20 @@ class User extends AppModel {
 		'Wallet' => array(
 			'className' => 'Wallet',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Transaction' => array(
+			'className' => 'Transaction',
+			'foreignKey' => 'user_id',
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

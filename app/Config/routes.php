@@ -32,7 +32,10 @@
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
 	Router::connect('/doi-mat-khau', array('controller' => 'users', 'action' => 'change_password'));
-
+	Router::connect('/cap-nhat-thong-tin', array('controller' => 'users', 'action' => 'change_info'));
+	Router::connect('/quen-mat-khau', array('controller' => 'users', 'action' => 'forgot'));
+	Router::connect('/xac-nhan/:code', array('controller' => 'users', 'action' => 'confirm'),array('pass'=>array('code')));
+/**
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
