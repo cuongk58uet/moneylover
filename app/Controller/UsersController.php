@@ -96,7 +96,7 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	/*public function edit($id = null) {
 		if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Không tìm thấy trang'));
 		}
@@ -127,7 +127,7 @@ class UsersController extends AppController {
 			$this->request->data = $this->User->find('first', $options);
 		}
 	}
-
+*/
 	private function uploadFile(){
 		$file = new File($this->request->data['User']['avatar']['tmp_name']);
 		$file_name = $this->request->data['User']['avatar']['name'];
@@ -287,6 +287,7 @@ class UsersController extends AppController {
 					if($this->User->validates()){
 						if($this->update_password($user['User']['id'])){
 							$this->User->updateAll(array('User.code' => null), array('User.id'=>$user['User']['id']));
+							$this->Session->setFlash('Lấy lại mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới', 'default', array('class' => 'alert alert-info'));
 							return $this->redirect(array( 'controller' => 'users', 'action' => 'login'));
 						}
 					} else{

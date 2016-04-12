@@ -15,7 +15,7 @@
 				<legend><?php echo __('Thêm người dùng'); ?></legend>
 			<?php
 				echo $this->Form->input('username', array('label'=>'Tên tài khoản', 'class'=>"form-control", 'placeholder' => 'User Name'));
-				echo $this->Form->input('password', array('label'=>'Mật khẩu', 'class'=>"form-control", 'placeholder'=>" Mật khẩu"));
+				echo $this->Form->input('password', array('label'=>'Mật khẩu (Tối thiểu 8 kí tự)', 'class'=>"form-control", 'placeholder'=>" Mật khẩu"));
 				echo $this->Form->input('confirm_password', array('label'=>'Xác nhận mật khẩu', 'class'=>"form-control", 'type'=>'password', 'placeholder'=>" Xác nhận mật khẩu"));
 				echo $this->Form->input('fullname', array('label'=>'Tên chủ tài khoản', 'class'=>"form-control", 'placeholder' => 'Họ và tên'));
 				echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control", 'placeholder'=>" Địa chỉ"));

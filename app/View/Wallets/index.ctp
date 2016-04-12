@@ -41,7 +41,7 @@
 							<?php echo $this->Html->link($wallet['User']['username'], array('controller' => 'users', 'action' => 'view', $wallet['User']['id'])); ?>
 						</td>
 						<td class="actions">
-							<?php echo $this->Html->link(__('Chi tiết'), array('action' => 'view', $wallet['Wallet']['id']), array('class' => 'btn btn-xs btn-primary')); ?>
+							<?php echo $this->Html->link(__('Chi tiết'), '/thong-tin-vi/'.$wallet['Wallet']['wallet_name'], array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Html->link(__('Sửa'), array('action' => 'edit', $wallet['Wallet']['id']),array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $wallet['Wallet']['id']))); ?>
 						</td>

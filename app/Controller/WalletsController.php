@@ -45,12 +45,14 @@ class WalletsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->Wallet->exists($id)) {
+	public function view($wallet_name = null) {
+		$wallets = $this->Wallet->find('first', array('conditions' => array('wallet_name' => $wallet_name)));
+		if (!$wallets) {
 			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
+		} else{
+			$this->set('wallet', $wallets);
 		}
-		$options = array('conditions' => array('Wallet.' . $this->Wallet->primaryKey => $id));
-		$this->set('wallet', $this->Wallet->find('first', $options));
+		
 	}
 
 /**
@@ -115,9 +117,9 @@ class WalletsController extends AppController {
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Wallet->delete()) {
-			$this->Session->setFlash('Lưu thành công.', 'default', array('class' => 'alert alert-info'));
+			$this->Session->setFlash('Xóa thành công.', 'default', array('class' => 'alert alert-info'));
 		} else {
-			$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+			$this->Session->setFlash(' Ví chưa được Xóa. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}

@@ -34,12 +34,11 @@ class Wallet extends AppModel {
 		'wallet_name' => array(
 			'notBlank' => array(
 				'rule' => array('notBlank'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'unique' => array(
+				'rule' =>'isUnique',
+				'message' => 'Tên ví đã tồn tại. Vui lòng thử lại'
+				),
 		),
 	);
 

@@ -33,7 +33,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $components = array(
-		//array('DebugKit.Toolbar','Session'),
+		'Session',
 		
 		'Auth' => array(
 			'authError' => 'Bạn cần phải đăng nhập để tiếp tục',

@@ -26,7 +26,7 @@
 						<?php echo $this->Form->button('Đăng nhập',array('type' => 'submit','class'=>'btn btn-lg btn-primary btn-block')); ?></br>
 						
 						<?php echo $this->Html->link('Quên mật khẩu?','/quen-mat-khau'); ?></br>
-						<?php echo $this->Html->link('Đăng kí mới','/users/add', array('class' => 'btn btn-sm btn-default')); ?>
+						<?php echo $this->Html->link('Đăng kí mới','/dang-ki', array('class' => 'btn btn-sm btn-default')); ?>
 						
 						<?php echo $this->Form->end(); ?>
 					</div>
