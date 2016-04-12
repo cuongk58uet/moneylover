@@ -46,7 +46,7 @@ class UsersController extends AppController {
 		$this->Paginator->settings = $this->paginate;
 		$this->set('wallets', $this->paginate('Wallet'));
 		$this->set('transactions', $this->paginate('Transaction'));
-		//pr($this->paginate()); exit;
+		
 	}
 
 /**
@@ -56,12 +56,13 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->User->exists($id)) {
+	public function view() {
+		/*if (!$this->User->exists($id)) {
 			throw new NotFoundException(__(' Không tìm thấy trang'));
-		}
-		$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-		$this->set('user', $this->User->find('first', $options));
+		}*/
+		//$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+		$users = $this->get_user();
+		$this->set('user', $this->User->findById($users['id']));
 	}
 
 /**
@@ -73,22 +74,17 @@ class UsersController extends AppController {
 		$location = null;
 		if ($this->request->is('post')) {
 			$this->User->create();
-			if(!empty($this->request->data['User']['avatar']['name'])){
-				if($this->uploadFile()){
-					$location = 'img/'.$this->request->data['User']['avatar']['name'];
-					$this->request->data['User']['avatar'] = $location;
-				} else{
-					$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
-					$save = fasle;
-				}
-			} else{
-				unset($this->request->data['User']['avatar']);
-			}
-			if ($this->User->save($this->request->data)) {
+			if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
+				if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(' Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				} else {
+					$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				}
+			} else{
+				$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
+				unset($this->request->data['User']['password']);
+				unset($this->request->data['User']['confirm_password']);
 			}
 		}
 	}
@@ -226,7 +222,7 @@ class UsersController extends AppController {
 				if($save){
 					if($this->User->save($data)){
 						$this->Session->setFlash('Cập nhật thành công', 'default', array('class'=>'alert alert-info'));
-						$this->redirect(array('action' => 'change_info'));
+						$this->redirect($this->referer());
 					} else{
 						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=>'alert alert-danger'));
 						}

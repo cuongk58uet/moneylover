@@ -19,6 +19,7 @@
 			<fieldset>
 				<legend><?php echo __(' Chỉnh sửa ví'); ?></legend>
 			<?php
+				echo $this->Form->input('id');
 				echo $this->Form->input('wallet_name', array('label'=>'Tên ví','class'=>"form-control", 'placeholder' => 'Tên ví'));
 				echo $this->Form->input('currency',array('label'=>' Đơn vị tiền tệ','class'=>"form-control", 'placeholder' => 'Đơn vị tiền tệ'));
 				echo $this->Form->input('banlances', array('label'=>' Số dư','class'=>"form-control", 'placeholder' => 'Số dư'));

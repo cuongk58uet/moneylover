@@ -87,7 +87,6 @@ class WalletsController extends AppController {
 			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			//pr($this->request->data); exit;
 			if ($this->Wallet->save($this->request->data)) {
 				$this->Session->setFlash(' Lưu thành công.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));

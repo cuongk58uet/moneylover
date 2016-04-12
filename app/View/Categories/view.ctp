@@ -20,7 +20,7 @@
 			<div class="panel-body">
 				<div class="categories view">
 					<dl>
-						<dt><?php echo __('Id'); ?></dt>
+						<dt><?php echo __('ID'); ?></dt>
 						<dd>
 							<?php echo h($category['Category']['id']); ?>
 							&nbsp;

@@ -11,7 +11,7 @@
 		<?php if($confirm): ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-	            	<h2 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đổi mật khẩu</h2>
+	            	<h2 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Lấy lại mật khẩu</h2>
 	            </div>
 	            <div class="panel-body">
 	            	<?php echo $this->Session->flash(); ?>

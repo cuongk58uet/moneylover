@@ -8,13 +8,14 @@
 	<div class="content col-md-4">
 	</div>
 		<div class="content col-md-4">
+		<?php echo $this->Session->flash(); ?>
+		<?php echo $this->Session->flash('auth'); ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 	            	<h3 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đăng nhập </h3>
             	</div>
 	            <div class="panel-body"> 
 					<div class="users form">
-						<?php echo $this->Session->flash('auth'); ?>
 						<?php echo $this->Form->create('User' ); ?>
 						<fieldset>
 							<?php echo $this->Form->input('username',array('label'=>'Tên đăng nhập','class'=>"form-control", 'placeholder'=>" Tên đăng nhập"));

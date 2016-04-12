@@ -67,7 +67,7 @@ class TransactionsController extends AppController {
 		}
 		$user_info = $this->get_user();
 		$wallets = $this->Transaction->Wallet->find('list',array(
-			'fields' => 'wallet_name',
+			// 'fields' => 'wallet_name',
 			'conditions' => array('user_id' => $user_info['id'])
 			));
 

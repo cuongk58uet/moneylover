@@ -10,7 +10,7 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
           		<ul class="nav nav-sidebar">
-          		<li><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?> </li>
+          		<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?> </li>
             	<li><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin'); ?> </li>
           </ul>
 			</div>

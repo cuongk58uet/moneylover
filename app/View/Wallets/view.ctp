@@ -23,7 +23,7 @@
 				<div class="panel-body">
 					<h2><?php echo __(' Ví'); ?></h2>
 					<dl>
-						<dt><?php echo __('Id'); ?></dt>
+						<dt><?php echo __('ID'); ?></dt>
 						<dd>
 							<?php echo h($wallet['Wallet']['id']); ?>
 							&nbsp;
@@ -43,7 +43,7 @@
 							<?php echo h($wallet['Wallet']['banlances']); ?>
 							&nbsp;
 						</dd>
-						<dt><?php echo __('User'); ?></dt>
+						<dt><?php echo __('Tài khoản'); ?></dt>
 						<dd>
 							<?php echo $this->Html->link($wallet['User']['username'], array('controller' => 'users', 'action' => 'view', $wallet['User']['id'])); ?>
 							&nbsp;
@@ -57,7 +57,7 @@
 			<?php if (!empty($wallet['Transaction'])): ?>
 				<table class="table table-striped">
 				<tr>
-					<th><?php echo __('Id'); ?></th>
+					<th><?php echo __('ID'); ?></th>
 					<th><?php echo __('Giá trị'); ?></th>
 					<th><?php echo __('Ngày giao dịch'); ?></th>
 					<th><?php echo __('Ghi chú'); ?></th>

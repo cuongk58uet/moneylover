@@ -20,7 +20,7 @@
 				echo $this->Form->hidden('username');
 				echo $this->Form->hidden('password');
 				echo $this->Form->input('fullname', array('label'=>'Họ và tên','class'=>"form-control"));
-				echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>140, 'height' => 200));
+				echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>200, 'height' => 200));
 				echo $this->Form->input('avatar', array('label'=> '', 'class'=>'img-thumbnail', 'type' => 'file'));
 				echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control"));
 				echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin' , 'author' => 'Author')));

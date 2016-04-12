@@ -11,12 +11,11 @@
 		<div class=" col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
           	<li>Xin chào: <b><?php echo $user_info['fullname'];?></b></li>
-          	<li class="active"><?php echo $this->Html->link(' Thông tin cá nhân','view/'.$user_info['id']); ?></li>
-            <!-- <li><?php echo $this->Html->link(__(' Thêm người dùng'), array('action' => 'add')); ?></li> -->
+          	<li class="active"><?php echo $this->Html->link(' Thông tin cá nhân',array('action' => 'view')); ?></li>
 			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('controller' => 'wallets', 'action' => 'add')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Danh sách các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?> </li>
+			<!-- <li><?php echo $this->Html->link(__(' Danh sách các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?> </li> -->
 			<li><?php echo $this->Html->link('Đổi mật khẩu', '/doi-mat-khau');	?></li>
 
           </ul>
@@ -26,8 +25,8 @@
 			<div class="transactions index">
 			
 				<?php if(empty($wallets)): ?>
-					<h1>Opps!!!</h1>
-					<h4><strong> Bạn chưa tạo ví nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4></br>
+					<h3>Ohhh!!! Xin chào <b><?php echo $user_info['fullname'];?></b></h3>
+					<h4><strong> Có vẻ bạn chưa tạo ví nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4></br>
 				<?php else: ?>
 				<?php if(!empty($transactions)): ?>
 					<h2><?php echo __('Các giao dịch đã lưu'); ?></h2>
@@ -59,7 +58,7 @@
 						<td class="actions">
 							<?php echo $this->Html->link(__('Chi tiết'), array( 'controller' => 'transactions', 'action' => 'view', $transaction['Transaction']['id']), array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Html->link(__('Sửa'), array('controller' => 'transactions', 'action' => 'edit', $transaction['Transaction']['id']), array('class' => 'btn btn-xs btn-primary')); ?>
-							<?php echo $this->Form->postLink(__(' Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $transaction['Transaction']['id']))); ?>
+							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn thực sự muốn xóa # %s?', $transaction['Transaction']['id']))); ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>
@@ -69,8 +68,8 @@
 					<?php echo $this->element('paginate', array('object' => 'giao dịch')); ?>
 				</div>
 			<?php else: ?>
-				<h1>Opps!!!</h1>
-				<h4><strong> Bạn chưa tạo giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>
+				<h3>Ohhh!!! Xin chào <b><?php echo $user_info['fullname'];?></b></h3>
+				<h4><strong> Có vẻ bạn chưa tạo giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>
 			<?php endif ?>
 			<?php endif ?>
 		</div>
