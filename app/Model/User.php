@@ -15,6 +15,13 @@ class User extends AppModel {
  */
 	public $displayField = 'username';
 
+	public $actsAs = array(
+    'Captcha.Captcha' => array(
+        'field' => array('captcha'),
+        'error' => 'Incorrect captcha code value'
+    )
+);
+
 /**
  * Validation rules
  *

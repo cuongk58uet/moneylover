@@ -18,7 +18,25 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Flash', 'Session','Tool');
+	public $components = array('Paginator', 'Flash', 'Session','Tool','Captcha.Captcha'=>array('Model'=>'Signup', 'field'=>'captcha'));
+
+	var $uses = array('User');
+	public $helpers = array('Captcha.Captcha');
+
+
+	public function captcha()  {
+    $this->autoRender = false;
+    $this->layout='ajax';
+    if(!isset($this->Captcha)) {
+    	$this->Captcha = $this->Components->load('Captcha', array(
+			'width' => 150,
+			'height' => 50,
+			'theme' => 'random'
+			));
+    }
+
+    $this->Captcha->generate();
+}
 
 /**
  * index method
@@ -74,17 +92,24 @@ class UsersController extends AppController {
 		$location = null;
 		if ($this->request->is('post')) {
 			$this->User->create();
-			if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
-				if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(' Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
-				return $this->redirect(array('action' => 'index'));
-				} else {
-					$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+
+			$this->Signup->setCaptcha('captcha', $this->Captcha->getCode('Signup.captcha'));
+			$this->Signup->set($this->request->data);
+			if($this->Signup->validates()){
+				if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
+					if ($this->User->save($this->request->data)) {
+						$this->Session->setFlash(' Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
+						return $this->redirect(array('action' => 'index'));
+					} else {
+						$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+					}
+				} else{
+					$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
+					unset($this->request->data['User']['password']);
+					unset($this->request->data['User']['confirm_password']);
 				}
 			} else{
-				$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
-				unset($this->request->data['User']['password']);
-				unset($this->request->data['User']['confirm_password']);
+				$this->Session->setFlash('Xác thực không thành công. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
 			}
 		}
 	}

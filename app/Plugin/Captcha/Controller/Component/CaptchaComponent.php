@@ -122,18 +122,18 @@
      * @var array
      */
     public $settings = array(
-      'width' => 120,
-      'height' => 40,
+      'width' => 150,
+      'height' => 50,
       'length' => 6,
-      'theme'=>'default',
+      'theme'=>'basic',
       'fontAdjustment'=>0.50,
       'type'=>'image',
       'model' => 'Signup',
       'field' => 'captcha',
       'rotate' => true,
-      'reload_txt' => 'Can\'t read? Reload',
-      'clabel' => '<p>Enter security code shown above:</p>',
-      'mlabel' => '<p>Answer simple math:</p>'
+      'reload_txt' => 'Thử mã khác',
+      'clabel' => '<p>Nhập mã xác thực:</p>',
+      'mlabel' => '<p> Trả lời câu hỏi:</p>'
        
     );
 

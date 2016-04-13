@@ -54,5 +54,19 @@
 <?php echo $this->Html->script('jquery'); ?>
 <?php echo $this->Html->script('bootstrap'); ?>
 <?php echo $this->Html->script('html5shiv'); ?>
+<script 
+src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+jQuery('.creload').on('click', function() {
+    var mySrc = $(this).prev().attr('src');
+    var glue = '?';
+    if(mySrc.indexOf('?')!=-1)  {
+        glue = '&';
+    }
+    $(this).prev().attr('src', mySrc + glue + new Date().getTime());
+    return false;
+});
+</script>
 </body>
 </html>
