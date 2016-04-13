@@ -35,14 +35,14 @@
 				<td><?php echo h($transaction['Transaction']['create_date']); ?>&nbsp;</td>
 				<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
 				<td>
-					<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], array('controller' => 'wallets', 'action' => 'view', $transaction['Wallet']['id'])); ?>
+					<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
 				</td>
 				<td>
 					<?php echo $this->Html->link($transaction['Category']['category_name'], array('controller' => 'categories', 'action' => 'view', $transaction['Category']['id'])); ?>
 				</td>
 				<td class="actions">
-					<?php echo $this->Html->link(__('Chi tiết'), array('action' => 'view', $transaction['Transaction']['id']),array('class' => 'btn btn-xs btn-primary')); ?>
-					<?php echo $this->Html->link(__('Sửa'), array('action' => 'edit', $transaction['Transaction']['id']),array('class' => 'btn btn-xs btn-primary')); ?>
+					<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
+					<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
 					<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $transaction['Transaction']['id']))); ?>
 				</td>
 			</tr>

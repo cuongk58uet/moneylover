@@ -4,7 +4,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><?php echo $this->Html->link(__(' Chỉnh sửa ví'), array('action' => 'edit', $wallet['Wallet']['id'])); ?> </li>
+            <li class="active"><?php echo $this->Html->link(__(' Chỉnh sửa ví'), '/chinh-sua-vi/'.$wallet['Wallet']['slug']); ?> </li>
 			<li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $wallet['Wallet']['wallet_name']))); ?> </li>
 			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?> </li>
@@ -74,8 +74,8 @@
 						<td><?php echo $transaction['wallet_id']; ?></td>
 						<td><?php echo $transaction['category_id']; ?></td>
 						<td class="actions">
-							<?php echo $this->Html->link(__('Chi tiết'), array('controller' => 'transactions', 'action' => 'view', $transaction['id']), array('class' => 'btn btn-xs btn-primary')); ?>
-							<?php echo $this->Html->link(__('Sửa'), array('controller' => 'transactions', 'action' => 'edit', $transaction['id']), array('class' => 'btn btn-xs btn-primary')); ?>
+							<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['slug'], array('class' => 'btn btn-xs btn-primary')); ?>
+							<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['slug'], array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $transaction['id']))); ?>
 						</td>
 					</tr>

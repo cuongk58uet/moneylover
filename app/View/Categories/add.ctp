@@ -21,7 +21,7 @@
 			<legend><?php echo __('Thêm danh mục'); ?></legend>
 				<?php
 					echo $this->Form->input('category_name',array('label'=>'Tên danh mục mới','class'=>"form-control", 'placeholder'=>" Tên danh mục"));
-					echo $this->Form->input('category_type',array('label'=>'Kiểu danh mục','class'=>"form-control", 'options' => array('Nợ & Cho vay' => 'Nợ & Cho vay' ,'Chi Tiêu' => 'Chi Tiêu', 'Thu Nhập' => 'Thu Nhập')));
+					echo $this->Form->input('category_type',array('label'=>'Kiểu danh mục','class'=>"form-control", 'options' => array('Nợ' => 'Nợ' , 'Cho Vay' => 'Cho Vay' , 'Chi Tiêu' => 'Chi Tiêu', 'Khoản Thu Nhập' => 'Thu Nhập')));
 				?>
 		</fieldset>
 		</br>

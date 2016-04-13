@@ -42,12 +42,13 @@ class TransactionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->Transaction->exists($id)) {
+	public function view($slug = null) {
+		$transactions = $this->Transaction->find('first', array('conditions' => array('Transaction.slug' => $slug)));
+		if (!$transactions) {
 			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu.'));
+		} else{
+			$this->set('transaction', $transactions);
 		}
-		$options = array('conditions' => array('Transaction.' . $this->Transaction->primaryKey => $id));
-		$this->set('transaction', $this->Transaction->find('first', $options));
 	}
 
 /**
@@ -57,6 +58,7 @@ class TransactionsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
+			pr($this->request->data); exit;
 			$this->Transaction->create();
 			if ($this->Transaction->save($this->request->data)) {
 				$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
@@ -67,14 +69,12 @@ class TransactionsController extends AppController {
 		}
 		$user_info = $this->get_user();
 		$wallets = $this->Transaction->Wallet->find('list',array(
-			// 'fields' => 'wallet_name',
 			'conditions' => array('user_id' => $user_info['id'])
 			));
-
 		$categories = $this->Transaction->Category->find('list');
 		$users = $this->Transaction->User->find('list',array(
 			'conditions' => array('id' => $user_info['id'])));
-		$this->set(compact('wallets', 'categories','users'));
+		$this->set(compact('wallets','users', 'categories'));
 	}
 
 /**
@@ -84,25 +84,23 @@ class TransactionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
-		if (!$this->Transaction->exists($id)) {
-			throw new NotFoundException(__('Invalid transaction'));
+	public function edit($slug = null) {
+		if (!$this->Transaction->find('first', array('conditions' => array('Transaction.slug' => $slug)))) {
+			throw new NotFoundException(__('Không tìm thấy trang bạn yêu cầu'));
 		}
-		if ($this->request->is(array('post', 'put'))) {
+		if (/*$this->Transaction->Wallet->update_banlances($this->request->data['Transaction']['wallet_id'],$this->request->data['Transaction']['amount'], $this->request->data['Transaction']['category_type']) && */$this->request->is(array('post', 'put'))) {
+			//pr($this->request->data); exit;
 			if ($this->Transaction->save($this->request->data)) {
-				//pr($this->request->data); exit;
-				$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
-				return $this->redirect(array('action' => 'index'));
+					$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
+					return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Giao dịch chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		} else {
-			$options = array('conditions' => array('Transaction.' . $this->Transaction->primaryKey => $id));
-			$this->request->data = $this->Transaction->find('first', $options);
+			$this->request->data = $this->Transaction->find('first', array('conditions' => array('Transaction.slug' => $slug)));
 		}
 		$user_info = $this->get_user();
 		$wallets = $this->Transaction->Wallet->find('list',array(
-			'fields' => 'wallet_name',
 			'conditions' => array('user_id' => $user_info['id'])
 			));
 		

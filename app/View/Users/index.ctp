@@ -56,8 +56,9 @@
 							<?php echo $this->Html->link($transaction['Category']['category_name'], array('controller' => 'categories', 'action' => 'view', $transaction['Category']['id'])); ?>
 						</td>
 						<td class="actions">
-							<?php echo $this->Html->link(__('Chi tiết'), array( 'controller' => 'transactions', 'action' => 'view', $transaction['Transaction']['id']), array('class' => 'btn btn-xs btn-primary')); ?>
-							<?php echo $this->Html->link(__('Sửa'), array('controller' => 'transactions', 'action' => 'edit', $transaction['Transaction']['id']), array('class' => 'btn btn-xs btn-primary')); ?>
+							
+							<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
+							<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn thực sự muốn xóa # %s?', $transaction['Transaction']['id']))); ?>
 						</td>
 					</tr>

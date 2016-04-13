@@ -34,13 +34,16 @@ class Wallet extends AppModel {
 		'wallet_name' => array(
 			'notBlank' => array(
 				'rule' => array('notBlank'),
-			),
-			'unique' => array(
-				'rule' =>'isUnique',
-				'message' => 'Tên ví đã tồn tại. Vui lòng thử lại'
-				),
+			)
 		),
 	);
+
+	public function beforeSave($options = array()) {
+		if(!empty($this->data['Wallet']['wallet_name'])){
+			$this->data['Wallet']['slug'] = $this->create_slug($this->data['Wallet']['wallet_name']);
+		}
+		return true;
+	}
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
 

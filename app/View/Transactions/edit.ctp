@@ -31,6 +31,7 @@
 				<?php echo $this->Form->input('note',array('label'=>' Ghi chú','class'=>"form-control", 'placeholder' => 'Ghi chú')); ?>
 				<?php echo $this->Form->input('wallet_id',array('label'=>' Ví','class'=>"form-control")); ?>
 				<?php echo $this->Form->input('category_id',array('label'=>'Danh mục','class'=>"form-control")); ?>
+				<?php echo $this->Form->input('category_type',array('label'=>'Kiểu danh mục','class'=>"form-control", 'options' => array('Nợ' => 'Nợ', 'Cho Vay' => 'Cho Vay', 'Chi Tiêu' => 'Chi Tiêu', 'Khoản Thu Nhập' => 'Khoản Thu Nhập'))); ?>
 			
 			</fieldset>
 			</br>

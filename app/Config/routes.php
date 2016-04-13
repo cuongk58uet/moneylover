@@ -38,9 +38,14 @@
 	Router::connect('/thong-tin-ca-nhan', array('controller' => 'users', 'action' => 'view'));
 	Router::connect('/quen-mat-khau', array('controller' => 'users', 'action' => 'forgot'));
 	Router::connect('/xac-nhan/:code', array('controller' => 'users', 'action' => 'confirm'),array('pass'=>array('code')));
-	Router::connect('/thong-tin-vi/:wallet_name', array('controller' => 'wallets', 'action' => 'view'), array('pass' => array('wallet_name')));
+	Router::connect('/thong-tin-vi/:slug', array('controller' => 'wallets', 'action' => 'view'), array('pass' => array('slug')));
+	Router::connect('/chinh-sua-vi/:slug', array('controller' => 'wallets', 'action' => 'edit'), array('pass' => array('slug')));
 	Router::connect('/danh-sach-vi', array('controller' => 'wallets', 'action' => 'index'));
 	Router::connect('/them-vi', array('controller' => 'wallets', 'action' => 'add'));
+	Router::connect('/giao-dich', array('controller' => 'transactions', 'action' => 'index'));
+	Router::connect('/them-giao-dich', array('controller' => 'transactions', 'action' => 'add'));
+	Router::connect('/chi-tiet-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'view'), array('pass' => array('slug')));
+	Router::connect('/chinh-sua-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'edit'), array('pass' => array('slug')));
 /**
 /**
  * Load all plugin routes. See the CakePlugin documentation on

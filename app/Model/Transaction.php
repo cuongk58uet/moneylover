@@ -33,6 +33,15 @@ class Transaction extends AppModel {
 		),
 	);
 
+	public function beforeSave($options = array()) {
+		if(!empty($this->data['Transaction']['note'])){
+			$this->data['Transaction']['slug'] = $this->create_slug($this->data['Transaction']['note']);
+		} else{
+			$this->data['Transaction']['slug'] = $this->create_slug($this->data['Transaction']['create_date']);
+		}
+		return true;
+	}
+
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**

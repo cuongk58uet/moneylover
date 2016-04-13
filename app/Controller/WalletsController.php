@@ -16,7 +16,7 @@ class WalletsController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Flash', 'Security', 'Session');
+	public $components = array('Paginator', 'Flash', 'Security', 'Session','Tool');
 
 /**
  * index method
@@ -45,8 +45,8 @@ class WalletsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($wallet_name = null) {
-		$wallets = $this->Wallet->find('first', array('conditions' => array('wallet_name' => $wallet_name)));
+	public function view($slug = null) {
+		$wallets = $this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)));
 		if (!$wallets) {
 			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
 		} else{
@@ -84,8 +84,8 @@ class WalletsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
-		if (!$this->Wallet->exists($id)) {
+	public function edit($slug = null) {
+		if (!$this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)))) {
 			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
@@ -96,8 +96,7 @@ class WalletsController extends AppController {
 				$this->Session->setFlash('Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		} else {
-			$options = array('conditions' => array('Wallet.' . $this->Wallet->primaryKey => $id));
-			$this->request->data = $this->Wallet->find('first', $options);
+			$this->request->data = $this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)));
 		}
 		$users = $this->Wallet->User->find('list');
 		$this->set(compact('users'));
@@ -122,5 +121,20 @@ class WalletsController extends AppController {
 			$this->Session->setFlash(' Ví chưa được Xóa. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+
+	public function update_banlances($id, $amount, $string){
+		$this->Wallet->id = $id;
+		$banlances = 0;
+		if(strlen($string) == 7 || strlen($string) == 8){
+			$banlances = $this->Wallet->banlances - $amount;
+		} else{
+			$banlances = $this->Wallet->banlances + $amount;
+		}
+		if($this->Wallet->saveField('banlances',$banlances)){
+			return true;
+		} else{
+			return false;
+		}
 	}
 }

@@ -5,5 +5,6 @@ class ToolComponent extends Component{
 		$code = md5($random_number);
 		return $code;
 	}
+
 }
 ?>
