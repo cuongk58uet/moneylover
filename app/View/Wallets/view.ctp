@@ -45,7 +45,7 @@
 						</dd>
 						<dt><?php echo __('Tài khoản'); ?></dt>
 						<dd>
-							<?php echo $this->Html->link($wallet['User']['username'], array('controller' => 'users', 'action' => 'view', $wallet['User']['id'])); ?>
+							<?php echo $this->Html->link($wallet['User']['username'], '/thong-tin-ca-nhan/'); ?>
 							&nbsp;
 						</dd>
 					</dl>

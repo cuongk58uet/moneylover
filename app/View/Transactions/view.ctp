@@ -37,7 +37,7 @@
 						</dd>
 						<dt><?php echo __(' Ví'); ?></dt>
 						<dd>
-							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], array('controller' => 'wallets', 'action' => 'view', $transaction['Wallet']['id'])); ?>
+							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
 							&nbsp;
 						</dd>
 						<dt><?php echo __(' Kiểu danh mục'); ?></dt>

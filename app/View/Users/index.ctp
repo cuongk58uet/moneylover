@@ -50,7 +50,7 @@
 						<td><?php echo h($transaction['Transaction']['create_date']); ?>&nbsp;</td>
 						<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
 						<td>
-							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['wallet_name']); ?>
+							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
 						</td>
 						<td>
 							<?php echo $this->Html->link($transaction['Category']['category_name'], array('controller' => 'categories', 'action' => 'view', $transaction['Category']['id'])); ?>
