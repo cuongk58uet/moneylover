@@ -18,25 +18,8 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Flash', 'Session','Tool','Captcha.Captcha'=>array('Model'=>'Signup', 'field'=>'captcha'));
-
-	var $uses = array('User');
-	public $helpers = array('Captcha.Captcha');
-
-
-	public function captcha()  {
-    $this->autoRender = false;
-    $this->layout='ajax';
-    if(!isset($this->Captcha)) {
-    	$this->Captcha = $this->Components->load('Captcha', array(
-			'width' => 150,
-			'height' => 50,
-			'theme' => 'random'
-			));
-    }
-
-    $this->Captcha->generate();
-}
+	public $components = array('Paginator', 'Flash', 'Session','Tool');
+	
 
 /**
  * index method
@@ -92,10 +75,7 @@ class UsersController extends AppController {
 		$location = null;
 		if ($this->request->is('post')) {
 			$this->User->create();
-
-			$this->Signup->setCaptcha('captcha', $this->Captcha->getCode('Signup.captcha'));
-			$this->Signup->set($this->request->data);
-			if($this->Signup->validates()){
+			if($this->User->validates()){
 				if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
 					if ($this->User->save($this->request->data)) {
 						$this->Session->setFlash(' Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
@@ -107,9 +87,7 @@ class UsersController extends AppController {
 					$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
 					unset($this->request->data['User']['password']);
 					unset($this->request->data['User']['confirm_password']);
-				}
-			} else{
-				$this->Session->setFlash('Xác thực không thành công. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
+				}	
 			}
 		}
 	}
@@ -310,19 +288,25 @@ class UsersController extends AppController {
 				if($this->request->is('post')){
 					$this->User->set($this->request->data);
 					if($this->User->validates()){
-						if($this->update_password($user['User']['id'])){
-							$this->User->updateAll(array('User.code' => null), array('User.id'=>$user['User']['id']));
-							$this->Session->setFlash('Lấy lại mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới', 'default', array('class' => 'alert alert-info'));
-							return $this->redirect(array( 'controller' => 'users', 'action' => 'login'));
-						}
-					} else{
-						$this->set('errors', $this->validationErrors);
-					}
+						if(strcmp($this->request->data['User']['password'],$this->request->data['User']['confirm_password']) == 0){
+							if($this->update_password($user['User']['id'])){
+								$this->User->updateAll(array('User.code' => null), array('User.id'=>$user['User']['id']));
+								$this->Session->setFlash('Lấy lại mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới', 'default', array('class' => 'alert alert-info'));
+								return $this->redirect(array( 'controller' => 'users', 'action' => 'login'));
+							} else{
+								$this->set('errors', $this->validationErrors);
+							}
+						} else {
+							$this->Session->setFlash('Xác nhận mật khẩu không đúng. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
+							unset($this->request->data['User']['password']);
+							unset($this->request->data['User']['confirm_password']);
+						}		
 				}
 			}
 		}
 		$this->set('confirm', $confirm);
 	}
+}
 
 	public function update_password($id){
 		$this->User->id = $id;

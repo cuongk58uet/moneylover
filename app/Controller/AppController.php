@@ -32,9 +32,11 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
+	
+    
+
 	public $components = array(
 		'Session',
-		
 		'Auth' => array(
 			'authError' => 'Bạn cần phải đăng nhập để tiếp tục',
 			'flash' => array(

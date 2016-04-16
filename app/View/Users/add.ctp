@@ -21,8 +21,7 @@
 				echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control", 'placeholder'=>" Địa chỉ"));
 				echo $this->Form->input('email', array('label'=>'Email', 'class'=>"form-control", 'placeholder' => 'Địa chỉ email'));
 				echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin')));
-				echo $this->Form->create("Signups");
-				echo $this->Captcha->render();
+				
 			?>
 			</fieldset>
 			</br>

@@ -9,7 +9,7 @@
 			<div class="users form">
 				<?php echo $this->Form->create('User' ); ?>
 				<fieldset>
-					<?php echo $this->Form->input('email',array('label'=>'Email','class'=>"form-control", 'placeholder'=>"Email"));?></br>
+					<?php echo $this->Form->input('email',array('label'=>'Vui lòng nhập địa chỉ Email mà bạn đã đăng kí trên  MoneyLover','class'=>"form-control", 'placeholder'=>"Email"));?></br>
 					<?php echo $this->Session->flash(); ?>
 				</fieldset></br>
 				<div class="col-md-4 col-xs-6"></div>
