@@ -3,14 +3,11 @@
 <body>
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-          	<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-            <!-- <li><?php echo $this->Html->link(__(' Danh sách ví'), array('action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__(' Thêm người dùng'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Danh sách giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>-->
+        <ul class="nav nav-sidebar">
+          	<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?></li>
 			<li><?php echo $this->Html->link(__('Thêm danh mục mới'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
 			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
-          </ul>
+    	</ul>
 	</div>
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<?php echo $this->Session->flash(); ?>

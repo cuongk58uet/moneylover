@@ -72,9 +72,12 @@ class TransactionsController extends AppController {
 			'conditions' => array('user_id' => $user_info['id'])
 			));
 		$categories = $this->Transaction->Category->find('list');
+		$category_type = $this->Transaction->Category->find('list', array(
+			'group' => array('category_type')
+			));
 		$users = $this->Transaction->User->find('list',array(
 			'conditions' => array('id' => $user_info['id'])));
-		$this->set(compact('wallets','users', 'categories'));
+		$this->set(compact('wallets','users', 'categories', 'category_type'));
 	}
 
 /**
@@ -88,7 +91,7 @@ class TransactionsController extends AppController {
 		if (!$this->Transaction->find('first', array('conditions' => array('Transaction.slug' => $slug)))) {
 			throw new NotFoundException(__('Không tìm thấy trang bạn yêu cầu'));
 		}
-		if (/*$this->Transaction->Wallet->update_banlances($this->request->data['Transaction']['wallet_id'],$this->request->data['Transaction']['amount'], $this->request->data['Transaction']['category_type']) && */$this->request->is(array('post', 'put'))) {
+		if ($this->request->is(array('post', 'put'))) {
 			//pr($this->request->data); exit;
 			if ($this->Transaction->save($this->request->data)) {
 					$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
