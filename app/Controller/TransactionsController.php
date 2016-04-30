@@ -33,6 +33,7 @@ class TransactionsController extends AppController {
 			);
 		$this->Paginator->settings = $this->paginate;
 		$this->set('transactions', $this->paginate());
+		//pr($this->paginate()); exit;
 	}
 
 /**
@@ -58,7 +59,7 @@ class TransactionsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-			pr($this->request->data); exit;
+			
 			$this->Transaction->create();
 			if ($this->Transaction->save($this->request->data)) {
 				$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));

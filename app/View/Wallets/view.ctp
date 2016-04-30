@@ -4,12 +4,12 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><?php echo $this->Html->link(__(' Chỉnh sửa ví'), '/chinh-sua-vi/'.$wallet['Wallet']['slug']); ?> </li>
-			<li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $wallet['Wallet']['wallet_name']))); ?> </li>
-			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('action' => 'index')); ?> </li>
+            <li><?php echo $this->Html->link(__(' Chỉnh sửa ví'), '/chinh-sua-vi/'.$wallet['Wallet']['slug']); ?> </li>
+			<!-- <li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $wallet['Wallet']['wallet_name']))); ?> </li> -->
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Danh sách các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?> </li>
+			<li><?php echo $this->Html->link(__(' Trở lại'), array('action' => 'index')); ?> </li>
           </ul>
 	</div>
 
@@ -23,11 +23,11 @@
 				<div class="panel-body">
 					<h2><?php echo __(' Ví'); ?></h2>
 					<dl>
-						<dt><?php echo __('ID'); ?></dt>
+						<!-- <dt><?php echo __('ID'); ?></dt>
 						<dd>
 							<?php echo h($wallet['Wallet']['id']); ?>
 							&nbsp;
-						</dd>
+						</dd> -->
 						<dt><?php echo __(' Tên ví'); ?></dt>
 						<dd>
 							<?php echo h($wallet['Wallet']['wallet_name']); ?>
@@ -82,7 +82,7 @@
 				<?php endforeach; ?>
 				</table>
 			<?php else: ?>
-				<h4><strong> Bạn chưa tạo giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>
+				<h4><strong> Ví này không có giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>
 			<?php endif; ?>
 		</div>
 	</div>

@@ -8,8 +8,11 @@
 	<div class="content col-md-4">
 	</div>
 		<div class="content col-md-4">
-		<?php echo $this->Session->flash(); ?>
-		<?php echo $this->Session->flash('auth'); ?>
+		<?php if(empty($this->request->data)) : ?>
+			<?php echo $this->Flash->render('authenticate'); ?>
+		<?php else: ?>
+			<?php echo $this->Session->flash('auth'); ?>
+		<?php endif ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 	            	<h3 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đăng nhập </h3>

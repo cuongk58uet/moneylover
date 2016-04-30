@@ -4,7 +4,7 @@
 	<?php echo $this->element('header');	?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-      		<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+      		<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
             <li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('action' => 'add')); ?></li>
 			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
           </ul>
@@ -32,7 +32,7 @@
 			<tr>
 				<!-- <td><?php echo h($transaction['Transaction']['id']); ?>&nbsp;</td> -->
 				<td><?php echo h($transaction['Transaction']['amount']); ?>&nbsp;</td>
-				<td><?php echo h($transaction['Transaction']['create_date']); ?>&nbsp;</td>
+				<td><?php echo date('d-m-y',strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
 				<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
 				<td>
 					<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
@@ -43,7 +43,7 @@
 				<td class="actions">
 					<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
 					<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
-					<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $transaction['Transaction']['id']))); ?>
+					<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['note']))); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

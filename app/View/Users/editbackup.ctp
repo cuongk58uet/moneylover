@@ -5,7 +5,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-			<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?></li>
 			<li><?php echo $this->Html->link(' Quay lại','view/'.$user_info['id']); ?></li>
           </ul>
 	</div>

@@ -31,23 +31,21 @@ class UsersController extends AppController {
 		$this->User->recursive = 1;
 		$this->paginate = array(
 			'Transaction' => array(
-				'order' => array('create_date' => 'desc'),
+				//'order' => array('create_date' => 'desc'),
 				'limit' => 5,
 				'conditions' => array('Transaction.user_id' => $user_info['id']),
 				'paramType' => 'querystring'
 			),
 			'Wallet' => array(
-				'order' => array('wallet_name' => 'desc'),
 				'limit' => 5,
 				'conditions' => array('Wallet.user_id' => $user_info['id']),
 				'paramType' => 'querystring'
 			),
-			'conditions' => array('id' => $user_info['id'])
+			'conditions' => array('User.id' => $user_info['id'])
 			);
 		$this->Paginator->settings = $this->paginate;
-		$this->set('wallets', $this->paginate('Wallet'));
 		$this->set('transactions', $this->paginate('Transaction'));
-		
+		$this->set('wallets', $this->paginate('Wallet'));
 	}
 
 /**
@@ -93,44 +91,13 @@ class UsersController extends AppController {
 	}
 
 /**
- * edit method
+ * uploadFile method
  *
  * @throws NotFoundException
- * @param string $id
+ * @param void
  * @return void
  */
-	/*public function edit($id = null) {
-		if (!$this->User->exists($id)) {
-			throw new NotFoundException(__('Không tìm thấy trang'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			$save = true;
-			if(!empty($this->request->data['User']['avatar']['name'])){
-				if($this->uploadFile()){
-					$location = 'img/'.$this->request->data['User']['avatar']['name'];
-					$this->request->data['User']['avatar'] = $location;
-				} else{
-					$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
-					$save = fasle;
-				}
-			} else{
-				unset($this->request->data['User']['avatar']);
-			}
-			//pr($this->request->data); exit;
-			if($save){
-				if ($this->User->save($this->request->data)) {
-					$this->Session->setFlash('Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
-					return $this->redirect(array('action' => 'index'));
-				}
-			} else {
-				$this->Session->setFlash('Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
-			}
-		} else {
-			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-			$this->request->data = $this->User->find('first', $options);
-		}
-	}
-*/
+	
 	private function uploadFile(){
 		$file = new File($this->request->data['User']['avatar']['tmp_name']);
 		$file_name = $this->request->data['User']['avatar']['name'];

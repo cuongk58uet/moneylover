@@ -5,7 +5,7 @@
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             
-            <li class="active"><?php echo $this->Html->link(__(' Sửa giao dịch'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug']); ?> </li>
+            <li><?php echo $this->Html->link(__(' Sửa giao dịch'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug']); ?> </li>
 			<li><?php echo $this->Form->postLink(__(' Xóa giao dịch'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['id']))); ?> </li>
 			<li><?php echo $this->Html->link(__(' Trở về'), array('action' => 'index')); ?> </li>
           </ul>

@@ -10,12 +10,8 @@
 	<div class="row">
 		<div class=" col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          	<li>Xin chào: <b><?php echo $user_info['fullname'];?></b></li>
-          	<li class="active"><?php echo $this->Html->link(' Thông tin cá nhân',array('action' => 'view')); ?></li>
 			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('controller' => 'wallets', 'action' => 'add')); ?> </li>
-			<!-- <li><?php echo $this->Html->link(__(' Danh sách các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?> </li> -->
 			<li><?php echo $this->Html->link('Đổi mật khẩu', '/doi-mat-khau');	?></li>
 
           </ul>
@@ -39,7 +35,7 @@
 							<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
 							<th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>
 							<th><?php echo $this->Paginator->sort('category_name','Kiểu danh mục'); ?></th>
-							<th><?php echo __('Actions'); ?></th>
+							<th><?php echo __('Tùy chọn'); ?></th>
 					</tr>
 					</thead>
 					<tbody>
@@ -47,7 +43,7 @@
 					<tr>
 						<!-- <td><?php echo h($transaction['Transaction']['id']); ?>&nbsp;</td> -->
 						<td><?php echo h($transaction['Transaction']['amount']); ?>&nbsp;</td>
-						<td><?php echo h($transaction['Transaction']['create_date']); ?>&nbsp;</td>
+						<td><?php echo date('d-m-y', strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
 						<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
 						<td>
 							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
@@ -59,7 +55,7 @@
 							
 							<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
-							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn thực sự muốn xóa # %s?', $transaction['Transaction']['id']))); ?>
+							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn thực sự muốn xóa giao dịch %s?', $transaction['Transaction']['note']))); ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

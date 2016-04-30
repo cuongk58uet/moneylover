@@ -10,8 +10,8 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
           		<ul class="nav nav-sidebar">
-          		<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?> </li>
-            	<li><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin'); ?> </li>
+          		<li><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?> </li>
+            	<!-- <li><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin'); ?> </li> -->
           </ul>
 			</div>
 			
@@ -28,33 +28,29 @@
 							<dd>
 								<?php echo h($user['User']['username']); ?>
 								&nbsp;
-							</dd>
-							<dt><?php echo __('Tên chủ tài khoản'); ?></dt>
+							</dd></br>
+							<dt><?php echo __('Chủ tài khoản'); ?></dt>
 							<dd>
 								<?php echo h($user['User']['fullname']); ?>
 								&nbsp;
-							</dd>
+							</dd></br>
 							<dt><?php echo __(' Địa chỉ'); ?></dt>
 							<dd>
 								<?php echo h($user['User']['address']); ?>
 								&nbsp;
-							</dd>
+							</dd></br>
 							<dt><?php echo __('Email'); ?></dt>
 							<dd>
 								<?php echo h($user['User']['email']); ?>
 								&nbsp;
-							</dd>
+							</dd></br>
 							<dt><?php echo __('Avatar'); ?></dt>
 							<dd>
 								<?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200)); ?>
 								&nbsp;
 							</dd></br>
-							<dt><?php echo __(' Quyền'); ?></dt>
-							<dd>
-								<?php echo h($user['User']['role']); ?>
-								&nbsp;
-							</dd>
 						</dl>
+						<?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?>
 					</div>
 				</div>
 			</div>

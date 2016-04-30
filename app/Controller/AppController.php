@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
-	
+	public $helper = array('Time');
     
 
 	public $components = array(
@@ -40,8 +40,8 @@ class AppController extends Controller {
 		'Auth' => array(
 			'authError' => 'Bạn cần phải đăng nhập để tiếp tục',
 			'flash' => array(
+				'key' => 'authenticate',
 				'element' => 'default',
-				'key' => 'auth',
 				'params' => array('class' => 'alert alert-danger')
 				),
 			'loginRedirect' => array(

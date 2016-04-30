@@ -14,6 +14,7 @@ class User extends AppModel {
  * @var string
  */
 	public $displayField = 'username';
+	public $actsAs = array('Containable');
 
 /**
  * Validation rules
@@ -55,7 +56,7 @@ class User extends AppModel {
 			),
 		'email' => array(
 			'required' => array(
-				'rule' => array('email'),
+				'rule' => array('email', 'notBlank'),
 				'message' => 'Email không được trống'
 				),
 			'unique' => array(

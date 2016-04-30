@@ -5,11 +5,12 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          	<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+          	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
             <li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?></li>
-			
+		<?php if(!empty($wallets)): ?>
 			<li><?php echo $this->Html->link(__(' Các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?></li>
+		<?php endif ?>
 			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'users', 'action' => 'index')); ?></li>
           </ul>
 	</div>
@@ -52,7 +53,7 @@
 					<?php echo $this->element('paginate', array('object' => 'ví')); ?>
 			<?php else: ?>
 					<h1>Opps!!!</h1>
-					<strong> Bạn chưa tạo ví. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong>
+					<h4><strong> Bạn chưa tạo ví. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4>
 			<?php endif ?>
 			</div>
 	</div>

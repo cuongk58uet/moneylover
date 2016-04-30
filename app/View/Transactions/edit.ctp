@@ -4,7 +4,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><?php echo $this->Form->postLink(__(' Xóa giao dịch'), array('action' => 'delete', $this->Form->value('Transaction.id')), array('confirm' => __(' Bạn có chắc chắn muốn xóa giao dịch %s?', $this->Form->value('Transaction.id')))); ?></li>
+            <li><?php echo $this->Form->postLink(__(' Xóa giao dịch'), array('action' => 'delete', $this->Form->value('Transaction.id')), array('confirm' => __(' Bạn có chắc chắn muốn xóa giao dịch %s?', $this->Form->value('Transaction.id')))); ?></li>
             <li><?php echo $this->Html->link(__(' Danh mục ví'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__('Trở về'), array('action' => 'index')); ?></li>
           </ul>

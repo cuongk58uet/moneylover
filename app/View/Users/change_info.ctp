@@ -5,7 +5,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-			<li class="active"><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Trang chủ'), array('action' => 'index')); ?></li>
 			<li><?php echo $this->Html->link(' Quay lại', array('action' => 'view')); ?></li>
           </ul>
 	</div>
@@ -26,6 +26,7 @@
 			</fieldset>
 			</br>
 			<?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Hủy thay đổi', array('action' => 'view'), array('class' => 'btn  btn-default')) ?>
 			<?php echo $this->Form->end(); ?>
 		</div>
 	</div>
