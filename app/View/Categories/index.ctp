@@ -18,16 +18,16 @@
 			<table class="table table-striped">
 			<thead>
 			<tr>
-					<th><?php echo $this->Paginator->sort('id', 'ID'); ?></th>
+					<!-- <th><?php echo $this->Paginator->sort('id', 'ID'); ?></th> -->
 					<th><?php echo $this->Paginator->sort('category_name', 'Tên danh mục'); ?></th>
 					<th><?php echo $this->Paginator->sort('category_type', 'Kiểu danh mục'); ?></th>
-					<th><?php echo __('Actions'); ?></th>
+					<th><?php echo __('Tùy chọn'); ?></th>
 			</tr>
 			</thead>
 			<tbody>
 			<?php foreach ($categories as $category): ?>
 			<tr>
-				<td><?php echo h($category['Category']['id']); ?>&nbsp;</td>
+				<!-- <td><?php echo h($category['Category']['id']); ?>&nbsp;</td> -->
 				<td><?php echo h($category['Category']['category_name']); ?>&nbsp;</td>
 				<td><?php echo h($category['Category']['category_type']); ?>&nbsp;</td>
 				<td class= "actions")>

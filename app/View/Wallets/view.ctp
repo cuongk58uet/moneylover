@@ -57,22 +57,28 @@
 			<?php if (!empty($wallet['Transaction'])): ?>
 				<table class="table table-striped">
 				<tr>
-					<th><?php echo __('ID'); ?></th>
-					<th><?php echo __('Giá trị'); ?></th>
+					<!-- <th><?php echo __('ID'); ?></th> -->
 					<th><?php echo __('Ngày giao dịch'); ?></th>
+					<th><?php echo __('Giá trị'); ?></th>
 					<th><?php echo __('Ghi chú'); ?></th>
-					<th><?php echo __(' ID Ví'); ?></th>
-					<th><?php echo __(' Danh mục'); ?></th>
-					<th class="actions"><?php echo __('Actions'); ?></th>
+					<!-- <th><?php echo __(' ID Ví'); ?></th> -->
+					<!-- <th><?php echo __(' Danh mục'); ?></th> -->
+					<th class="actions"><?php echo __('Tùy chọn'); ?></th>
 				</tr>
 				<?php foreach ($wallet['Transaction'] as $transaction): ?>
 					<tr>
-						<td><?php echo $transaction['id']; ?></td>
-						<td><?php echo $transaction['amount']; ?></td>
-						<td><?php echo $transaction['create_date']; ?></td>
+						<!-- <td><?php echo $transaction['id']; ?></td> -->
+						<td><?php echo date('d-m-y',strtotime($transaction['create_date'])); ?></td>
+						<td><?php echo $this->Number->format($transaction['amount'],array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )); ?></td>
 						<td><?php echo $transaction['note']; ?></td>
-						<td><?php echo $transaction['wallet_id']; ?></td>
-						<td><?php echo $transaction['category_id']; ?></td>
+						<!-- <td><?php echo $transaction['wallet_id']; ?></td> -->
+						<!-- <td><?php echo $transaction['category_id']; ?></td> -->
 						<td class="actions">
 							<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['slug'], array('class' => 'btn btn-xs btn-primary')); ?>
 							<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['slug'], array('class' => 'btn btn-xs btn-primary')); ?>

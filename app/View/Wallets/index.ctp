@@ -28,7 +28,7 @@
 							<th><?php echo $this->Paginator->sort('currency','Đơn vị tiền tệ'); ?></th>
 							<th><?php echo $this->Paginator->sort('banlances', 'Số dư'); ?></th>
 							<th><?php echo $this->Paginator->sort('user_id', 'Tài khoản'); ?></th>
-							<th><?php echo __('Actions'); ?></th>
+							<th><?php echo __('Tùy chọn'); ?></th>
 					</tr>
 					</thead>
 					<tbody>

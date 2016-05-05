@@ -46,7 +46,9 @@ class WalletsController extends AppController {
  * @return void
  */
 	public function view($slug = null) {
-		$wallets = $this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)));
+		$wallets = $this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)
+			));
+		//pr($wallets); exit;
 		if (!$wallets) {
 			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
 		} else{

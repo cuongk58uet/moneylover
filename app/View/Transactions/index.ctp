@@ -24,7 +24,7 @@
 					<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
 					<th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>
 					<th><?php echo $this->Paginator->sort('category_name','Kiểu danh mục'); ?></th>
-					<th><?php echo __('Actions'); ?></th>
+					<th><?php echo __('Tùy chọn'); ?></th>
 			</tr>
 			</thead>
 			<tbody>
