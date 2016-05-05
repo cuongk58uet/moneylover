@@ -22,7 +22,13 @@
 					<dl>
 						<dt><?php echo __(' Giá trị'); ?></dt>
 						<dd>
-							<?php echo h($transaction['Transaction']['amount']); ?>
+							<?php echo $this->Number->format($transaction['Transaction']['amount'],array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )); ?>
 							&nbsp;
 						</dd>
 						<dt><?php echo __(' Ngày tạo giao dịch'); ?></dt>

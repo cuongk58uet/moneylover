@@ -13,7 +13,8 @@
             <li class="dropdown">
             <a href="" class="dropdown-toggle" data-toggle="dropdown"><b><?php echo $user_info['fullname'];?></b><span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href='<?php echo $this->webroot."thong-tin-ca-nhan";?>'><i class="glyphicon glyphicon-user"></i>Thông tin cá nhân</a></li>
+                <li><a href='<?php echo $this->webroot."thong-tin-ca-nhan";?>'><i class="glyphicon glyphicon-user"></i> Thông tin cá nhân</a></li>
+                <li><a href='<?php echo $this->webroot."doi-mat-khau";?>'><i class="glyphicon glyphicon-edit"></i> Đổi mật khẩu</a></li>
                 <li><a href='<?php echo $this->webroot."users/logout";?>'><i class="glyphicon glyphicon-log-out"></i>  Đăng xuất</a></li>
               </ul>
             </li>

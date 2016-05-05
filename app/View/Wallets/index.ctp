@@ -37,7 +37,13 @@
 						<!-- <td><?php echo h($wallet['Wallet']['id']); ?>&nbsp;</td> -->
 						<td><?php echo h($wallet['Wallet']['wallet_name']); ?>&nbsp;</td>
 						<td><?php echo h($wallet['Wallet']['currency']); ?>&nbsp;</td>
-						<td><?php echo h($wallet['Wallet']['banlances']); ?>&nbsp;</td>
+						<td><?php echo $this->Number->format($wallet['Wallet']['banlances'],array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )); ?>&nbsp;</td>
 						<td>
 							<?php echo $this->Html->link($wallet['User']['username'], '/thong-tin-ca-nhan'); ?>
 						</td>

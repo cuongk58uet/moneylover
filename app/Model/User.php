@@ -56,7 +56,7 @@ class User extends AppModel {
 			),
 		'email' => array(
 			'required' => array(
-				'rule' => array('email', 'notBlank'),
+				'rule' => array('email'),
 				'message' => 'Email không được trống'
 				),
 			'unique' => array(

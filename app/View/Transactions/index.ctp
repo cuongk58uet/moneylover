@@ -19,8 +19,8 @@
 			<thead>
 			<tr>
 					<!-- <th><?php echo $this->Paginator->sort('id'); ?></th> -->
-					<th><?php echo $this->Paginator->sort('amount','Giá trị'); ?></th>
 					<th><?php echo $this->Paginator->sort('create_date','Ngày giao dịch'); ?></th>
+					<th><?php echo $this->Paginator->sort('amount','Giá trị'); ?></th>
 					<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
 					<th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>
 					<th><?php echo $this->Paginator->sort('category_name','Kiểu danh mục'); ?></th>
@@ -31,8 +31,14 @@
 			<?php foreach ($transactions as $transaction): ?>
 			<tr>
 				<!-- <td><?php echo h($transaction['Transaction']['id']); ?>&nbsp;</td> -->
-				<td><?php echo h($transaction['Transaction']['amount']); ?>&nbsp;</td>
 				<td><?php echo date('d-m-y',strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
+				<td><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )); ?>&nbsp;</td>
 				<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
 				<td>
 					<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>

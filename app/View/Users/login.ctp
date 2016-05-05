@@ -10,6 +10,7 @@
 		<div class="content col-md-4">
 		<?php if(empty($this->request->data)) : ?>
 			<?php echo $this->Flash->render('authenticate'); ?>
+			<?php echo $this->Session->flash('auth'); ?>
 		<?php else: ?>
 			<?php echo $this->Session->flash('auth'); ?>
 		<?php endif ?>

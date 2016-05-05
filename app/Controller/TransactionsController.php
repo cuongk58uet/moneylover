@@ -27,7 +27,7 @@ class TransactionsController extends AppController {
 		$this->Transaction->recursive = 0;
 		$this->paginate = array(
 			'order' => array('create_date' => 'desc'),
-			'limit' => 10,
+			'limit' => 5,
 			'conditions' => array('Transaction.user_id' => $user_info['id']),
 			'paramType' => 'querystring'
 			);

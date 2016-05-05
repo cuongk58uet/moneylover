@@ -19,6 +19,7 @@ class UsersController extends AppController {
  * @var array
  */
 	public $components = array('Paginator', 'Flash', 'Session','Tool');
+	public $helper = array('Number');
 	
 
 /**
@@ -31,8 +32,8 @@ class UsersController extends AppController {
 		$this->User->recursive = 1;
 		$this->paginate = array(
 			'Transaction' => array(
-				//'order' => array('create_date' => 'desc'),
-				'limit' => 5,
+				'order' => array('create_date' => 'desc'),
+				'limit' => 20,
 				'conditions' => array('Transaction.user_id' => $user_info['id']),
 				'paramType' => 'querystring'
 			),
@@ -75,12 +76,22 @@ class UsersController extends AppController {
 			$this->User->create();
 			if($this->User->validates()){
 				if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
-					if ($this->User->save($this->request->data)) {
-						$this->Session->setFlash(' Tài khoản đã được lưu.', 'default', array('class' => 'alert alert-info'));
-						return $this->redirect(array('action' => 'index'));
-					} else {
-						$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
-					}
+					$user = $this->User->findByUsername($this->request->data['User']['username']);
+					//pr($user); exit;
+					if(empty($user)){
+						if ($this->User->save($this->request->data)) {
+						$this->User->saveField('avatar', '/img/default_avatar.png');
+						$this->Session->setFlash(' Tài khoản đã được lưu. Vui lòng đăng nhập bằng tài khoản vừa tạo', 'default', array('class' => 'alert alert-info'),'auth');
+						return $this->redirect(array('action' => 'login'));
+						} else {
+							$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+						}
+					} else{
+						unset($this->request->data['User']['username']);
+						unset($this->request->data['User']['password']);
+						unset($this->request->data['User']['confirm_password']);
+						$this->Session->setFlash(' Tài khoản đã tồn tại. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+					} 
 				} else{
 					$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
 					unset($this->request->data['User']['password']);
@@ -258,7 +269,7 @@ class UsersController extends AppController {
 						if(strcmp($this->request->data['User']['password'],$this->request->data['User']['confirm_password']) == 0){
 							if($this->update_password($user['User']['id'])){
 								$this->User->updateAll(array('User.code' => null), array('User.id'=>$user['User']['id']));
-								$this->Session->setFlash('Lấy lại mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới', 'default', array('class' => 'alert alert-info'));
+								$this->Session->setFlash('Lấy lại mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới', 'default', array('class' => 'alert alert-info'),'auth');
 								return $this->redirect(array( 'controller' => 'users', 'action' => 'login'));
 							} else{
 								$this->set('errors', $this->validationErrors);
