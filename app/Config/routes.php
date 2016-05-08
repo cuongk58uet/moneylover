@@ -44,6 +44,7 @@
 	Router::connect('/them-vi', array('controller' => 'wallets', 'action' => 'add'));
 	Router::connect('/giao-dich', array('controller' => 'transactions', 'action' => 'index'));
 	Router::connect('/them-giao-dich', array('controller' => 'transactions', 'action' => 'add'));
+	Router::connect('/bao-cao-hang-thang', array('controller' => 'transactions', 'action' => 'report'));
 	Router::connect('/chi-tiet-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'view'), array('pass' => array('slug')));
 	Router::connect('/chinh-sua-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'edit'), array('pass' => array('slug')));
 /**

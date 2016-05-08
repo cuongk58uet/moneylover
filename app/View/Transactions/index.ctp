@@ -14,7 +14,41 @@
 		<?php echo $this->Session->flash(); ?>
 		<div class="transactions index">
 		<?php if(!empty($transactions)): ?>
-			<h2><?php echo __('Các giao dịch đã lưu'); ?></h2>
+			<h3><b>Tổng quan tháng <?php echo date('m - Y'); ?></b></h3>
+			<table class="table" style="width:auto; border:none;">
+				<tr>
+					<td><b>Tiền vào:</b></td>
+					<td><?php echo $this->Number->format($inflow['0']['0']['Total'],array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )) ?></td>
+				</tr>
+				<tr>
+					<td><b>Tiền ra:</b></td>
+					<td><?php echo $this->Number->format($outflow['0']['0']['Total'], array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )) ?></td>
+				</tr>
+				<tr>
+					<td><b>Thu nhập ròng:</b></td>
+					<td><?php echo $this->Number->format($netIncome, array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )) ?></td>
+				</tr>
+			</table>
+			<?php echo $this->Html->link(__('Chi tiết'), array('controller' => 'transactions', 'action' => 'report'), array('class' => 'btn btn-sm btn-primary')); ?>
+			<h2><b><?php echo __('Các giao dịch đã lưu'); ?></b></h2>
 			<table class="table table-striped">
 			<thead>
 			<tr>
@@ -31,7 +65,7 @@
 			<?php foreach ($transactions as $transaction): ?>
 			<tr>
 				<!-- <td><?php echo h($transaction['Transaction']['id']); ?>&nbsp;</td> -->
-				<td><?php echo date('d-m-y',strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
+				<td><?php echo date('d-m-Y',strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
 				<td><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
 						'places' => 0,
 						'before' => null,

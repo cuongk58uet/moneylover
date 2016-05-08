@@ -27,14 +27,100 @@ class TransactionsController extends AppController {
 		$this->Transaction->recursive = 0;
 		$this->paginate = array(
 			'order' => array('create_date' => 'desc'),
-			'limit' => 5,
+			'limit' => 20,
 			'conditions' => array('Transaction.user_id' => $user_info['id']),
 			'paramType' => 'querystring'
 			);
 		$this->Paginator->settings = $this->paginate;
 		$this->set('transactions', $this->paginate());
+		
+		$currDate = date("m");
+		//pr($currDateTime); exit;
+		$inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currDate,
+					'Category.category_type' => array('Thu Nhập','Nợ')
+					)
+			));
+		$this->set('inflow', $inflow);
+		//pr($inflow); exit;
+		$outflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currDate,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
+					)
+			));
+		$this->set('outflow', $outflow);
+		//pr($outflow); exit;
+		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
+		$this->set('netIncome', $netIncome);
+		//pr($netIncome); exit;
 		//pr($this->paginate()); exit;
 	}
+
+/**
+* report method
+*
+*
+*/
+	public function report(){
+		$currDate = date("m");
+		$inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currDate,
+					'Category.category_type' => array('Thu Nhập','Nợ')
+					)
+			));
+		$this->set('inflow', $inflow);
+		//pr($inflow); exit;
+		$outflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currDate,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
+					)
+			));
+		$this->set('outflow', $outflow);
+		//pr($outflow); exit;
+		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
+		$this->set('netIncome', $netIncome);
+
+		$most_outflow = $this->Transaction->find('first', array(
+			'conditions' => array(
+				'month(create_date)' => $currDate,
+				'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
+				),
+			'order' => array('amount' => 'desc')
+			));
+		$this->set('most_outflow', $most_outflow);
+
+		$details_outflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total', 'Category.category_name'),
+				'conditions' => array(
+					'month(create_date)' => $currDate,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
+					),
+				'group' => array('Category.category_name')
+			));
+		$this->set('details_outflow', $details_outflow);
+		//pr($details); exit;
+		$details_inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total', 'Category.category_name'),
+				'conditions' => array(
+					'month(create_date)' => $currDate,
+					'Category.category_type' => array('Thu Nhập','Nợ')
+					),
+				'group' => array('Category.category_name')
+			));
+		//pr($detail_inflow); exit;
+		$this->set('details_inflow', $details_inflow);
+	}
+
+
+
 
 /**
  * view method
@@ -61,6 +147,7 @@ class TransactionsController extends AppController {
 		if ($this->request->is('post')) {
 			
 			$this->Transaction->create();
+			//pr($this->request->data); exit;
 			if ($this->Transaction->save($this->request->data)) {
 				$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));

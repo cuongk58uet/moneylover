@@ -40,7 +40,13 @@
 						</dd>
 						<dt><?php echo __(' Số dư'); ?></dt>
 						<dd>
-							<?php echo h($wallet['Wallet']['banlances']); ?>
+							<?php echo $this->Number->format($wallet['Wallet']['banlances'], array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )); ?>
 							&nbsp;
 						</dd>
 						<dt><?php echo __('Tài khoản'); ?></dt>

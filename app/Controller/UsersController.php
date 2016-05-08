@@ -150,7 +150,8 @@ class UsersController extends AppController {
 	public function login() {
 		if ($this->request->is('post' )) {
 			if ($this->Auth->login()) {
-			return $this->redirect($this->Auth->redirectUrl());
+			// return $this->redirect($this->Auth->redirectUrl());
+				return $this->redirect(array('controller' => 'transactions', 'action' => 'index'));
 		} else{
 			$this->Session->setFlash('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại','default', array('class'=>'alert alert-danger'),'auth');
 		}
