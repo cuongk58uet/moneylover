@@ -33,7 +33,7 @@
 						</dd>
 						<dt><?php echo __(' Ngày tạo giao dịch'); ?></dt>
 						<dd>
-							<?php echo h($transaction['Transaction']['create_date']); ?>
+							<?php echo date('d-m-Y', strtotime($transaction['Transaction']['create_date'])); ?>
 							&nbsp;
 						</dd>
 						<dt><?php echo __(' Ghi chú'); ?></dt>

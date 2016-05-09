@@ -4,18 +4,25 @@
 	<?php echo $this->element('header');	?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-      		<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+          <?php if(!empty($wallets)): ?>
             <li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('action' => 'add')); ?></li>
-			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
+          <?php endif ?>
+            <li><?php echo $this->Html->link(__('Thêm ví mới'), array('controller' => 'wallets', 'action' => 'add')); ?> </li>
+            <li><?php echo $this->Html->link(__('Thêm danh mục mới'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
+			<li><?php echo $this->Html->link(__('Danh sách ví'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
           </ul>
 	</div>
 
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<?php echo $this->Session->flash(); ?>
 		<div class="transactions index">
-		<?php if(!empty($transactions)): ?>
+			<?php if(empty($wallets)): ?>
+				<h3>Ohhh!!! Xin chào <b><?php echo $user_info['fullname'];?></b></h3>
+				<h4><strong> Có vẻ bạn chưa tạo ví nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4></br>
+			<?php else: ?>
+			<?php if(!empty($transactions)): ?>
 			<h3><b>Tổng quan tháng <?php echo date('m - Y'); ?></b></h3>
-			<table class="table" style="width:auto; border:none;">
+			<table class="table" style="width:auto;">
 				<tr>
 					<td><b>Tiền vào:</b></td>
 					<td><?php echo $this->Number->format($inflow['0']['0']['Total'],array(
@@ -47,7 +54,7 @@
 					    )) ?></td>
 				</tr>
 			</table>
-			<?php echo $this->Html->link(__('Chi tiết'), array('controller' => 'transactions', 'action' => 'report'), array('class' => 'btn btn-sm btn-primary')); ?>
+			<?php echo $this->Html->link(__('Chi tiết'), '/bao-cao-hang-thang/'.$currentMonth.'/'.$currentYear , array('class' => 'btn btn-sm btn-primary')); ?>
 			<h2><b><?php echo __('Các giao dịch đã lưu'); ?></b></h2>
 			<table class="table table-striped">
 			<thead>
@@ -93,8 +100,9 @@
 			<?php echo $this->element('paginate', array('object' => 'giao dịch')); ?>
 		</div>
 	<?php else: ?>
-		<h1>Opps!!!</h1>
+		<h1>Ohhh!!!</h1>
 		<h4><strong> Bạn chưa tạo giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>
+	<?php endif ?>
 	<?php endif ?>
 	</div>
 

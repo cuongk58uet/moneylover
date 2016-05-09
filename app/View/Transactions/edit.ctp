@@ -35,6 +35,7 @@
 			</fieldset>
 			</br>
 			<?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link(__('Hủy thay đổi'), array('controller' => 'transactions', 'action' => 'index'), array('class' => 'btn btn-default')); ?>
 			<?php echo $this->Form->end(); ?>
 </div>
 	</div>

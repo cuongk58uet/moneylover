@@ -31,7 +31,6 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/dang-nhap', array('controller' => 'users', 'action' => 'login'));
-	Router::connect('/trang-chu', array('controller' => 'users', 'action' => 'index'));
 	Router::connect('/dang-ki', array('controller' => 'users', 'action' => 'add'));
 	Router::connect('/doi-mat-khau', array('controller' => 'users', 'action' => 'change_password'));
 	Router::connect('/cap-nhat-thong-tin', array('controller' => 'users', 'action' => 'change_info'));
@@ -42,11 +41,16 @@
 	Router::connect('/chinh-sua-vi/:slug', array('controller' => 'wallets', 'action' => 'edit'), array('pass' => array('slug')));
 	Router::connect('/danh-sach-vi', array('controller' => 'wallets', 'action' => 'index'));
 	Router::connect('/them-vi', array('controller' => 'wallets', 'action' => 'add'));
-	Router::connect('/giao-dich', array('controller' => 'transactions', 'action' => 'index'));
+	//Router::connect('/giao-dich', array('controller' => 'transactions', 'action' => 'index'));
+	Router::connect('/trang-chu', array('controller' => 'transactions', 'action' => 'index'));
 	Router::connect('/them-giao-dich', array('controller' => 'transactions', 'action' => 'add'));
-	Router::connect('/bao-cao-hang-thang', array('controller' => 'transactions', 'action' => 'report'));
+	Router::connect('/bao-cao-hang-thang/:month/:year', array('controller' => 'transactions', 'action' => 'report'), array('pass'=>array('month', 'year')));
 	Router::connect('/chi-tiet-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'view'), array('pass' => array('slug')));
 	Router::connect('/chinh-sua-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'edit'), array('pass' => array('slug')));
+	Router::connect('/chi-tiet-danh-muc/:id', array('controller' => 'categories', 'action' => 'view'),array('pass'=>array('id')));
+	Router::connect('/chinh-sua-danh-muc/:id', array('controller' => 'categories', 'action' => 'edit'),array('pass'=>array('id')));
+	Router::connect('/danh-muc', array('controller' => 'categories', 'action' => 'index'));
+	Router::connect('/them-danh-muc', array('controller' => 'categories', 'action' => 'add'));
 /**
 /**
  * Load all plugin routes. See the CakePlugin documentation on

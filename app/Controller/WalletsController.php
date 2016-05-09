@@ -46,7 +46,9 @@ class WalletsController extends AppController {
  * @return void
  */
 	public function view($slug = null) {
-		$wallets = $this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)
+		$wallets = $this->Wallet->find('first', array(
+			'conditions' => array('Wallet.slug' => $slug),
+			//'order' => array('Transaction.create_date' => 'desc')
 			));
 		//pr($wallets); exit;
 		if (!$wallets) {

@@ -5,13 +5,11 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+          	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
             <li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?></li>
 		<?php if(!empty($wallets)): ?>
-			<li><?php echo $this->Html->link(__(' Các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?></li>
 		<?php endif ?>
-			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'users', 'action' => 'index')); ?></li>
           </ul>
 	</div>
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

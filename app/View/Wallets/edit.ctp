@@ -4,11 +4,9 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+          	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
             <li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $this->Form->value('Wallet.id')), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $this->Form->value('Wallet.wallet_name')))); ?></li>
-			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__(' Danh sách các giao dịch'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?> </li>
+			<li><?php echo $this->Html->link(__('Trở lại'), array('action' => 'index')); ?></li>
           </ul>
 	</div>
 

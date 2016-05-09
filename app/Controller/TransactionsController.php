@@ -23,18 +23,27 @@ class TransactionsController extends AppController {
  * @return void
  */
 	public function index() {
+		$currentMonth = date('m');
+		$currentYear = date('Y');
+		$this->set('currentMonth',$currentMonth);
+		$this->set('currentYear', $currentYear);
 		$user_info = $this->get_user();
 		$this->Transaction->recursive = 0;
 		$this->paginate = array(
 			'order' => array('create_date' => 'desc'),
-			'limit' => 20,
+			'limit' => 10,
 			'conditions' => array('Transaction.user_id' => $user_info['id']),
 			'paramType' => 'querystring'
 			);
 		$this->Paginator->settings = $this->paginate;
 		$this->set('transactions', $this->paginate());
-		
+		$this->loadModel('Wallet');
+		$wallets = $this->Wallet->find('all', array(
+			'conditions' => array('user_id' => $user_info['id'])
+			));
+		$this->set('wallets',$wallets);
 		$currDate = date("m");
+		$this->set('currDate', $currDate);
 		//pr($currDateTime); exit;
 		$inflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total'),
@@ -56,6 +65,12 @@ class TransactionsController extends AppController {
 		//pr($outflow); exit;
 		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
 		$this->set('netIncome', $netIncome);
+
+		$months = $this->Transaction->find('all', array(
+			'fields' => array('month(create_date) AS Month'),
+			'group' => array('month(create_date)')
+			));
+		//pr($months['0']['0']['Month']); exit;
 		//pr($netIncome); exit;
 		//pr($this->paginate()); exit;
 	}
@@ -65,12 +80,12 @@ class TransactionsController extends AppController {
 *
 *
 */
-	public function report(){
-		$currDate = date("m");
+	public function report($month,$year){
 		$inflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total'),
 				'conditions' => array(
-					'month(create_date)' => $currDate,
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
 					'Category.category_type' => array('Thu Nhập','Nợ')
 					)
 			));
@@ -79,7 +94,8 @@ class TransactionsController extends AppController {
 		$outflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total'),
 				'conditions' => array(
-					'month(create_date)' => $currDate,
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
 					'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
 					)
 			));
@@ -90,7 +106,8 @@ class TransactionsController extends AppController {
 
 		$most_outflow = $this->Transaction->find('first', array(
 			'conditions' => array(
-				'month(create_date)' => $currDate,
+				'month(create_date)' => $month,
+				'year(create_date)' => $year,
 				'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
 				),
 			'order' => array('amount' => 'desc')
@@ -100,7 +117,8 @@ class TransactionsController extends AppController {
 		$details_outflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total', 'Category.category_name'),
 				'conditions' => array(
-					'month(create_date)' => $currDate,
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
 					'Category.category_type' => array('Chi Tiêu', 'Cho Vay')
 					),
 				'group' => array('Category.category_name')
@@ -110,13 +128,21 @@ class TransactionsController extends AppController {
 		$details_inflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total', 'Category.category_name'),
 				'conditions' => array(
-					'month(create_date)' => $currDate,
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
 					'Category.category_type' => array('Thu Nhập','Nợ')
 					),
 				'group' => array('Category.category_name')
 			));
 		//pr($detail_inflow); exit;
 		$this->set('details_inflow', $details_inflow);
+		if(!empty($this->request->data)){
+			//pr($this->request->data); exit;
+			$this->redirect('/bao-cao-hang-thang/'.$this->request->data['Transaction']['date']['month'].'/'.$this->request->data['Transaction']['date']['year']);
+		}
+		$this->set('month', $month);
+		//pr($year); exit;
+		$this->set('year', $year);
 	}
 
 
