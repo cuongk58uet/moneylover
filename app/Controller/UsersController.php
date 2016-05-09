@@ -76,23 +76,16 @@ class UsersController extends AppController {
 			$this->User->create();
 			if($this->User->validates()){
 				if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
-					$user = $this->User->findByUsername($this->request->data['User']['username']);
-					//pr($user); exit;
-					if(empty($user)){
-						if ($this->User->save($this->request->data)) {
-						$this->User->saveField('avatar', '/img/default_avatar.png');
-						$this->Session->setFlash(' Tài khoản đã được lưu. Vui lòng đăng nhập bằng tài khoản vừa tạo', 'default', array('class' => 'alert alert-info'),'auth');
-						return $this->redirect(array('action' => 'login'));
-						} else {
-							$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
-						}
-					} else{
-						unset($this->request->data['User']['username']);
+					if ($this->User->save($this->request->data)) {
+					$this->User->saveField('avatar', '/img/default_avatar.png');
+					$this->Session->setFlash(' Tài khoản đã được lưu. Vui lòng đăng nhập bằng tài khoản vừa tạo', 'default', array('class' => 'alert alert-info'),'auth');
+					return $this->redirect(array('action' => 'login'));
+					} else {
+						$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 						unset($this->request->data['User']['password']);
 						unset($this->request->data['User']['confirm_password']);
-						$this->Session->setFlash(' Tài khoản đã tồn tại. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 					} 
-				} else{
+				}else{
 					$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
 					unset($this->request->data['User']['password']);
 					unset($this->request->data['User']['confirm_password']);
