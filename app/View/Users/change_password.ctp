@@ -25,7 +25,7 @@
 							
 						</fieldset></br>
 						<?php echo $this->Form->button(' Lưu thay đổi',array('type' => '','class'=>'btn btn-lg btn-primary btn-block')); ?></br>
-						<?php echo $this->Html->link(__('Hủy thay đổi'), array('action' => 'index'),array('class' => 'btn btn-default')); ?>
+						<?php echo $this->Html->link(__('Hủy thay đổi'), array('controller'=>'transactions', 'action' => 'index'),array('class' => 'btn btn-default')); ?>
 						
 						<?php echo $this->Form->end(); ?>
 					</div>

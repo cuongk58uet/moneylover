@@ -127,18 +127,54 @@ class WalletsController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	public function update_banlances($id, $amount, $string){
-		$this->Wallet->id = $id;
-		$banlances = 0;
-		if(strlen($string) == 7 || strlen($string) == 8){
-			$banlances = $this->Wallet->banlances - $amount;
+/**
+* update_banlances method
+*
+*/
+	public function update_banlances($id1, $id2, $amount){
+		if($id1 != $id2){
+			$wallet1 = $this->Wallet->findById($id1);
+			$wallet2 = $this->Wallet->findById($id2);
+			if(empty($wallet1) && empty($wallet2)){
+				throw new NotFoundException(__('Không tìm thấy'));
+			} else{
+				$new_banlances1 = $wallet1['Wallet']['banlances'] - $amount;
+				$this->Wallet->id = $id1;
+				$this->Wallet->saveField('banlances', $new_banlances1);
+
+				$new_banlances2 = $wallet2['Wallet']['banlances'] + $amount;
+				$this->Wallet->id = $id2;
+				$this->Wallet->saveField('banlances', $new_banlances2);
+				return true;
+			}
 		} else{
-			$banlances = $this->Wallet->banlances + $amount;
-		}
-		if($this->Wallet->saveField('banlances',$banlances)){
+			
 			return true;
-		} else{
-			return false;
 		}
+		
+	}
+
+/**
+* transfer_money method
+*
+*/
+	public function transfer_money(){
+		$user_info = $this->get_user();
+		$sources = $this->Wallet->find('list', array(
+			'conditions' => array('Wallet.user_id' => $user_info['id'])
+			));
+		//pr($wallet1); exit;
+		$destinations = $this->Wallet->find('list', array(
+			'conditions' => array('Wallet.user_id' => $user_info['id'])
+			));
+		if(!empty($this->request->data)){
+			if($this->update_banlances($this->request->data['Wallet']['source_id'], $this->request->data['Wallet']['destination_id'], $this->request->data['Wallet']['amount'])){
+					$this->Session->setFlash('Chuyển tiền thành công.', 'default', array('class' => 'alert alert-info'));
+					return $this->redirect(array('action' => 'index'));
+			} else{
+				$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
+			}
+		}
+		$this->set(compact('sources', 'destinations'));
 	}
 }

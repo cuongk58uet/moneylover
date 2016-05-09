@@ -7,6 +7,7 @@
           <ul class="nav nav-sidebar">
           	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
             <li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?></li>
+            <li><?php echo $this->Html->link(__(' Chuyển tiền'), array('action' => 'transfer_money')); ?></li>
 		<?php if(!empty($wallets)): ?>
 			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?></li>
 		<?php endif ?>

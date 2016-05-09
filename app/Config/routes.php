@@ -41,7 +41,7 @@
 	Router::connect('/chinh-sua-vi/:slug', array('controller' => 'wallets', 'action' => 'edit'), array('pass' => array('slug')));
 	Router::connect('/danh-sach-vi', array('controller' => 'wallets', 'action' => 'index'));
 	Router::connect('/them-vi', array('controller' => 'wallets', 'action' => 'add'));
-	//Router::connect('/giao-dich', array('controller' => 'transactions', 'action' => 'index'));
+	Router::connect('/chuyen-tien-giua-2-vi', array('controller' => 'wallets', 'action' => 'transfer_money'));
 	Router::connect('/trang-chu', array('controller' => 'transactions', 'action' => 'index'));
 	Router::connect('/them-giao-dich', array('controller' => 'transactions', 'action' => 'add'));
 	Router::connect('/bao-cao-hang-thang/:month/:year', array('controller' => 'transactions', 'action' => 'report'), array('pass'=>array('month', 'year')));
