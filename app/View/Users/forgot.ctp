@@ -11,11 +11,9 @@
 				<fieldset>
 					<?php echo $this->Form->input('email',array('label'=>'Vui lòng nhập địa chỉ Email mà bạn đã đăng kí trên  MoneyLover','class'=>"form-control", 'placeholder'=>"Email"));?></br>
 					<?php echo $this->Session->flash(); ?>
-				</fieldset></br>
-				<div class="col-md-4 col-xs-6"></div>
-				<div class=" col-md-4">
-				<?php echo $this->Form->button('Lấy lại mật khẩu',array('type' => 'submit','class'=>'btn btn-lg btn-primary btn-block')); ?>
-				</div>
+				</fieldset>
+				<?php echo $this->Form->button('Lấy lại mật khẩu',array('type' => 'submit','class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Trở về', array('action' => 'login'), array('class' => 'btn  btn-default')) ?>
 				<?php echo $this->Form->end(); ?>
 			</div>
 		</div>

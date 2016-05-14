@@ -85,6 +85,11 @@
 		'log' => true
 	));
 
+	Configure::write('GoogleRecaptcha', array(
+	'siteKey' => '{6LdQ4R8TAAAAAFcBQnwk9H4vHOqA1vdpNf4C99sF}',
+	'secretKey' => '{6LdQ4R8TAAAAAFxzueBgy2CS5bXRWwiqKi8-sAuh}'
+));
+
 /**
  * Application wide charset encoding
  */

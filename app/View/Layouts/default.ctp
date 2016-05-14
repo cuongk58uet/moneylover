@@ -54,5 +54,6 @@
 <?php echo $this->Html->script('jquery'); ?>
 <?php echo $this->Html->script('bootstrap'); ?>
 <?php echo $this->Html->script('html5shiv'); ?>
+<?php echo $this->Html->script('https://www.google.com/recaptcha/api.js'); ?>
 </body>
 </html>

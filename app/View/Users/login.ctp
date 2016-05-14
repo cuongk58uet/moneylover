@@ -23,11 +23,11 @@
 						<?php echo $this->Form->create('User' ); ?>
 						<fieldset>
 							<?php echo $this->Form->input('username',array('label'=>'Tên đăng nhập','class'=>"form-control", 'placeholder'=>" Tên đăng nhập"));
-							echo $this->Form->input('password',array('lable'=>'Mật khẩu', 'class'=>'form-control', 'placeholder'=>"Mật khẩu" ));
+							echo $this->Form->input('password',array('label'=>'Mật khẩu', 'class'=>'form-control', 'placeholder'=>"Mật khẩu" ));
 							?>
 							
 						</fieldset></br>
-						<?php echo $this->Form->button('Đăng nhập',array('type' => 'submit','class'=>'btn btn-lg btn-primary btn-block')); ?></br>
+						<?php echo $this->Form->button('Đăng nhập',array('type' => 'submit','class'=>'btn btn-primary btn-block')); ?></br>
 						
 						<?php echo $this->Html->link('Quên mật khẩu?','/quen-mat-khau'); ?></br>
 						<?php echo $this->Html->link('Đăng kí mới','/dang-ki', array('class' => 'btn btn-sm btn-default')); ?>

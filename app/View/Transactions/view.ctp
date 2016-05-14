@@ -48,7 +48,7 @@
 						</dd>
 						<dt><?php echo __(' Kiểu danh mục'); ?></dt>
 						<dd>
-							<?php echo $this->Html->link($transaction['Category']['category_type'], array('controller' => 'categories', 'action' => 'view', $transaction['Category']['id'])); ?>
+							<?php echo $this->Html->link($transaction['Category']['category_type'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?>
 							&nbsp;
 						</dd>
 					</dl>

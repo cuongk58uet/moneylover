@@ -63,8 +63,8 @@
 					<th><?php echo $this->Paginator->sort('create_date','Ngày giao dịch'); ?></th>
 					<th><?php echo $this->Paginator->sort('amount','Giá trị'); ?></th>
 					<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
-					<th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>
-					<th><?php echo $this->Paginator->sort('category_name','Kiểu danh mục'); ?></th>
+					<!-- <th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>
+					<th><?php echo $this->Paginator->sort('category_name','Kiểu danh mục'); ?></th> -->
 					<th><?php echo __('Tùy chọn'); ?></th>
 			</tr>
 			</thead>
@@ -81,12 +81,12 @@
 					    'thousands' => ','
 					    )); ?>&nbsp;</td>
 				<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
-				<td>
+				<!-- <td>
 					<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
 				</td>
 				<td>
 					<?php echo $this->Html->link($transaction['Category']['category_name'], array('controller' => 'categories', 'action' => 'view', $transaction['Category']['id'])); ?>
-				</td>
+				</td> -->
 				<td class="actions">
 					<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
 					<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
