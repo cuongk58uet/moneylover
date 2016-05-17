@@ -24,22 +24,12 @@
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
-<!-- Bootstrap core CSS -->
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-  <script src="js/html5shiv.js"></script>
-  <script src="js/respond/respond.min.js"></script>
-<![endif]-->
 </head>
 <body>
 <div id="container" class="container">
   	<div id="content">
 	  	<div class="row">
-	  		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-	  			<?php echo $this->Flash->render(); ?>
-	  			
-			</div>	
+	  		<?php echo $this->Flash->render(); ?>
 	  		<?php echo $this->fetch('content'); ?>
 	  	</div>
   	</div>
@@ -54,6 +44,5 @@
 <?php echo $this->Html->script('jquery'); ?>
 <?php echo $this->Html->script('bootstrap'); ?>
 <?php echo $this->Html->script('html5shiv'); ?>
-<?php echo $this->Html->script('https://www.google.com/recaptcha/api.js'); ?>
 </body>
 </html>

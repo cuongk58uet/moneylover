@@ -48,15 +48,15 @@ class User extends AppModel {
 		'confirm_password' => array(
 				'required' => array(
 					'rule' => 'notBlank' ,
-					'message' => ' Mật khẩu không được trống'),
-				'minlength' => array(
-				'rule' => array('minlength',8),
-				'message' => 'Mật khẩu tối thiểu 8 kí tự'
+					'message' => ' Xác nhận mật khẩu không được trống'),
+				'check_confirm_password' => array(
+					'rule' => 'check_confirm_password',
+					'message' => 'Xác nhận mật khẩu không đúng'
 				)
 			),
 		'email' => array(
 			'required' => array(
-				'rule' => array('email'),
+				'rule' => 'email',
 				'message' => 'Email không được trống'
 				),
 			'unique' => array(
@@ -69,33 +69,32 @@ class User extends AppModel {
 			'valid' => array(
 				'rule' => array('inList' , array('admin' , 'author' )),
 				'message' => 'Vui lòng nhập giá trị' ,
-				'allowEmpty' => false)));
+				'allowEmpty' => true)));
 
 	public function beforeSave($options = array()) {
 		if(isset($this->data['User']['password'])){
 			$passwordHasher = new BlowfishPasswordHasher();
 			$this->data['User']['password'] = $passwordHasher->hash($this->data['User']['password']);
 		}
-		return true;
-	}
-
-	public function beforeValidate($options = array()){
-		if(isset($this->data['User']['username'])){
-			$user_info = AuthComponent::user();
-			$user = $this->findById($user_info['id']);
-			if((!empty($user_info)) && $this->data['User']['username'] == $user['User']['username']){
+		if(isset($this->data['User']['username'])) {
+			$user = $this->findByUsername($this->data['User']['username']);
+			if(!empty($user)){
 				unset($this->data['User']['username']);
 			}
 		}
-		if(isset($this->data['User']['email'])){
-			$user_info = AuthComponent::user();
-			$user = $this->findById($user_info['id']);
-			if((!empty($user_info)) && $this->data['User']['email'] == $user['User']['email']){
-				unset($this->data['User']['email']);
-			}
-		}
 		return true;
 	}
+
+	public function check_confirm_password($check){
+		$password = $this->data['User']['password'];
+		$confirm_password = $this->data['User']['confirm_password'];
+		if(strcmp($password, $confirm_password) == 0){
+			return true;
+		} else{
+			return false;
+		}
+	}
+
 /**
  * hasMany associations
  *

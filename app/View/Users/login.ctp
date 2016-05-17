@@ -4,7 +4,12 @@
 </head>
 
 <body>
+
 <div class ="container">
+	<div class="row">
+		<?php echo $this->element('header_login'); ?>
+	</div>
+	<hr>
 	<div class="content col-md-4">
 	</div>
 		<div class="content col-md-4">

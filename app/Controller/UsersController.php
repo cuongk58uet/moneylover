@@ -75,29 +75,24 @@ class UsersController extends AppController {
 		$location = null;
 		if ($this->request->is('post')) {
 			$this->User->create();
-			if($this->GoogleRecaptcha->checkRecaptcha()){
-				if($this->User->validates()){
-					if(strcmp($this->request->data['User']['password'], $this->request->data['User']['confirm_password']) == 0){
-						if ($this->User->save($this->request->data)) {
-						$this->User->saveField('avatar', '/img/default_avatar.png');
-						$this->Session->setFlash(' Tài khoản đã được lưu. Vui lòng đăng nhập bằng tài khoản vừa tạo', 'default', array('class' => 'alert alert-info'),'auth');
+				if($this->GoogleRecaptcha->checkRecaptcha()){
+					if($this->User->validates()){
+						if($this->User->save($this->request->data)) {
+							$this->User->saveField('avatar', '/img/default_avatar.png');
+							$this->Session->setFlash(' Tài khoản đã được lưu. Vui lòng đăng nhập bằng tài khoản vừa tạo', 'default', array('class' => 'alert alert-info'),'auth');
 						return $this->redirect(array('action' => 'login'));
 						} else {
-							$this->Session->setFlash(' Tài khoản chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+							$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', array('class' => 'alert alert-danger'));
 							unset($this->request->data['User']['password']);
 							unset($this->request->data['User']['confirm_password']);
+
 						}
 					} else{
-						$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
-						unset($this->request->data['User']['password']);
-						unset($this->request->data['User']['confirm_password']);
-					}	
+						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', array('class' => 'alert alert-danger'));
+					}
 				} else{
-					$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
-				}
-			} else{
-				$this->Session->setFlash('Mã xác nhận không đúng. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
-			}
+						$this->Session->setFlash('Mã xác nhận không đúng. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
+					}
 		}
 	}
 
@@ -223,22 +218,18 @@ class UsersController extends AppController {
 		if($this->request->is('post')) {
 			$this->User->set($this->request->data);
 			if($this->User->validates()){
-				if(strcmp($this->request->data['User']['password'],$this->request->data['User']['confirm_password']) == 0) {
-					$user_info = $this->get_user();
-					// $this->User->id = $user_info['id'];
-					if($this->update_password($user_info['id'])) {
-						$this->Session->setFlash('Đã lưu thành công', 'default', array('class' => 'alert alert-info'));
-						return $this->redirect(array('action' => 'index'));
-					} else {
-						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=> 'alert alert-danger'));
-					}
-
-				} else{
-					$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
+				$user_info = $this->get_user();
+				// $this->User->id = $user_info['id'];
+				if($this->update_password($user_info['id'])) {
+					$this->Session->setFlash('Cập nhật mật khẩu thành công', 'default', array('class' => 'alert alert-info'));
+					return $this->redirect(array('controller' =>'transactions', 'action' => 'index'));
+				} else {
+					$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=> 'alert alert-danger'));
 				}
-				
 			} else{
-				//$this->set->('errors',$this->User->validationErrors);
+				$this->Session->setFlash('Xác nhận mật khẩu không đúng', 'default', array('class' => 'alert alert-danger'));
+				unset($this->request->data['User']['password']);
+				unset($this->request->data['User']['confirm_password']);
 			}
 		}
 	}

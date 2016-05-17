@@ -5,6 +5,10 @@
 
 <body>
 <div class ="container">
+	<div class="row">
+		<?php echo $this->element('header'); ?>
+	</div>
+	<hr>
 	<div class="content col-md-4">
 	</div>
 		<div class="content col-md-4">
@@ -19,8 +23,8 @@
 
 						<?php echo $this->Form->create('User' ); ?>
 						<fieldset>
-							<?php echo $this->Form->input('password',array('label'=>' Mật khẩu mới','class'=>"form-control", 'placeholder'=>" Mật khẩu mới"));
-							echo $this->Form->input('confirm_password',array('label'=>' Xác nhận mật khẩu', 'class'=>'form-control', 'placeholder'=>" Xác nhận mật khẩu", 'type'=>'password' ));
+							<?php echo $this->Form->input('password',array('label'=>' Mật khẩu mới(Tối thiểu 8 kí tự)','class'=>"form-control", 'placeholder'=>" Mật khẩu mới"));
+							echo $this->Form->input('confirm_password',array('label'=>' Xác nhận mật khẩu', 'class'=>'form-control', 'placeholder'=>" Xác nhận mật khẩu", 'type'=>'password', 'error' => false ));
 							?>
 							
 						</fieldset></br>

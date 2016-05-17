@@ -41,9 +41,14 @@
 							<?php echo h($transaction['Transaction']['note']); ?>
 							&nbsp;
 						</dd>
-						<dt><?php echo __(' Ví'); ?></dt>
+						<dt><?php echo __(' Ví sử dụng'); ?></dt>
 						<dd>
 							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
+							&nbsp;
+						</dd>
+						<dt><?php echo __(' Danh mục'); ?></dt>
+						<dd>
+							<?php echo $this->Html->link($transaction['Category']['category_name'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?>
 							&nbsp;
 						</dd>
 						<dt><?php echo __(' Kiểu danh mục'); ?></dt>

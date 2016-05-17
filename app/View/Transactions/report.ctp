@@ -66,7 +66,7 @@
 				</tr>
 			</table>
 			<?php if($netIncome < 0): ?>
-				<h4><b>Bạn đã chi tiêu quá tay trong tháng này. Hãy nhanh chóng điều chỉnh kế hoạch chi tiêu hợp lý</b></h4></br>
+				<h4><b style=" color: red">Bạn đã chi tiêu quá tay trong tháng này. Hãy nhanh chóng điều chỉnh kế hoạch chi tiêu hợp lý</b></h4></br>
 			<?php endif ?>
 			<h4><b>Khoản chi lớn nhất: </b> 
 			<?php if(!empty($most_outflow['Transaction']['amount'])): ?>
@@ -110,7 +110,7 @@
 					<h5><b><?php echo $detail['Category']['category_name']?>: </b><?php echo $this->Number->toPercentage($detail['0']['Total']/$outflow['0']['0']['Total']*100)?> </h5>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<p style="color: #0080ff">Không có dữ liệu để hiển thị</p>
+				<p style="color: #0080ff">Không có khoản chi tiêu nào</p>
 			<?php endif ?>
 			
 			<!--  -->
