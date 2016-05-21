@@ -211,52 +211,34 @@ class UsersController extends AppController {
 		$save = true;
 		$location = $user_info['avatar'];
 		if($this->request->is(array('post', 'put'))){
-			//pr($this->request->data); exit;
-			$this->User->set($this->request->data);
 			if($this->User->validates()){
-				if(!empty($this->request->data['User']['avatar']['name']) && $this->request->data['User']['avatar']['error']== 0){
+				if(!empty($this->request->data['User']['avatar']['name'])){
 					if($this->uploadFile()){
 						$location = '/img/'.$this->request->data['User']['avatar']['name'];
 						$this->request->data['User']['avatar'] = $location;
-						//pr($this->request->data); exit;
-						$data = array(
-							'fullname' => $this->request->data['User']['fullname'],
-							'address' => $this->request->data['User']['address'],
-							'avatar' => $this->request->data['User']['avatar'],
-							'role' => $this->request->data['User']['role'],
-							);
-						} else{
-							$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
-							$save = false;
-						}
-					} 
-				else{
-					$user_data = $this->User->findById($user_info['id']);
-					$current_avatar = $user_data['User']['avatar'];
-					$this->request->data['User']['avatar'] = $current_avatar;
-					$data = array(
-							'fullname' => $this->request->data['User']['fullname'],
-							'address' => $this->request->data['User']['address'],
-							'avatar' => $this->request->data['User']['avatar'],
-							'role' => $this->request->data['User']['role'],
-							);
+					} else{
+						$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+						$save = false;
+					}
+				} else{
+				$old_avatar = $this->User->findById($user_info['id']);
+				$this->request->data['User']['avatar'] = $old_avatar['User']['avatar'];
 				}
-				
 				$this->User->id = $user_info['id'];
 				if($save){
-					if($this->User->save($data)){
+					$this->User->saveField('email', null);
+					if($this->User->save($this->request->data)){
 						$this->Session->setFlash('Cập nhật thành công', 'default', array('class'=>'alert alert-info'));
 						$this->redirect($this->referer());
 					} else{
 						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=>'alert alert-danger'));
 						}
-				} else{
-					$this->set('errors',$this->User->validationErrors);
 				}
+			} else{
+				$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class'=>'alert alert-danger'));
 			} 
 		}else{
 			$this->request->data = $this->User->findById($user_info['id']);
-
 		}
 	}
 

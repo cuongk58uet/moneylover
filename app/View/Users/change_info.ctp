@@ -22,7 +22,7 @@
 				<?php echo $this->Form->input('avatar', array('label'=> 'Ảnh đại diện', 'class'=>'img-thumbnail', 'type' => 'file')); ?></br>
 				<?php echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control")); ?></br>
 				<?php echo $this->Form->input('email', array('label'=>'Email','class'=>"form-control")); ?></br>
-				<?php echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin'))); ?>
+				<?php echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin'), 'type' => 'hidden')); ?>
 			
 			</fieldset>
 			</br>
