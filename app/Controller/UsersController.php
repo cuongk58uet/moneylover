@@ -2,6 +2,7 @@
 App::uses('AppController', 'Controller');
 App::uses('File', 'Utility');
 App:: uses('BlowfishPasswordHasher' , 'Controller/Component/Auth' );
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Users Controller
  *
@@ -57,10 +58,6 @@ class UsersController extends AppController {
  * @return void
  */
 	public function view() {
-		/*if (!$this->User->exists($id)) {
-			throw new NotFoundException(__(' Không tìm thấy trang'));
-		}*/
-		//$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
 		$users = $this->get_user();
 		//pr($users); exit;
 		$this->set('user', $this->User->findById($users['id']));
@@ -72,15 +69,23 @@ class UsersController extends AppController {
  * @return void
  */
 	public function add() {
-		$location = null;
 		if ($this->request->is('post')) {
 			$this->User->create();
-				if($this->GoogleRecaptcha->checkRecaptcha()){
+				//if($this->GoogleRecaptcha->checkRecaptcha()){
 					if($this->User->validates()){
+						$register_code = md5($this->request->data['User']['username']);
 						if($this->User->save($this->request->data)) {
 							$this->User->saveField('avatar', '/img/default_avatar.png');
-							$this->Session->setFlash(' Tài khoản đã được lưu. Vui lòng đăng nhập bằng tài khoản vừa tạo', 'default', array('class' => 'alert alert-info'),'auth');
-						return $this->redirect(array('action' => 'login'));
+							$this->User->saveField('register_code', $register_code);
+							$link_confirm = 'http://localhost/moneylover/users/verify/register:'.$register_code.'/user:'.$this->data['User']['username'];
+							
+							$email = new CakeEmail();
+							$email->config('smtp')
+								->to(array($this->data['User']['email'] => $this->data['User']['fullname']))
+								->subject('Đăng kí tài khoản thành công')
+								->send('Đăng kí thành công tài khoản '.$this->data['User']['username'].' trên hệ thống MoneyLover .Vui lòng truy cập link sau để kích hoạt tài khoản '.$link_confirm);
+							$this->Session->setFlash('Đăng kí tài khoản thành công. Vui lòng kiểm tra hộp thư để kích hoạt tài khoản. ', 'default', array('class' => 'alert alert-info'),'auth');
+							$this->redirect('/dang-nhap');
 						} else {
 							$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', array('class' => 'alert alert-danger'));
 							unset($this->request->data['User']['password']);
@@ -90,10 +95,46 @@ class UsersController extends AppController {
 					} else{
 						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', array('class' => 'alert alert-danger'));
 					}
-				} else{
+				/*} else{
 						$this->Session->setFlash('Mã xác nhận không đúng. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
-					}
+					}*/
 		}
+	}
+
+	public function check_active($active){
+		if($active != 0){
+			return true;
+		} else{
+			return false;
+		}
+	}
+
+	public function verify(){
+    	//kiểm tra mã kích hoạt
+	    if (!empty($this->passedArgs['register']) && !empty($this->passedArgs['user'])){
+	        $username = $this->passedArgs['user'];
+	        $register_code = $this->passedArgs['register'];
+	        $user = $this->User->findByUsername($username);
+	        if ($user['User']['actived'] == 0 ){
+	            //check the token
+	            if($user['User']['register_code'] == $register_code){
+	            	$this->User->id  = $user['User']['id'];
+	            	$this->User->saveField('actived', 1);
+	            	$this->User->saveField('register_code', null);
+	                $this->Session->setFlash('Kích hoạt tài khoản thành công', 'default', array('class' => 'alert alert-info'), 'auth');
+	                $this->redirect('/dang-nhap');
+	            } else{
+	                $this->Session->setFlash('Mã kích hoạt không đúng', 'default', array('class' => 'alert alert-danger'), 'auth');
+	                //$this->redirect('/users/register');
+	            }
+	        } else{
+	            $this->Session->setFlash('Mã kích hoạt đã được sử dụng', 'default', array('class' => 'alert alert-danger'), 'auth');
+	            //$this->redirect('/dang-ki');
+	        }
+	    } else{
+	        $this->Session->setFlash('Mã kích hoạt không đúng. Vui lòng đăng kí tài khoản', 'default', array('class' => 'alert alert-danger'));
+	        //$this->redirect('/dang-ki');
+	    }
 	}
 
 /**
@@ -138,18 +179,24 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent:: beforeFilter();
 		// Allow users to register and logout.
-		$this->Auth->allow('add','forgot','confirm');
+		$this->Auth->allow('add','forgot','confirm','verify');
 		
 	}
 
 	public function login() {
 		if ($this->request->is('post' )) {
 			if ($this->Auth->login()) {
-			// return $this->redirect($this->Auth->redirectUrl());
-				return $this->redirect(array('controller' => 'transactions', 'action' => 'index'));
-		} else{
-			$this->Session->setFlash('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại','default', array('class'=>'alert alert-danger'),'auth');
-		}
+				$user = $this->get_user();
+				if($this->check_active($user['actived'])){
+					return $this->redirect(array('controller' => 'transactions', 'action' => 'index'));
+				} else{
+					$this->Session->setFlash('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại','default', array('class'=>'alert alert-danger'),'auth');
+					return $this->redirect($this->Auth->logout());
+				}
+			} else{
+				$this->Session->setFlash('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại','default', array('class'=>'alert alert-danger'),'auth');
+				unset($this->request->data['User']['password']);
+			}
 		
 		}
 	}
@@ -239,10 +286,16 @@ class UsersController extends AppController {
 			$user = $this->User->findByEmail($this->request->data['User']['email']);
 			if(!empty($user)){
 				$code = $this->Tool->generate_code();
-				$link_confirm = 'http://localhost/cakephp/xac-nhan/'.$code;
+				$link_confirm = 'http://localhost/moneylover/xac-nhan/'.$code;
 				$this->User->id = $user['User']['id'];
 				$this->User->saveField('code',$code);
-				$this->Session->setFlash('Vui lòng truy cập đường link sau để lấy lại mật khẩu - '.$link_confirm, 'default', array('class' => 'alert alert-info'));
+				//Gửi link xác nhận đến email
+				$email = new CakeEmail();
+				$email->config('smtp')
+					->to(array($user['User']['email'] => $user['User']['fullname']))
+					->subject('Xác nhận quên mật khẩu')
+					->send('Bạn vừa yêu cầu lấy lại mật khẩu của tài khoản: '.$user['User']['username'].' trên hệ thống MoneyLover .Vui lòng truy cập link sau để xác nhận lấy lại mật khẩu '.$link_confirm);
+				$this->Session->setFlash('Vui lòng kiểm tra hộp thư để lấy lại mật khẩu', 'default', array('class' => 'alert alert-info'));
 
 			} else{
 				$this->Session->setFlash('Email chưa được đăng kí', 'default', array('class' => 'alert alert-danger'));
@@ -254,6 +307,7 @@ class UsersController extends AppController {
 		$confirm = false;
 		if(!empty($code)){
 			$user = $this->User->findByCode($code);
+			$this->set('user_info', $user);
 			if(!empty($user)){
 				$confirm = true;
 				if($this->request->is('post')){

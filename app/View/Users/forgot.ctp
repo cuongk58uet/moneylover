@@ -1,6 +1,8 @@
 <html>
 <body>
-	<div class="panel panel-info">
+	<?php echo $this->element('header_login'); ?>
+	<hr>
+	<div class="panel panel-primary">
 	
 		<div class="panel-heading">
 	    	<h3 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Quên mật khẩu </h3>

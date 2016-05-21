@@ -4,6 +4,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+          	<li class="active"><?php echo $this->Html->link(__('Sửa giao dịch'), ''); ?></li>
             <li><?php echo $this->Form->postLink(__(' Xóa giao dịch'), array('action' => 'delete', $this->Form->value('Transaction.id')), array('confirm' => __(' Bạn có chắc chắn muốn xóa giao dịch %s?', $this->Form->value('Transaction.id')))); ?></li>
             <li><?php echo $this->Html->link(__(' Danh mục ví'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__('Trở về'), array('action' => 'index')); ?></li>
@@ -21,6 +22,7 @@
 				<?php echo $this->Form->input('amount',array('label'=>'Giá trị','class'=>"form-control", 'placeholder' => 'Giá trị')); ?></br>
 				<?php echo $this->Form->input('create_date',array(
 					'label' => 'Ngày giao dịch : ',
+					'dateFormat' => 'DMY',
 					'class'=>"form-control",
 					'placeholder' => 'Ngày',
 					'div' => array('class' => 'form-inline'),
@@ -37,8 +39,15 @@
 			<?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>
 			<?php echo $this->Html->link(__('Hủy thay đổi'), array('controller' => 'transactions', 'action' => 'index'), array('class' => 'btn btn-default')); ?>
 			<?php echo $this->Form->end(); ?>
-</div>
+		</div>
 	</div>
+	<script type="text/javascript">
+		$(function() {
+	    $('.input.date select[name$="[day]"] option[value=""]').html('-- Day --');
+	    $('.input.date select[name$="[month]"] option[value="Tháng Một, Tháng Hai, Tháng Ba"]').html('-- Month --');
+	    $('.input.date select[name$="[year]"] option[value=""]').html('-- Year --');
+    </script>
+});
 </body>
 
 </html>

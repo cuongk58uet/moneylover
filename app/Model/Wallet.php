@@ -24,11 +24,6 @@ class Wallet extends AppModel {
 		'id' => array(
 			'notBlank' => array(
 				'rule' => array('notBlank'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'wallet_name' => array(
@@ -36,6 +31,15 @@ class Wallet extends AppModel {
 				'rule' => array('notBlank'),
 			)
 		),
+		'currency' => array(
+			'notBlank' => array(
+				'rule' => array('notBlank'),
+			)
+		),
+		'banlances' => array(
+			'rule' => array('naturalNumber', true),
+			'message' => 'Số dư phải là một tự nhiên'
+			)
 	);
 
 	public function beforeSave($options = array()) {

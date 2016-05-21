@@ -19,7 +19,7 @@
 		<?php else: ?>
 			<?php echo $this->Session->flash('auth'); ?>
 		<?php endif ?>
-			<div class="panel panel-info">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
 	            	<h3 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đăng nhập </h3>
             	</div>

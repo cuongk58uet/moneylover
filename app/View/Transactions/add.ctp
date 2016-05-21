@@ -4,6 +4,7 @@
 	<?php echo $this->element('header');?>
 	<div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
+        	<li class="active"><?php echo $this->Html->link(__(' Thêm giao dịch mới'), ''); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('controller' => 'wallets', 'action' => 'add')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Các danh mục'), array('controller' => 'categories', 'action' => 'index')); ?></li>
 			<li><?php echo $this->Html->link(__(' Thêm danh mục'), array('controller' => 'categories', 'action' => 'add')); ?></li>
@@ -21,6 +22,8 @@
 				<?php echo $this->Form->input('create_date',array(
 					'label' => 'Ngày giao dịch : ',
 					'class'=>"form-control",
+					'type' => 'date',
+					'dateFormat' => 'DMY',
 					'placeholder' => 'Ngày',
 					'div' => array('class' => 'form-inline'),
 					'between' => '<div class="form-group">',
@@ -29,7 +32,7 @@
 					)); ?>
 				<?php echo $this->Form->input('note',array('label'=>'Ghi chú','class'=>"form-control", 'placeholder' => 'Ghi chú')); ?>
 				<?php echo $this->Form->input('wallet_id',array('label'=>' Ví','class'=>"form-control")); ?>
-				<?php echo $this->Form->input('category_id',array('label'=>' Danh mục','class'=>"form-control", 'placeholder' => 'Danh mục')); ?>
+				<?php echo $this->Form->input('category_id',array('label'=>' Nợ và Cho vay','class'=>"form-control")); ?>
 				<?php echo $this->Form->input('user_id',array('label'=>'Tài khoản','class'=>"form-control")); ?>
 			
 			</fieldset>

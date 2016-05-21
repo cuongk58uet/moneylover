@@ -4,6 +4,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+          	<li class="active"><?php echo $this->Html->link(__('Các danh mục'), ''); ?></li>
           	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'transactions', 'action' => 'index')); ?></li>
           	<li><?php echo $this->Html->link(__('Thêm danh mục'), array('action' => 'add')); ?></li>
 			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>

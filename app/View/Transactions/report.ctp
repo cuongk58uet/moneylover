@@ -4,7 +4,7 @@
 	<?php echo $this->element('header');	?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-      		<!-- <li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'transactions', 'action' => 'index')); ?> </li> -->
+      		<li class="active"><?php echo $this->Html->link(__('Chi tiết báo cáo'), ''); ?> </li>
 			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
           </ul>
 	</div>
@@ -12,6 +12,7 @@
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<?php echo $this->Session->flash(); ?>
 		<div class="transactions index">
+			<div class="jumbotron">
 			<h3><b>Tổng quan tháng <?php echo $month.' - '.$year ?></b></h3>
 			<table class="table" style="width:auto; border:none;">
 				<tr>
@@ -26,7 +27,7 @@
 						    'thousands' => ','
 						    )) ?>
 					<?php else: ?>
-						<p style="color: #0080ff">Không có dữ liệu để hiển thị</p>
+						<b style="color: #0080ff">Không có dữ liệu để hiển thị</b>
 					<?php endif ?>
 					</td>
 					
@@ -44,7 +45,7 @@
 					    'thousands' => ','
 					    )) ?>
 					<?php else: ?>
-						<p style="color: #0080ff">Không có dữ liệu để hiển thị</p>
+						<b style="color: #0080ff">Không có dữ liệu để hiển thị</b>
 					<?php endif ?>
 					</td>
 				</tr>
@@ -60,7 +61,7 @@
 					    'thousands' => ','
 					    )) ?>
 					<?php else: ?>
-						<p style="color: #0080ff">Không có dữ liệu để hiển thị</p>
+						<b style="color: #0080ff">Không có dữ liệu để hiển thị</b>
 					<?php endif ?>
 					</td>
 				</tr>
@@ -81,28 +82,28 @@
 						
 			<?php endif ?>
 						</h4>
-		    <p><b>Danh mục:</b> 
+		    <h5><b>Danh mục:</b> 
 		    <?php if(!empty($most_outflow['Category']['category_name'])): ?>
 		    	<?php echo $most_outflow['Category']['category_name']?>
 		    <?php else: ?>
 		    	<b style="color: #0080ff">Rỗng</b>
 		    <?php endif ?>
-		    </p>
+		    </h5>
 
-			<p><b>Ghi chú:</b> 
+			<h5><b>Ghi chú:</b> 
 			<?php if(!empty($most_outflow['Transaction']['note'])): ?>
 				<?php echo $most_outflow['Transaction']['note']?>
 			<?php else: ?>
 				<b style="color: #0080ff">Rỗng</b>
 			<?php endif ?>
-			</p>
-			<p><b>Ngày tạo giao dịch:</b> 
+			</h5>
+			<h5><b>Ngày tạo giao dịch:</b> 
 			<?php if(!empty($most_outflow['Transaction']['create_date'])): ?>
 				<?php echo date('d-m-Y',strtotime($most_outflow['Transaction']['create_date']))?>
 			<?php else: ?>
 				<b style="color: #0080ff">Rỗng</b>
 			<?php endif ?>
-			</p></br>
+			</h5></br>
 			<!--  -->
 			<h4><b>Chi tiêu theo nhóm:</b></h4>
 			<?php if(!empty($details_outflow)): ?>
@@ -110,7 +111,7 @@
 					<h5><b><?php echo $detail['Category']['category_name']?>: </b><?php echo $this->Number->toPercentage($detail['0']['Total']/$outflow['0']['0']['Total']*100)?> </h5>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<p style="color: #0080ff">Không có khoản chi tiêu nào</p>
+				<b style="color: #0080ff">Không có khoản chi tiêu nào</b>
 			<?php endif ?>
 			
 			<!--  -->
@@ -126,7 +127,7 @@
 					    ))?> </h5>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<p style="color: #0080ff">Không có khoản thu nhập nào</p>
+				<b style="color: #0080ff">Không có khoản thu nhập nào</b>
 			<?php endif ?>
 
 			</br></br><h4><b>Xem tổng quan của tháng khác: </b></h4>
@@ -134,7 +135,7 @@
 				<?php echo $this->Form->create(); ?>
 				<fieldset>
 						<?php echo $this->Form->input('date', array(
-							'type'  => 'date',
+							'type' => 'date',
 							'class'=>"form-control",
 							'div' => array('class' => 'form-inline'),
 							'between' => '<div class="form-group">',
@@ -143,8 +144,8 @@
 		        			'label' => 'Chọn thời gian: ',
 							'empty' => false,
 							'dateFormat' => 'MY',
-							'maxYear' => date('Y'),
-							'minYear' => date('Y') - 5
+							'maxYear' => date('Y') + 5,
+							'minYear' => date('Y') - 5,
 							));
 						?>
 				</fieldset>
@@ -152,10 +153,9 @@
 				<?php echo $this->Form->button('Xem',array('type' => 'submit','class'=>'btn btn-primary')); ?>
 				<?php echo $this->Form->end(); ?>
 			</div>
-			
+			</div>
 		</div>
 	</div>
-
 </body>
 
 

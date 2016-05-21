@@ -12,7 +12,7 @@
 	<div class="content col-md-4">
 	</div>
 		<div class="content col-md-4">
-			<div class="panel panel-info">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
 	            	<h2 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đổi mật khẩu</h2>
 	            </div>
@@ -30,7 +30,6 @@
 						</fieldset></br>
 						<?php echo $this->Form->button(' Lưu thay đổi',array('type' => '','class'=>'btn btn-lg btn-primary btn-block')); ?></br>
 						<?php echo $this->Html->link(__('Hủy thay đổi'), array('controller'=>'transactions', 'action' => 'index'),array('class' => 'btn btn-default')); ?>
-						
 						<?php echo $this->Form->end(); ?>
 					</div>
 				</div>

@@ -4,6 +4,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+          	<li class="active"><?php echo $this->Html->link(__('Chỉnh sửa ví'), ''); ?> </li>
           	<li><?php echo $this->Html->link(__('Trang chủ'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
             <li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $this->Form->value('Wallet.id')), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $this->Form->value('Wallet.wallet_name')))); ?></li>
 			<li><?php echo $this->Html->link(__('Trở lại'), array('action' => 'index')); ?></li>
@@ -19,7 +20,13 @@
 			<?php
 				echo $this->Form->input('id');
 				echo $this->Form->input('wallet_name', array('label'=>'Tên ví','class'=>"form-control", 'placeholder' => 'Tên ví'));
-				echo $this->Form->input('currency',array('label'=>' Đơn vị tiền tệ','class'=>"form-control", 'placeholder' => 'Đơn vị tiền tệ'));
+				echo $this->Form->input('currency',array('label'=>' Đơn vị tiền tệ','class'=>"form-control", 'placeholder' => 'Đơn vị tiền tệ', 'options' => array(
+					'VND (₫)' => 'Việt Nam Đồng (₫)',
+					'USD ($)' => 'Đô La Mỹ ($)',
+					'YEN (¥)' => 'Yên Nhật (¥)',
+					'Euro (€)' => 'Euro (€)',
+					'Pound (£)' => 'Bảng Anh (£)'
+				)));
 				echo $this->Form->input('banlances', array('label'=>' Số dư','class'=>"form-control", 'placeholder' => 'Số dư'));
 			?>
 			</fieldset>

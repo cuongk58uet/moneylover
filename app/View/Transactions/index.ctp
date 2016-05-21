@@ -4,6 +4,7 @@
 	<?php echo $this->element('header');	?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+          	<li class="active"><?php echo $this->Html->link(__('Trang chủ'), ''); ?></li>
           <?php if(!empty($wallets)): ?>
             <li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('action' => 'add')); ?></li>
           <?php endif ?>
@@ -21,40 +22,60 @@
 				<h4><strong> Có vẻ bạn chưa tạo ví nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4></br>
 			<?php else: ?>
 			<?php if(!empty($transactions)): ?>
+			<div class="jumbotron">
 			<h3><b>Tổng quan tháng <?php echo date('m - Y'); ?></b></h3>
 			<table class="table" style="width:auto;">
 				<tr>
 					<td><b>Tiền vào:</b></td>
-					<td><?php echo $this->Number->format($inflow['0']['0']['Total'],array(
-						'places' => 0,
-						'before' => null,
-					    'escape' => false,
-					    'decimals' => '.',
-					    'thousands' => ','
-					    )) ?></td>
+					<td>
+					<?php if(!empty($inflow)): ?>
+						<?php echo $this->Number->format($inflow['0']['0']['Total'],array(
+							'places' => 0,
+							'before' => null,
+						    'escape' => false,
+						    'decimals' => '.',
+						    'thousands' => ','
+						    )) ?>
+				    <?php else: ?>
+				    	0
+				    <?php endif ?>
+					</td>
 				</tr>
 				<tr>
 					<td><b>Tiền ra:</b></td>
-					<td><?php echo $this->Number->format($outflow['0']['0']['Total'], array(
-						'places' => 0,
-						'before' => null,
-					    'escape' => false,
-					    'decimals' => '.',
-					    'thousands' => ','
-					    )) ?></td>
+					<td>
+					<?php if(!empty($outflow)): ?>
+						<?php echo $this->Number->format($outflow['0']['0']['Total'], array(
+							'places' => 0,
+							'before' => null,
+						    'escape' => false,
+						    'decimals' => '.',
+						    'thousands' => ','
+						    )) ?>
+			    	<?php else: ?>
+			    		0
+			    	<?php endif ?>
+					</td>
 				</tr>
 				<tr>
 					<td><b>Thu nhập ròng:</b></td>
-					<td><?php echo $this->Number->format($netIncome, array(
-						'places' => 0,
-						'before' => null,
-					    'escape' => false,
-					    'decimals' => '.',
-					    'thousands' => ','
-					    )) ?></td>
+					<td>
+					<?php if(!empty($netIncome)): ?>
+						<?php echo $this->Number->format($netIncome, array(
+							'places' => 0,
+							'before' => null,
+						    'escape' => false,
+						    'decimals' => '.',
+						    'thousands' => ','
+						    )) ?>
+					<?php else: ?>
+						0
+					<?php endif ?>
+					</td>
 				</tr>
 			</table>
 			<?php echo $this->Html->link(__('Chi tiết'), '/bao-cao-hang-thang/'.$currentMonth.'/'.$currentYear , array('class' => 'btn btn-sm btn-primary')); ?>
+			</div>
 			<h2><b><?php echo __('Các giao dịch đã lưu'); ?></b></h2>
 			<table class="table table-striped">
 			<thead>

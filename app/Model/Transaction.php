@@ -22,13 +22,13 @@ class Transaction extends AppModel {
  */
 	public $validate = array(
 		'amount' => array(
-			'numeric' => array(
-				'rule' => array('numeric')
-			),
+			'rule' => array('naturalNumber'),
+			'message' => 'Giá trị giao dịch phải là số tự nhiên lớn hơn 0'
 		),
 		'create_date' => array(
 			'date' => array(
-				'rule' => array('date')
+				'rule' => array('date'),
+				'message' => 'Ngày tháng nhập vào không đúng. Vui lòng thử lại'
 			),
 		),
 	);
@@ -40,6 +40,14 @@ class Transaction extends AppModel {
 			$this->data['Transaction']['slug'] = $this->create_slug($this->data['Transaction']['create_date']);
 		}
 		return true;
+	}
+
+	public function check_amount($check){
+		if($this->data['amount'] > 0){
+			return true;
+		} else{
+			return false;
+		}
 	}
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed

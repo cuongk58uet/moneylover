@@ -71,7 +71,7 @@ class WalletsController extends AppController {
 				$this->Session->setFlash('Lưu thành công.', 'default', array('class' => 'alert alert-info'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-info'));
+				$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
 			}
 		}
 		$user_info = $this->get_user();

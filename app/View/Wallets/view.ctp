@@ -4,6 +4,7 @@
 	<?php echo $this->element('header'); ?>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+          	<li class="active"><?php echo $this->Html->link(__(' Chi tiết ví'), ''); ?> </li>
             <li><?php echo $this->Html->link(__(' Chỉnh sửa ví'), '/chinh-sua-vi/'.$wallet['Wallet']['slug']); ?> </li>
 			<li><?php echo $this->Form->postLink(__(' Xóa ví'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $wallet['Wallet']['wallet_name']))); ?> </li>
 			<li><?php echo $this->Html->link(__(' Trở lại'), array('action' => 'index')); ?> </li>
@@ -13,11 +14,11 @@
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<?php echo $this->Session->flash(); ?>
 		<div class="wallets view">
-			<div class="panel panel-info">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
           			<h3 class="panel-title"><?php echo __(' Thông tin ví'); ?></h3>
         		</div>
-				<div class="panel-body">
+				<div class="panel-body" style="background-color: #eaeae1">
 					<h2><?php echo __(' Ví'); ?></h2>
 					<dl>
 						<!-- <dt><?php echo __('ID'); ?></dt>

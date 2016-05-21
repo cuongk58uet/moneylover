@@ -37,16 +37,20 @@
 	Router::connect('/thong-tin-ca-nhan', array('controller' => 'users', 'action' => 'view'));
 	Router::connect('/quen-mat-khau', array('controller' => 'users', 'action' => 'forgot'));
 	Router::connect('/xac-nhan/:code', array('controller' => 'users', 'action' => 'confirm'),array('pass'=>array('code')));
+	Router::connectNamed(array('register','user'));
+
 	Router::connect('/thong-tin-vi/:slug', array('controller' => 'wallets', 'action' => 'view'), array('pass' => array('slug')));
 	Router::connect('/chinh-sua-vi/:slug', array('controller' => 'wallets', 'action' => 'edit'), array('pass' => array('slug')));
 	Router::connect('/danh-sach-vi', array('controller' => 'wallets', 'action' => 'index'));
 	Router::connect('/them-vi', array('controller' => 'wallets', 'action' => 'add'));
 	Router::connect('/chuyen-tien-giua-2-vi', array('controller' => 'wallets', 'action' => 'transfer_money'));
+
 	Router::connect('/trang-chu', array('controller' => 'transactions', 'action' => 'index'));
 	Router::connect('/them-giao-dich', array('controller' => 'transactions', 'action' => 'add'));
 	Router::connect('/bao-cao-hang-thang/:month/:year', array('controller' => 'transactions', 'action' => 'report'), array('pass'=>array('month', 'year')));
 	Router::connect('/chi-tiet-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'view'), array('pass' => array('slug')));
 	Router::connect('/chinh-sua-giao-dich/:slug', array('controller' => 'transactions', 'action' => 'edit'), array('pass' => array('slug')));
+
 	Router::connect('/chi-tiet-danh-muc/:id', array('controller' => 'categories', 'action' => 'view'),array('pass'=>array('id')));
 	Router::connect('/chinh-sua-danh-muc/:id', array('controller' => 'categories', 'action' => 'edit'),array('pass'=>array('id')));
 	Router::connect('/danh-muc', array('controller' => 'categories', 'action' => 'index'));

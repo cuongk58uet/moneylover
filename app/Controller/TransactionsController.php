@@ -42,17 +42,22 @@ class TransactionsController extends AppController {
 			'conditions' => array('user_id' => $user_info['id'])
 			));
 		$this->set('wallets',$wallets);
+
 		$currDate = date("m");
 		$this->set('currDate', $currDate);
 		//pr($currDateTime); exit;
 		$inflow = $this->Transaction->find('all', array(
-				'fields' => array('SUM(amount) AS Total'),
+				'fields' => array('SUM(amount) AS Total', 'wallet_id'),
 				'conditions' => array(
 					'month(create_date)' => $currDate,
 					'Category.category_type' => array('Thu Nhập','Nợ'),
 					'Transaction.user_id' => $user_info['id']
-					)
+					),
+				'group' => array('Transaction.wallet_id')
 			));
+		if(empty($inflow)){
+			$inflow = 0;
+		}
 		$this->set('inflow', $inflow);
 		//pr($inflow); exit;
 		$outflow = $this->Transaction->find('all', array(
@@ -63,15 +68,21 @@ class TransactionsController extends AppController {
 					'Transaction.user_id' => $user_info['id']
 					)
 			));
+		if(empty($outflow)){
+			$outflow = 0;
+		}
 		$this->set('outflow', $outflow);
 		//pr($outflow); exit;
+
 		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
 		$this->set('netIncome', $netIncome);
 
 		$months = $this->Transaction->find('all', array(
-			'fields' => array('month(create_date) AS Month'),
-			'group' => array('month(create_date)')
+			'fields' => array('COUNT(*) AS Total, month(create_date) AS Month'),
+			'group' => array('month(create_date)'),
+			'conditions' => array('Transaction.user_id' => $user_info['id'])
 			));
+		//pr($months); exit;
 		//pr($months['0']['0']['Month']); exit;
 		//pr($netIncome); exit;
 		//pr($this->paginate()); exit;
@@ -200,10 +211,26 @@ class TransactionsController extends AppController {
 		$wallets = $this->Transaction->Wallet->find('list',array(
 			'conditions' => array('user_id' => $user_info['id'])
 			));
-		$categories = $this->Transaction->Category->find('list');
+		$categories = $this->Transaction->Category->find('list',array(
+			'conditions' => array(
+				'category_type' => array('Nợ', 'Cho Vay', 'Chi Tiêu', 'Thu Nhập')
+				)
+			));
+		$expences = $this->Transaction->Category->find('list',array(
+			'conditions' => array(
+				'category_type' => array('Chi Tiêu')
+				)
+			));
+
+		$incomes = $this->Transaction->Category->find('list',array(
+			'conditions' => array(
+				'category_type' => array('Thu Nhập')
+				)
+			));
+
 		$users = $this->Transaction->User->find('list',array(
 			'conditions' => array('id' => $user_info['id'])));
-		$this->set(compact('wallets','users', 'categories'));
+		$this->set(compact('wallets','users', 'categories', 'expences', 'incomes'));
 	}
 
 /**
