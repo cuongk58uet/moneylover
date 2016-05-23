@@ -8,7 +8,19 @@
           </ul>
 	</div>
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<?php echo $this->Session->flash(); ?>
+		<?php if($this->Session->check('Message.success')): ?>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('success'); ?>
+			</div>
+		<?php else: ?>
+		<?php if($this->Session->check('Message.error')): ?>
+			<div class="alert alert-danger">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('error'); ?>
+			</div>
+		<?php endif ?>
+		<?php endif ?>
 		<div class="users form">
 			<?php echo $this->Form->create('User',array('type' => 'file')); ?>
 			<fieldset>

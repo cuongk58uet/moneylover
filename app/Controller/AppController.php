@@ -63,7 +63,9 @@ class AppController extends Controller {
 );
 	public function beforeFilter() {
 		$this->Auth->allow('add');
-		$this->set('user_info',$this->get_user());
+		$user = $this->get_user();
+		$this->loadModel('User');
+		$this->set('user_info',$this->User->findById($user['id']));
 	}
 
 	public function get_user(){

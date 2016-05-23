@@ -2,6 +2,8 @@
 <html>
 <body>
 	<?php echo $this->element('header'); ?>
+	<br>
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><?php echo $this->Html->link(__('Chi tiết giao dịch'),''); ?> </li>
@@ -11,52 +13,60 @@
           </ul>
 	</div>
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<?php echo $this->Session->flash(); ?>
+		<?php if($this->Session->check('Message.success')): ?>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('success'); ?>
+			</div>
+		<?php else: ?>
+		<?php if($this->Session->check('Message.error')): ?>
+			<div class="alert alert-danger">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('error'); ?>
+			</div>
+		<?php endif ?>
+		<?php endif ?>
 		<div class="transactions view">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 	      			<h3 class="panel-title"><?php echo __('Chi tiết giao dịch'); ?></h3>
 	    		</div>
-				<div class="panel-body" style="background-color: #eaeae1">
-					
-					<dl>
-						<dt><?php echo __(' Giá trị'); ?></dt>
-						<dd>
-							<?php echo $this->Number->format($transaction['Transaction']['amount'],array(
-						'places' => 0,
-						'before' => null,
-					    'escape' => false,
-					    'decimals' => '.',
-					    'thousands' => ','
-					    )); ?>
-							&nbsp;
-						</dd>
-						<dt><?php echo __(' Ngày tạo giao dịch'); ?></dt>
-						<dd>
-							<?php echo date('d-m-Y', strtotime($transaction['Transaction']['create_date'])); ?>
-							&nbsp;
-						</dd>
-						<dt><?php echo __(' Ghi chú'); ?></dt>
-						<dd>
-							<?php echo h($transaction['Transaction']['note']); ?>
-							&nbsp;
-						</dd>
-						<dt><?php echo __(' Ví sử dụng'); ?></dt>
-						<dd>
-							<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
-							&nbsp;
-						</dd>
-						<dt><?php echo __(' Danh mục'); ?></dt>
-						<dd>
-							<?php echo $this->Html->link($transaction['Category']['category_name'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?>
-							&nbsp;
-						</dd>
-						<dt><?php echo __(' Kiểu danh mục'); ?></dt>
-						<dd>
-							<?php echo $this->Html->link($transaction['Category']['category_type'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?>
-							&nbsp;
-						</dd>
-					</dl>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table">
+							<tr>
+								<td rowspan="6" style="width:200px"><?php echo $this->Html->image('/img/transactions.jpg', array('width'=>200, 'height' => 200, 'class' => ' img-circle ')); ?></td>
+								<th style="width:200px"><?php echo __(' Giá trị'); ?></th>
+								<th><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
+									'places' => 0,
+									'before' => null,
+								    'escape' => false,
+								    'decimals' => '.',
+								    'thousands' => ','
+								    )); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __(' Ngày tạo giao dịch:'); ?></th>
+								<th><?php echo date('d-m-Y', strtotime($transaction['Transaction']['create_date'])); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __(' Ghi chú:'); ?></th>
+								<th><?php echo h($transaction['Transaction']['note']); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __(' Ví sử dụng:'); ?></th>
+								<th><?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __(' Danh mục:'); ?></th>
+								<th><?php echo $this->Html->link($transaction['Category']['category_name'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __(' Kiểu danh mục:'); ?></th>
+								<th><?php echo $this->Html->link($transaction['Category']['category_type'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?></th>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>

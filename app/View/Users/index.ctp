@@ -5,19 +5,33 @@
 </head>
 <body>
 <?php echo $this->element('header'); ?>
+	<br>
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 
-<div class="container-fluid">
+	<div class="container-fluid">
 	<div class="row">
 		<div class=" col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
+	      <ul class="nav nav-sidebar">
 			<li><?php echo $this->Html->link(__(' Danh sách ví'), array('controller' => 'wallets', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__(' Thêm ví mới'), array('controller' => 'wallets', 'action' => 'add')); ?> </li>
 			<li><?php echo $this->Html->link('Đổi mật khẩu', '/doi-mat-khau');	?></li>
 
-          </ul>
+	      </ul>
 		</div>
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-			<?php echo $this->Session->flash(); ?>
+			<?php if($this->Session->check('Message.success')): ?>
+				<div class="alert alert-info">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<?php echo $this->Session->flash('success'); ?>
+				</div>
+			<?php else: ?>
+			<?php if($this->Session->check('Message.error')): ?>
+				<div class="alert alert-danger">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<?php echo $this->Session->flash('error'); ?>
+				</div>
+			<?php endif ?>
+			<?php endif ?>
 			<div class="transactions index">
 			
 				<?php if(empty($wallets)): ?>
@@ -77,6 +91,6 @@
 			<?php endif ?>
 		</div>
 	</div>
-</div>
+	</div>
 </body>
 </html>

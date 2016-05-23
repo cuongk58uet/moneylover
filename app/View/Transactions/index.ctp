@@ -2,6 +2,8 @@
 <html>
 <body>
 	<?php echo $this->element('header');	?>
+	<br>
+	 <button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
           	<li class="active"><?php echo $this->Html->link(__('Trang chủ'), ''); ?></li>
@@ -15,10 +17,22 @@
 	</div>
 
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<?php echo $this->Session->flash(); ?>
+		<?php if($this->Session->check('Message.success')): ?>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('success'); ?>
+			</div>
+		<?php else: ?>
+		<?php if($this->Session->check('Message.error')): ?>
+			<div class="alert alert-danger">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('error'); ?>
+			</div>
+		<?php endif ?>
+		<?php endif ?>
 		<div class="transactions index">
 			<?php if(empty($wallets)): ?>
-				<h3>Ohhh!!! Xin chào <b><?php echo $user_info['fullname'];?></b></h3>
+				<h3>Ohhh!!! Xin chào <b><?php echo $user_info['User']['fullname'];?></b></h3>
 				<h4><strong> Có vẻ bạn chưa tạo ví nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4></br>
 			<?php else: ?>
 			<?php if(!empty($transactions)): ?>
@@ -76,47 +90,52 @@
 			</table>
 			<?php echo $this->Html->link(__('Chi tiết'), '/bao-cao-hang-thang/'.$currentMonth.'/'.$currentYear , array('class' => 'btn btn-sm btn-primary')); ?>
 			</div>
-			<h2><b><?php echo __('Các giao dịch đã lưu'); ?></b></h2>
-			<table class="table table-striped">
-			<thead>
-			<tr>
-					<!-- <th><?php echo $this->Paginator->sort('id'); ?></th> -->
-					<th><?php echo $this->Paginator->sort('create_date','Ngày giao dịch'); ?></th>
-					<th><?php echo $this->Paginator->sort('amount','Giá trị'); ?></th>
-					<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
-					<!-- <th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>
-					<th><?php echo $this->Paginator->sort('category_name','Kiểu danh mục'); ?></th> -->
-					<th><?php echo __('Tùy chọn'); ?></th>
-			</tr>
-			</thead>
-			<tbody>
-			<?php foreach ($transactions as $transaction): ?>
-			<tr>
-				<!-- <td><?php echo h($transaction['Transaction']['id']); ?>&nbsp;</td> -->
-				<td><?php echo date('d-m-Y',strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
-				<td><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
-						'places' => 0,
-						'before' => null,
-					    'escape' => false,
-					    'decimals' => '.',
-					    'thousands' => ','
-					    )); ?>&nbsp;</td>
-				<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
-				<!-- <td>
-					<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
-				</td>
-				<td>
-					<?php echo $this->Html->link($transaction['Category']['category_name'], array('controller' => 'categories', 'action' => 'view', $transaction['Category']['id'])); ?>
-				</td> -->
-				<td class="actions">
-					<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
-					<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
-					<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['note']))); ?>
-				</td>
-			</tr>
-			<?php endforeach; ?>
-			</tbody>
-			</table>
+			<hr>
+			
+
+			<h2 ><b><?php echo __('Các giao dịch đã lưu'); ?></b></h2>
+			<div class="table-responsive">
+				<table class="table table-striped">
+				<thead>
+				<tr>
+						<!-- <th><?php echo $this->Paginator->sort('id'); ?></th> -->
+						<th><?php echo $this->Paginator->sort('create_date','Ngày giao dịch'); ?></th>
+						<th><?php echo $this->Paginator->sort('amount','Giá trị'); ?></th>
+						<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
+						<!-- <th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>-->
+						<th><?php echo $this->Paginator->sort('Category.category_type','Danh mục'); ?></th>
+						<th><?php echo __('Tùy chọn'); ?></th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($transactions as $transaction): ?>
+				<tr>
+					<!-- <td><?php echo h($transaction['Transaction']['id']); ?>&nbsp;</td> -->
+					<td><?php echo date('d-m-Y',strtotime($transaction['Transaction']['create_date'])); ?>&nbsp;</td>
+					<td><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
+							'places' => 0,
+							'before' => null,
+						    'escape' => false,
+						    'decimals' => '.',
+						    'thousands' => ','
+						    )); ?>&nbsp;</td>
+					<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
+					<!-- <td>
+						<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
+					</td>-->
+					<td>
+						<?php echo $this->Html->link($transaction['Category']['category_type'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?>
+					</td> 
+					<td class="actions">
+						<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
+						<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
+						<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['note']))); ?>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+				</tbody>
+				</table>
+			</div>
 			<?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add'), array('class' => 'btn btn-sm btn-primary')); ?></br>
 			<?php echo $this->element('paginate', array('object' => 'giao dịch')); ?>
 		</div>

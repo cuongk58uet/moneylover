@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<?php echo $this->element('header');	?>
+	<?php echo $this->element('header'); ?>
+	<br>
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
       		<li class="active"><?php echo $this->Html->link(__('Chi tiết báo cáo'), ''); ?> </li>

@@ -6,6 +6,8 @@
 
 <body>
 	<?php echo $this->element('header'); ?>
+	<br>
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
@@ -16,41 +18,51 @@
 			</div>
 			
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<?php echo $this->Session->flash(); ?>
+				<?php if($this->Session->check('Message.success')): ?>
+					<div class="alert alert-info">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<?php echo $this->Session->flash('success'); ?>
+					</div>
+				<?php else: ?>
+				<?php if($this->Session->check('Message.error')): ?>
+					<div class="alert alert-danger">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<?php echo $this->Session->flash('error'); ?>
+					</div>
+				<?php endif ?>
+				<?php endif ?>
 			<div class="users view" >
-				<div class="panel panel-primary" style="background-color: #eaeae1">
+				<div class="panel panel-primary">
 					<div class="panel-heading">
               			<h3 class="panel-title"><?php echo __(' Thông tin cá nhân'); ?></h3>
             		</div>
 					<div class="panel-body">
-						<dl>
-							<dt><?php echo __('Tên tài khoản'); ?></dt>
-							<dd>
-								<?php echo h($user['User']['username']); ?>
-								&nbsp;
-							</dd></br>
-							<dt><?php echo __('Chủ tài khoản'); ?></dt>
-							<dd>
-								<?php echo h($user['User']['fullname']); ?>
-								&nbsp;
-							</dd></br>
-							<dt><?php echo __(' Địa chỉ'); ?></dt>
-							<dd>
-								<?php echo h($user['User']['address']); ?>
-								&nbsp;
-							</dd></br>
-							<dt><?php echo __('Email'); ?></dt>
-							<dd>
-								<?php echo h($user['User']['email']); ?>
-								&nbsp;
-							</dd></br>
-							<dt><?php echo __('Ảnh đại diện'); ?></dt>
-							<dd>
-								<?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200, 'class' => '')); ?>
-								&nbsp;
-							</dd></br>
-						</dl>
-						<?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?>
+					<div class="table-responsive">
+						<table class="table">
+							<tr>
+								<td rowspan="5" style="width:200px"><?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle ')); ?></td>
+								<th style="width:30px"><?php echo __('Tài Khoản:'); ?></th>
+								<th><?php echo h($user['User']['username']); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __('Chủ tài khoản:'); ?></th>
+								<th><?php echo h($user['User']['fullname']); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __(' Địa chỉ:'); ?></th>
+								<th><?php echo h($user['User']['address']); ?></th>
+							</tr>
+							<tr>
+								<th><?php echo __('Email:'); ?></th>
+								<th><?php echo h($user['User']['email']); ?></th>
+							</tr>
+							<tr>
+								<td><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?></td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+						
 					</div>
 				</div>
 			</div>

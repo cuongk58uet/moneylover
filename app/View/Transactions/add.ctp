@@ -2,6 +2,8 @@
 <html>
 <body>
 	<?php echo $this->element('header');?>
+	<br>
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 	<div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
         	<li class="active"><?php echo $this->Html->link(__(' Thêm giao dịch mới'), ''); ?> </li>
@@ -12,7 +14,19 @@
         </ul>
 	</div>
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<?php echo $this->Session->flash(); ?>
+		<?php if($this->Session->check('Message.success')): ?>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('success'); ?>
+			</div>
+		<?php else: ?>
+		<?php if($this->Session->check('Message.error')): ?>
+			<div class="alert alert-danger">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php echo $this->Session->flash('error'); ?>
+			</div>
+		<?php endif ?>
+		<?php endif ?>
 		<div class="transactions form">
 			<?php echo $this->Form->create('Transaction'); ?>
 			<fieldset>
@@ -32,7 +46,7 @@
 					)); ?>
 				<?php echo $this->Form->input('note',array('label'=>'Ghi chú','class'=>"form-control", 'placeholder' => 'Ghi chú')); ?>
 				<?php echo $this->Form->input('wallet_id',array('label'=>' Ví','class'=>"form-control")); ?>
-				<?php echo $this->Form->input('category_id',array('label'=>' Nợ và Cho vay','class'=>"form-control")); ?>
+				<?php echo $this->Form->input('category_id',array('label'=>'Danh mục','class'=>"form-control")); ?>
 				<?php echo $this->Form->input('user_id',array('label'=>'Tài khoản','class'=>"form-control")); ?>
 			
 			</fieldset>

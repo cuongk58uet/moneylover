@@ -68,10 +68,10 @@ class WalletsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Wallet->create();
 			if ($this->Wallet->save($this->request->data)) {
-				$this->Session->setFlash('Lưu thành công.', 'default', array('class' => 'alert alert-info'));
+				$this->Session->setFlash('Lưu thành công.', 'default', null,'success');
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->setFlash(' Ví chưa được lưu. Vui lòng thử lại.', 'default', null,'error');
 			}
 		}
 		$user_info = $this->get_user();
@@ -94,10 +94,11 @@ class WalletsController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Wallet->save($this->request->data)) {
-				$this->Session->setFlash(' Lưu thành công.', 'default', array('class' => 'alert alert-info'));
+				$this->Session->setFlash(' Lưu thành công.', 'default', null,'success');
+				//debug($this->Session->flash('success')); exit;
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Ví chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->setFlash('Ví chưa được lưu. Vui lòng thử lại.', 'default', null, 'error');
 			}
 		} else {
 			$this->request->data = $this->Wallet->find('first', array('conditions' => array('Wallet.slug' => $slug)));
@@ -120,9 +121,9 @@ class WalletsController extends AppController {
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Wallet->delete()) {
-			$this->Session->setFlash('Xóa thành công.', 'default', array('class' => 'alert alert-info'));
+			$this->Session->setFlash('Xóa thành công.', 'default', null,'success');
 		} else {
-			$this->Session->setFlash(' Ví chưa được Xóa. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+			$this->Session->setFlash(' Ví chưa được Xóa. Vui lòng thử lại.', 'default', null,'error');
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
@@ -163,17 +164,23 @@ class WalletsController extends AppController {
 		$sources = $this->Wallet->find('list', array(
 			'conditions' => array('Wallet.user_id' => $user_info['id'])
 			));
-		//pr($wallet1); exit;
+		
 		$destinations = $this->Wallet->find('list', array(
 			'conditions' => array('Wallet.user_id' => $user_info['id'])
 			));
 		if(!empty($this->request->data)){
-			if($this->update_banlances($this->request->data['Wallet']['source_id'], $this->request->data['Wallet']['destination_id'], $this->request->data['Wallet']['amount'])){
-					$this->Session->setFlash('Chuyển tiền thành công.', 'default', array('class' => 'alert alert-info'));
+			if($this->request->data['Wallet']['amount'] > 0){
+				if($this->update_banlances($this->request->data['Wallet']['source_id'], $this->request->data['Wallet']['destination_id'], $this->request->data['Wallet']['amount'])){
+					$this->Session->setFlash('Chuyển tiền thành công.', 'default', null,'success');
 					return $this->redirect(array('action' => 'index'));
+				} else{
+					$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', null,'error');
+				}
 			} else{
-				$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->setFlash('Số tiền phải là số tự nhiên lớn hơn 0', 'default', null,'error');
+				unset($this->request->data['Wallet']['amount']);
 			}
+			
 		}
 		$this->set(compact('sources', 'destinations'));
 	}

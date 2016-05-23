@@ -17,7 +17,19 @@
 	            	<h2 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đổi mật khẩu</h2>
 	            </div>
 	            <div class="panel-body">
-	            	<?php echo $this->Session->flash(); ?>
+	            	<?php if($this->Session->check('Message.success')): ?>
+						<div class="alert alert-info">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<?php echo $this->Session->flash('success'); ?>
+						</div>
+					<?php else: ?>
+					<?php if($this->Session->check('Message.error')): ?>
+						<div class="alert alert-danger">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<?php echo $this->Session->flash('error'); ?>
+						</div>
+					<?php endif ?>
+					<?php endif ?>
 					<?php echo $this->element('errors'); ?>
 					<div class="users form">
 

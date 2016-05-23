@@ -37,6 +37,7 @@ class TransactionsController extends AppController {
 			);
 		$this->Paginator->settings = $this->paginate;
 		$this->set('transactions', $this->paginate());
+		
 		$this->loadModel('Wallet');
 		$wallets = $this->Wallet->find('all', array(
 			'conditions' => array('user_id' => $user_info['id'])
@@ -197,14 +198,14 @@ class TransactionsController extends AppController {
 				$amount = $this->get_amount($this->request->data['Transaction']['category_id'], $this->request->data['Transaction']['amount']);
 				$this->loadModel('Wallet');
 				if($this->update_wallet($this->request->data['Transaction']['wallet_id'], $amount)) {
-					$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
+					$this->Session->setFlash('Lưu giao dịch thành công.', 'default', null, 'success');
 					return $this->redirect(array('action' => 'index'));
 				} else{
-					$this->Session->setFlash('Cập nhật thông tin ví thất bại.', 'default', array('class' => 'alert alert-danger'));
+					$this->Session->setFlash('Cập nhật thông tin ví thất bại.', 'default', null, 'error');
 				}
 				
 			} else {
-				$this->Session->setFlash('Giao dịch chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->setFlash('Giao dịch chưa được lưu. Vui lòng thử lại.', 'default', null, 'error');
 			}
 		}
 		$user_info = $this->get_user();
@@ -255,16 +256,16 @@ class TransactionsController extends AppController {
 				if($this->update_wallet($old_data['Transaction']['wallet_id'], $amount)){
 					$amount = $this->get_amount($this->request->data['Transaction']['category_id'], $this->request->data['Transaction']['amount']);
 					if($this->update_wallet($this->request->data['Transaction']['wallet_id'], $amount)){
-						$this->Session->setFlash('Lưu giao dịch thành công.', 'default', array('class' => 'alert alert-info'));
+						$this->Session->setFlash('Lưu giao dịch thành công.', 'default', null, 'success');
 						return $this->redirect(array('action' => 'index'));
 					} else{
-						$this->Session->setFlash('Lỗi khi cập nhập thông tin mới. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+						$this->Session->setFlash('Lỗi khi cập nhập thông tin mới. Vui lòng thử lại.', 'default', null, 'error');
 					}
 				} else{
-						$this->Session->setFlash('Lỗi khi khôi phục dữ liệu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+						$this->Session->setFlash('Lỗi khi khôi phục dữ liệu. Vui lòng thử lại.', 'default', null, 'error');
 					}
 			} else {
-				$this->Session->setFlash('Giao dịch chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->setFlash('Giao dịch chưa được lưu. Vui lòng thử lại.', 'default', null, 'error');
 			}
 		} else {
 			$this->request->data = $this->Transaction->find('first', array('conditions' => array('Transaction.slug' => $slug)));
@@ -295,10 +296,10 @@ class TransactionsController extends AppController {
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Transaction->delete()) {
 			if($this->update_wallet($data['Transaction']['wallet_id'], $amount)){
-				$this->Session->setFlash('Giao dịch đã được xóa', 'default', array('class' => 'alert alert-info'));
+				$this->Session->setFlash('Giao dịch đã được xóa', 'default', null, 'success');
 			}
 		} else {
-			$this->Session->setFlash('Giao dịch chưa được xóa. Vui lòng thử lại.', 'default', array('class' => 'alert alert-info'));
+			$this->Session->setFlash('Giao dịch chưa được xóa. Vui lòng thử lại.', 'default', null, 'error');
 		}
 		return $this->redirect(array('action' => 'index'));
 	}

@@ -55,10 +55,10 @@ class CategoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Category->create();
 			if ($this->Category->save($this->request->data)) {
-				$this->Session->setFlash('Danh mục đã được lưu.', 'default', array('class' => 'alert alert-info'));
+				$this->Session->setFlash('Danh mục đã được lưu.', 'default', null, 'success');
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Danh mục chưa được lưu. Vui lòng thử lại.', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->setFlash('Danh mục chưa được lưu. Vui lòng thử lại.', 'default', null, 'error');
 			}
 		}
 	}
@@ -76,10 +76,10 @@ class CategoriesController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Category->save($this->request->data)) {
-				$this->Session->setFlash('Đã lưu thay đổi.', 'default', array('class' => 'alert alert-info'));
+				$this->Session->setFlash('Đã lưu thay đổi.', 'default', null, 'success');
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->error('Thay đổi chưa được lưu. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
+				$this->Session->error('Thay đổi chưa được lưu. Vui lòng thử lại', 'default', null, 'error');
 			}
 		} else {
 			$options = array('conditions' => array('Category.' . $this->Category->primaryKey => $id));
@@ -97,13 +97,13 @@ class CategoriesController extends AppController {
 	public function delete($id = null) {
 		$this->Category->id = $id;
 		if (!$this->Category->exists()) {
-			throw new NotFoundException(__('Invalid category'));
+			throw new NotFoundException(__('Không tìm thấy trang bạn yêu cầu'));
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Category->delete()) {
-			$this->Session->success('Đã xóa danh mục.', 'default', array('class' => 'alert alert-info'));
+			$this->Session->setFlash('Đã xóa danh mục.', 'default', null, 'success');
 		} else {
-			$this->Session->error('Danh mục chưa được xóa. Vui lòng thử lại', 'default', array('class' => 'alert alert-info'));
+			$this->Session->setFlash('Danh mục chưa được xóa. Vui lòng thử lại', 'default', null, 'error');
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
