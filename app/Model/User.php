@@ -69,7 +69,15 @@ class User extends AppModel {
 			'valid' => array(
 				'rule' => array('inList' , array('admin' , 'author' )),
 				'message' => 'Vui lòng nhập giá trị' ,
-				'allowEmpty' => true)));
+				'allowEmpty' => true)),
+		
+		'avatar' => array(
+	        'rule' => array('extension', array('gif', 'jpeg', 'png', 'jpg')),
+	        'message' => 'Vui lòng chọn file hình ảnh dạng gif/ jpg/ jpeg/ png',
+	        'allowEmpty' => true
+	    )
+		);
+		
 
 	public function beforeSave($options = array()) {
 		if(isset($this->data['User']['password'])){

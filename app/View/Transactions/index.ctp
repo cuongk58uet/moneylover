@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<head>
+	
+</head>
 <body>
-	<?php echo $this->element('header');	?>
+	<?php echo $this->element('header'); ?>
 	<br>
-	 <button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".sidebar"><i class="glyphicon glyphicon-chevron-right"></i> Menu</button>
 	<div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
           	<li class="active"><?php echo $this->Html->link(__('Trang chủ'), ''); ?></li>
@@ -104,7 +106,7 @@
 						<th><?php echo $this->Paginator->sort('note','Ghi chú'); ?></th>
 						<!-- <th><?php echo $this->Paginator->sort('wallet_name', 'Tên ví'); ?></th>-->
 						<th><?php echo $this->Paginator->sort('Category.category_type','Danh mục'); ?></th>
-						<th><?php echo __('Tùy chọn'); ?></th>
+						<th style="color:#337ab7"><?php echo __('Tùy chọn'); ?></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -118,7 +120,9 @@
 						    'escape' => false,
 						    'decimals' => '.',
 						    'thousands' => ','
-						    )); ?>&nbsp;</td>
+						    )); ?>&nbsp;
+						    <b><?php echo $transaction['Wallet']['currency']; ?></b>
+					</td>
 					<td><?php echo h($transaction['Transaction']['note']); ?>&nbsp;</td>
 					<!-- <td>
 						<?php echo $this->Html->link($transaction['Wallet']['wallet_name'], '/thong-tin-vi/'.$transaction['Wallet']['slug']); ?>
@@ -127,9 +131,9 @@
 						<?php echo $this->Html->link($transaction['Category']['category_type'], '/chi-tiet-danh-muc/'.$transaction['Category']['id']); ?>
 					</td> 
 					<td class="actions">
-						<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
-						<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-xs btn-primary')); ?>
-						<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['note']))); ?>
+						<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-sm btn-info')); ?>
+						<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'],array('class' => 'btn btn-sm btn-success')); ?>
+						<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['note']), 'class'=>'btn btn-sm btn-danger')); ?>
 					</td>
 				</tr>
 				<?php endforeach; ?>
@@ -145,8 +149,5 @@
 	<?php endif ?>
 	<?php endif ?>
 	</div>
-
 </body>
-
-
 </html>

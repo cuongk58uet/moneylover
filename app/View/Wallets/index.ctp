@@ -9,9 +9,10 @@
           <ul class="nav nav-sidebar">
           	<li class="active"><?php echo $this->Html->link(__('Danh sách ví'), ''); ?> </li>
             <li><?php echo $this->Html->link(__(' Thêm ví mới'), array('action' => 'add')); ?></li>
-            <li><?php echo $this->Html->link(__(' Chuyển tiền'), array('action' => 'transfer_money')); ?></li>
+            
 		<?php if(!empty($wallets)): ?>
 			<li><?php echo $this->Html->link(__(' Thêm giao dịch mới'), array('controller' => 'transactions', 'action' => 'add')); ?></li>
+			<li><?php echo $this->Html->link(__(' Chuyển tiền'), array('action' => 'transfer_money')); ?></li>
 		<?php endif ?>
 			<li><?php echo $this->Html->link(__('Trở về'), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
           </ul>
@@ -43,7 +44,7 @@
 								<th><?php echo $this->Paginator->sort('currency','Đơn vị tiền tệ'); ?></th>
 								<th><?php echo $this->Paginator->sort('banlances', 'Số dư'); ?></th>
 								<th><?php echo $this->Paginator->sort('user_id', 'Tài khoản'); ?></th>
-								<th><?php echo __('Tùy chọn'); ?></th>
+								<th style="color:#337ab7"><?php echo __('Tùy chọn'); ?></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -63,9 +64,9 @@
 								<?php echo $this->Html->link($wallet['User']['username'], '/thong-tin-ca-nhan'); ?>
 							</td>
 							<td class="actions">
-								<?php echo $this->Html->link(__('Chi tiết'), '/thong-tin-vi/'.$wallet['Wallet']['slug'], array('class' => 'btn btn-xs btn-primary')); ?>
-								<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-vi/'.$wallet['Wallet']['slug'], array('class' => 'btn btn-xs btn-primary')); ?>
-								<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa ví %s?', $wallet['Wallet']['wallet_name']))); ?>
+								<?php echo $this->Html->link(__('Chi tiết'), '/thong-tin-vi/'.$wallet['Wallet']['slug'], array('class' => 'btn btn-sm btn-info')); ?>
+								<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-vi/'.$wallet['Wallet']['slug'], array('class' => 'btn btn-sm btn-success')); ?>
+								<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $wallet['Wallet']['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa ví %s?', $wallet['Wallet']['wallet_name']), 'class' => 'btn btn-sm btn-danger')); ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

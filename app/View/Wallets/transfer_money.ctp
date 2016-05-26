@@ -33,7 +33,7 @@
 			<fieldset>
 				<legend><?php echo __('Chuyển tiền giữa 2 ví'); ?></legend>
 					<?php
-						echo $this->Form->input('amount',array('label'=>'Số tiền muốn chuyển','class'=>"form-control", 'placeholder'=>" Số tiền muốn chuyển"));
+						echo $this->Form->input('amount',array('label'=>'Số tiền muốn chuyển','class'=>"form-control", 'placeholder'=>" Số tiền muốn chuyển", 'empty' => 'true'));
 						echo $this->Form->input('source_id',array('label'=>'Ví Nguồn','class'=>"form-control"));
 						echo $this->Form->input('destination_id',array('label'=>'Ví Đích','class'=>"form-control"));
 					?>

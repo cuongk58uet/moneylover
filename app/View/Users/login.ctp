@@ -21,9 +21,10 @@
 		<?php endif ?>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-	            	<h3 class="panel-title"><strong class="glyphicon glyphicon-user"></strong> Đăng nhập </h3>
+	            	<h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> Đăng nhập </h3>
             	</div>
-	            <div class="panel-body"> 
+	            <div class="panel-body">
+	            		<?php echo $this->Html->image('/img/avatar-001.jpg', array('width' => 100, 'height'=>100, 'class'=>'img-circle img-responsive center-block')); ?>
 					<div class="users form">
 						<?php echo $this->Form->create('User' ); ?>
 						<fieldset>

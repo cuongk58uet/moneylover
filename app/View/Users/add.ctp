@@ -34,8 +34,8 @@
 				echo $this->Form->input('email', array('label'=>'Email', 'class'=>"form-control", 'placeholder' => 'Địa chỉ email'));
 			?>
 			</br>
-			<!-- <?php echo $this->GoogleRecaptcha->getRecaptcha(); ?> -->
-			<!-- <div class="g-recaptcha" data-sitekey="6LdQ4R8TAAAAAFcBQnwk9H4vHOqA1vdpNf4C99sF"></div> -->
+			<!-- <?php echo $this->GoogleRecaptcha->getRecaptcha(); ?>
+			<div class="g-recaptcha" data-sitekey="6LdQ4R8TAAAAAFcBQnwk9H4vHOqA1vdpNf4C99sF"></div> -->
 			</fieldset>
 			</br>
 			<?php echo $this->Form->button('Đăng kí',array('type' => 'submit','class'=>'btn btn-primary')); ?>

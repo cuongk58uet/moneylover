@@ -46,20 +46,22 @@
 							</tr>
 							<tr>
 								<th><?php echo __('Chủ tài khoản:'); ?></th>
-								<th><?php echo h($user['User']['fullname']); ?></th>
+								<td><?php echo h($user['User']['fullname']); ?></td>
 							</tr>
 							<tr>
 								<th><?php echo __(' Địa chỉ:'); ?></th>
-								<th><?php echo h($user['User']['address']); ?></th>
+								<td><?php echo h($user['User']['address']); ?></td>
 							</tr>
 							<tr>
 								<th><?php echo __('Email:'); ?></th>
-								<th><?php echo h($user['User']['email']); ?></th>
+								<td><?php echo h($user['User']['email']); ?></td>
 							</tr>
+							
 							<tr>
 								<td><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?></td>
 								<td></td>
 							</tr>
+							
 						</table>
 					</div>
 						

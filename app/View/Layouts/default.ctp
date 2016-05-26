@@ -12,48 +12,30 @@
 </title>
 
 <?php
-		echo $this->Html->meta('icon');
-
-		echo $this->Html->css('bootstrap.min');
-		echo $this->Html->css('chickenrainshop');
-		
-		echo $this->Html->css('dashboard');
-		
-		echo $this->Html->css('font-awesome');
-
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
+	echo $this->Html->meta('icon');
+	
+	echo $this->Html->css('bootstrap.min');
+	echo $this->Html->css('dashboard');
+	echo $this->Html->css('font-awesome');
+	
+	echo $this->fetch('meta');
+	echo $this->fetch('css');
+	echo $this->fetch('script');
+?>
 </head>
 <body>
-<div  class="container-fluid">
-  	<div id="content">
-	  	<div class="row">
-	  		<?php echo $this->Flash->render(); ?>
-	  		<?php echo $this->fetch('content'); ?>
-	  	</div>	
-  	</div>
-</div>
-
-<div id="footer" class="footer">
-	<div class="container">
+	<div class="container-fluid" style="height:500px">
 		<div class="row">
-	        <div class="pull-right">
-	        <strong class="text-muted">DEVELOPMENT TEAM</strong>
-	        </div>
-			<!-- <?php echo $this->element('sql_dump'); ?> -->
+			<?php echo $this->Flash->render(); ?>
+			<?php echo $this->fetch('content'); ?>
 		</div>
 	</div>
-</div>
 
-
-<!-- Placed at the end of the document so the pages load faster -->
-<?php echo $this->Html->script('jquery'); ?>
-<?php echo $this->Html->script('bootstrap'); ?>
-<?php echo $this->Html->script('html5shiv'); ?>
-<?php echo $this->Html->script('ie10-viewport-bug-workaround'); ?>
-<?php echo $this->Html->script('ie-emulation-modes-warning'); ?>
-<?php echo $this->Html->script('docs.min'); ?>
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		<!-- <?php echo $this->element('sql_dump'); ?> -->
+	</div>		
+	<?php echo $this->Html->script('jquery'); ?>
+	<?php echo $this->Html->script('bootstrap'); ?>
+	<?php echo $this->Html->script('html5shiv'); ?>
 </body>
 </html>

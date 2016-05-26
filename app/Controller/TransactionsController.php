@@ -30,7 +30,7 @@ class TransactionsController extends AppController {
 		$user_info = $this->get_user();
 		$this->Transaction->recursive = 0;
 		$this->paginate = array(
-			'order' => array('create_date' => 'desc'),
+			'order' => array('Transaction.id' => 'desc'),
 			'limit' => 10,
 			'conditions' => array('Transaction.user_id' => $user_info['id']),
 			'paramType' => 'querystring'
@@ -44,18 +44,28 @@ class TransactionsController extends AppController {
 			));
 		$this->set('wallets',$wallets);
 
-		$currDate = date("m");
-		$this->set('currDate', $currDate);
 		//pr($currDateTime); exit;
 		$inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currentMonth,
+					'year(create_date)'=> $currentYear,
+					'Category.category_type' => array('Thu Nhập','Nợ'),
+					'Transaction.user_id' => $user_info['id']
+					),
+			));
+		$inflow_each_wallet = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total', 'wallet_id'),
 				'conditions' => array(
-					'month(create_date)' => $currDate,
+					'month(create_date)' => $currentMonth,
+					'year(create_date)'=> $currentYear,
 					'Category.category_type' => array('Thu Nhập','Nợ'),
 					'Transaction.user_id' => $user_info['id']
 					),
 				'group' => array('Transaction.wallet_id')
 			));
+		$this->set('inflow_each_wallet', $inflow_each_wallet);
+		//pr($inflow_each_wallet); exit;
 		if(empty($inflow)){
 			$inflow = 0;
 		}
@@ -64,11 +74,24 @@ class TransactionsController extends AppController {
 		$outflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total'),
 				'conditions' => array(
-					'month(create_date)' => $currDate,
+					'month(create_date)' => $currentMonth,
+					'year(create_date)'=> $currentYear,
 					'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
 					'Transaction.user_id' => $user_info['id']
 					)
 			));
+		$outflow_each_wallet = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total', 'wallet_id'),
+				'conditions' => array(
+					'month(create_date)' => $currentMonth,
+					'year(create_date)'=> $currentYear,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
+					'Transaction.user_id' => $user_info['id']
+					),
+				'group' => array('Transaction.wallet_id')
+			));
+		$this->set('outflow_each_wallet', $outflow_each_wallet);
+		//pr($outflow_each_wallet); exit;
 		if(empty($outflow)){
 			$outflow = 0;
 		}
@@ -77,14 +100,6 @@ class TransactionsController extends AppController {
 
 		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
 		$this->set('netIncome', $netIncome);
-
-		$months = $this->Transaction->find('all', array(
-			'fields' => array('COUNT(*) AS Total, month(create_date) AS Month'),
-			'group' => array('month(create_date)'),
-			'conditions' => array('Transaction.user_id' => $user_info['id'])
-			));
-		//pr($months); exit;
-		//pr($months['0']['0']['Month']); exit;
 		//pr($netIncome); exit;
 		//pr($this->paginate()); exit;
 	}
@@ -133,7 +148,7 @@ class TransactionsController extends AppController {
 		$this->set('most_outflow', $most_outflow);
 
 		$details_outflow = $this->Transaction->find('all', array(
-				'fields' => array('SUM(amount) AS Total', 'Category.category_name'),
+				'fields' => array('SUM(amount) AS Total', 'Category.category_name', 'Wallet.currency'),
 				'conditions' => array(
 					'month(create_date)' => $month,
 					'year(create_date)' => $year,
@@ -142,10 +157,11 @@ class TransactionsController extends AppController {
 					),
 				'group' => array('Category.category_name')
 			));
+		//pr($details_outflow); exit;
 		$this->set('details_outflow', $details_outflow);
 		//pr($details); exit;
 		$details_inflow = $this->Transaction->find('all', array(
-				'fields' => array('SUM(amount) AS Total', 'Category.category_name'),
+				'fields' => array('SUM(amount) AS Total', 'Category.category_name', 'Wallet.currency'),
 				'conditions' => array(
 					'month(create_date)' => $month,
 					'year(create_date)' => $year,

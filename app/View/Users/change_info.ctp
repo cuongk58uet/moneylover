@@ -36,17 +36,21 @@
 						<tr>
 							<td rowspan="6" style="width:200px"><?php echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle')); ?>
 							<?php echo $this->Form->input('avatar', array('label'=> 'Ảnh đại diện', 'class'=>'img-thumbnail', 'type' => 'file')); ?></td>
+							<?php echo $this->Form->hidden('id'); ?>
+							<?php echo $this->Form->hidden('username'); ?>
+							
+						</tr>
+						<tr>
 							<td><?php echo $this->Form->input('fullname', array('label'=>'Họ và tên','class'=>"form-control")); ?></td>
 						</tr>
 						<tr>
-							
 							<td><?php echo $this->Form->input('address', array('label'=>' Địa chỉ','class'=>"form-control")); ?></td>
 						</tr>
 						<tr>
 							<td><?php echo $this->Form->input('email', array('label'=>'Email','class'=>"form-control")); ?></td>
 						</tr>
 						<tr>
-							<td><?php echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin'), 'type' => 'hidden')); ?></td>
+							<?php echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin'), 'type' => 'hidden')); ?>
 						</tr>
 						<tr>
 							<td><?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>

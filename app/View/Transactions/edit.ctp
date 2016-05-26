@@ -47,7 +47,6 @@
 				<?php echo $this->Form->input('note',array('label'=>' Ghi chú','class'=>"form-control", 'placeholder' => 'Ghi chú')); ?>
 				<?php echo $this->Form->input('wallet_id',array('label'=>' Ví','class'=>"form-control")); ?>
 				<?php echo $this->Form->input('category_id',array('label'=>'Danh mục','class'=>"form-control")); ?>
-			
 			</fieldset>
 			</br>
 			<?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>

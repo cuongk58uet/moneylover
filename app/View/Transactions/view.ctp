@@ -35,7 +35,7 @@
 					<div class="table-responsive">
 						<table class="table">
 							<tr>
-								<td rowspan="6" style="width:200px"><?php echo $this->Html->image('/img/transactions.jpg', array('width'=>200, 'height' => 200, 'class' => ' img-circle ')); ?></td>
+								<td rowspan="6" style="width:200px"><?php echo $this->Html->image('/img/transactions.png', array('width'=>200, 'height' => 200, 'class' => ' img-circle ')); ?></td>
 								<th style="width:200px"><?php echo __(' Giá trị'); ?></th>
 								<th><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
 									'places' => 0,
@@ -43,7 +43,9 @@
 								    'escape' => false,
 								    'decimals' => '.',
 								    'thousands' => ','
-								    )); ?></th>
+								    )); ?>
+								    <?php echo $transaction['Wallet']['currency']; ?>
+								    </th>
 							</tr>
 							<tr>
 								<th><?php echo __(' Ngày tạo giao dịch:'); ?></th>

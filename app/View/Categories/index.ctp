@@ -36,7 +36,7 @@
 						<!-- <th><?php echo $this->Paginator->sort('id', 'ID'); ?></th> -->
 						<th><?php echo $this->Paginator->sort('category_name', 'Tên danh mục'); ?></th>
 						<th><?php echo $this->Paginator->sort('category_type', 'Kiểu danh mục'); ?></th>
-						<th><?php echo __('Tùy chọn'); ?></th>
+						<th style="color:#337ab7"><?php echo __('Tùy chọn'); ?></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -46,11 +46,11 @@
 					<td><?php echo h($category['Category']['category_name']); ?>&nbsp;</td>
 					<td><?php echo h($category['Category']['category_type']); ?>&nbsp;</td>
 					<td class= "actions")>
-						<?php echo $this->Html->link('Chi tiết', '/chi-tiet-danh-muc/'.$category['Category']['id'], array('class' => 'btn btn-xs btn-primary')); ?>
+						<?php echo $this->Html->link('Chi tiết', '/chi-tiet-danh-muc/'.$category['Category']['id'], array('class' => 'btn btn-sm btn-info')); ?>
 
-						<?php echo $this->Html->link('Sửa', '/chinh-sua-danh-muc/'.$category['Category']['id'], array('class' => 'btn btn-xs btn-primary')); ?>
+						<?php echo $this->Html->link('Sửa', '/chinh-sua-danh-muc/'.$category['Category']['id'], array('class' => 'btn btn-sm btn-success')); ?>
 						
-						<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $category['Category']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa danh mục %s?', $category['Category']['category_name']))); ?>
+						<?php echo $this->Form->postLink(__('Xóa'), array('action' => 'delete', $category['Category']['id']), array('confirm' => __('Bạn có chắc chắn muốn xóa danh mục %s?', $category['Category']['category_name']), 'class' => 'btn btn-sm btn-danger')); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

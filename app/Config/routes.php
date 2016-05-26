@@ -37,6 +37,8 @@
 	Router::connect('/thong-tin-ca-nhan', array('controller' => 'users', 'action' => 'view'));
 	Router::connect('/quen-mat-khau', array('controller' => 'users', 'action' => 'forgot'));
 	Router::connect('/xac-nhan/:code', array('controller' => 'users', 'action' => 'confirm'),array('pass'=>array('code')));
+	Router::connect('/ve-chung-toi', array('controller' => 'users', 'action' => 'about_us'));
+	Router::connect('/lien-he', array('controller' => 'users', 'action' => 'contact'));
 	Router::connectNamed(array('register','user'));
 
 	Router::connect('/thong-tin-vi/:slug', array('controller' => 'wallets', 'action' => 'view'), array('pass' => array('slug')));

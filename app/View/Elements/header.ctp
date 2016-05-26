@@ -12,9 +12,9 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="<?php echo $this->webroot."trang-chu";?>">Trang chủ</a></li>
-            <li><a href="">Liên hệ</a></li>
-            <li><a href=""> Về chúng tôi</a></li>
+            <li><a href='<?php echo $this->webroot."trang-chu";?>'>Trang chủ</a></li>
+            <li><a href='<?php echo $this->webroot."lien-he";?>'>Liên hệ</a></li>
+            <li><a href='<?php echo $this->webroot."ve-chung-toi";?>'> Về chúng tôi</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">

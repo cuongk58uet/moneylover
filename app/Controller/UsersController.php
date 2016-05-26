@@ -206,26 +206,25 @@ class UsersController extends AppController {
 	}
 
 	public function change_info(){
-		$user_info = $this->get_user();
 		$save = true;
-		$location = $user_info['avatar'];
+		$user_info = $this->get_user();
+		$avatar = $user_info['avatar'];
 		if($this->request->is(array('post', 'put'))){
 			if($this->User->validates()){
 				if(!empty($this->request->data['User']['avatar']['name'])) {
 					if($this->uploadFile() ){
-						$location = '/img/'.$this->request->data['User']['avatar']['name'];
-						$this->request->data['User']['avatar'] = $location;
+						$avatar = '/img/'.$this->request->data['User']['avatar']['name'];
+						$this->request->data['User']['avatar'] = $avatar;
 					} else{
 						$this->Session->setFlash('Ảnh chưa được lưu. Vui lòng thử lại.', 'default', null,'error');
 						$save = false;
 					}
 				} else{
-				$old_avatar = $this->User->findById($user_info['id']);
-				$this->request->data['User']['avatar'] = $old_avatar['User']['avatar'];
+				$this->request->data['User']['avatar'] = $avatar;
 				}
+				//pr($this->request->data); exit;
 				$this->User->id = $user_info['id'];
 				if($save){
-					$this->User->saveField('email', null);
 					if($this->User->save($this->request->data)){
 						$this->Session->setFlash('Cập nhật thành công', 'default', null,'success');
 						$this->redirect($this->referer());
@@ -234,7 +233,7 @@ class UsersController extends AppController {
 						}
 				}
 			} else{
-				$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại', 'default', null, 'error');
+				$this->Session->setFlash('Có lỗi xảy ra. Vui lòng thử lại 2', 'default', null, 'error');
 			} 
 		}else{
 			$this->request->data = $this->User->findById($user_info['id']);
@@ -323,6 +322,23 @@ class UsersController extends AppController {
 		}
 	}
 
+	public function about_us(){
+
+	}
+
+	public function contact(){
+		$user_info = $this->get_user();
+		if(!empty($this->request->data['User']['email'])){
+			$email = new CakeEmail();
+				$email->config('smtp')
+					->to(array('pixicumi@gmail.com'))
+					->subject('Phản hồi của khách hàng')
+					->send($this->request->data['User']['email']);
+			$this->Session->setFlash('Cảm ơn bạn đã gửi phản hồi', 'default', null, 'success');
+			$this->redirect('/lien-he');
+		}
+		
+	}
 
 
 }

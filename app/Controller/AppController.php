@@ -45,7 +45,7 @@ class AppController extends Controller {
 				'params' => array('class' => 'alert alert-danger')
 				),
 			'loginRedirect' => array(
-				'controller' => 'users' ,
+				'controller' => 'transactions' ,
 				'action' => 'index'
 		),
 			'logoutRedirect' => array(

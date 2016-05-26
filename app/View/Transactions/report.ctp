@@ -109,9 +109,21 @@
 			<!--  -->
 			<h4><b>Chi tiêu theo nhóm:</b></h4>
 			<?php if(!empty($details_outflow)): ?>
+				<table class="table" style="width:auto">
 				<?php foreach ($details_outflow as $detail): ?>
-					<h5><b><?php echo $detail['Category']['category_name']?>: </b><?php echo $this->Number->toPercentage($detail['0']['Total']/$outflow['0']['0']['Total']*100)?> </h5>
+					<tr>
+						<th><?php echo $detail['Category']['category_name']?>:</th>
+						<td><?php echo $this->Number->format($detail['0']['Total'], array(
+						'places' => 0,
+						'before' => null,
+					    'escape' => false,
+					    'decimals' => '.',
+					    'thousands' => ','
+					    )).' '.$detail['Wallet']['currency']; ?></td>
+					    <td><?php echo $this->Number->toPercentage($detail['0']['Total']/$outflow['0']['0']['Total']*100); ?></td>
+					</tr>
 				<?php endforeach; ?>
+				</table>
 			<?php else: ?>
 				<b style="color: #0080ff">Không có khoản chi tiêu nào</b>
 			<?php endif ?>

@@ -48,7 +48,7 @@ class EmailConfig {
 		'from' => array('cuongnm4215@gmail.com' => 'MoneyLover Team'),
 		'host' => 'ssl://smtp.gmail.com',
 		'port' => 465,
-		'timeout' => 30,
+		'timeout' => 300,
 		'username' => 'cuongnm4215@gmail.com',
 		'password' => 'ManhCuong95',
 		'client' => null,
