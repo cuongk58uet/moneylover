@@ -328,16 +328,15 @@ class UsersController extends AppController {
 
 	public function contact(){
 		$user_info = $this->get_user();
-		if(!empty($this->request->data['User']['email'])){
-			$email = new CakeEmail();
+		if(!empty($this->request->data)){
+			/*$email = new CakeEmail();
 				$email->config('smtp')
 					->to(array('pixicumi@gmail.com'))
 					->subject('Phản hồi của khách hàng')
-					->send($this->request->data['User']['email']);
+					->send($this->request->data['User']['email']);*/
 			$this->Session->setFlash('Cảm ơn bạn đã gửi phản hồi', 'default', null, 'success');
 			$this->redirect('/lien-he');
 		}
-		
 	}
 
 

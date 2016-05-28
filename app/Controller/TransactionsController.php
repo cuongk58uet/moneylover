@@ -39,10 +39,12 @@ class TransactionsController extends AppController {
 		$this->set('transactions', $this->paginate());
 		
 		$this->loadModel('Wallet');
-		$wallets = $this->Wallet->find('all', array(
+		$wallet_data = $this->Wallet->find('all', array(
 			'conditions' => array('user_id' => $user_info['id'])
 			));
-		$this->set('wallets',$wallets);
+		$this->set('wallet_data',$wallet_data);
+		//pr($wallets); exit;
+
 
 		//pr($currDateTime); exit;
 		$inflow = $this->Transaction->find('all', array(
@@ -102,6 +104,49 @@ class TransactionsController extends AppController {
 		$this->set('netIncome', $netIncome);
 		//pr($netIncome); exit;
 		//pr($this->paginate()); exit;
+
+		$wallets = $this->Wallet->find('list', array(
+			'conditions' => array('user_id' => $user_info['id'])
+			));
+		$this->set(compact('wallets'));
+		//pr($wallets); exit;
+
+		if(!empty($this->request->data['Transaction']['create_date'])){
+			$time = $this->get_date($this->request->data['Transaction']['create_date']);
+			//pr($this->request->data); exit;
+			if(empty($this->request->data['Transaction']['wallet_id'])){
+				 $search_result = $this->Transaction->find('all', array(
+					'order' => array('Transaction.id' => 'desc'),
+					'conditions' => array(
+						'Transaction.user_id' => $user_info['id'],
+						'day(create_date)' => $time['0'],
+						'month(create_date)' => $time['1'],
+						'year(create_date)'=> $time['2'],
+						),
+					));
+			} else{
+				$search_result = $this->Transaction->find('all', array(
+					'order' => array('Transaction.id' => 'desc'),
+					'conditions' => array(
+						'Transaction.user_id' => $user_info['id'],
+						'day(create_date)' => $time['0'],
+						'month(create_date)' => $time['1'],
+						'year(create_date)'=> $time['2'],
+						'wallet_id' => $this->request->data['Transaction']['wallet_id']
+						),
+					));
+			}
+			
+			//pr($search_result); exit;
+			unset($this->request->data['Transaction']['create_date']);
+			$this->set('search_result', $search_result);
+		}
+		
+	}
+
+	private function get_date($string){
+		$result = explode('/',$string);
+		return $result;
 	}
 
 /**

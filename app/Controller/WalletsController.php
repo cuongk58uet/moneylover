@@ -48,16 +48,157 @@ class WalletsController extends AppController {
 	public function view($slug = null) {
 		$wallets = $this->Wallet->find('first', array(
 			'conditions' => array('Wallet.slug' => $slug),
-			//'order' => array('Transaction.create_date' => 'desc')
 			));
-		//pr($wallets); exit;
+		$user_info = $this->get_user();
 		if (!$wallets) {
-			throw new NotFoundException(__(' Không tìm thấy trang bạn yêu cầu'));
+			throw new NotFoundException(__('Không tìm thấy trang bạn yêu cầu'));
 		} else{
 			$this->set('wallet', $wallets);
 		}
+		$this->loadModel('Transaction');
+		$this->Paginator->settings = array(
+			'Transaction' => array(
+				'order' => array('Transaction.id' => 'desc'),
+				'limit' => 10,
+				'conditions' => array('Transaction.user_id' => $user_info['id']),
+				'Transaction.wallet_id' => $wallets['Wallet']['id'],
+				'paramType' => 'querystring'
+				),
+			'Wallet' => array(
+				'conditions' => array(
+					'Wallet.id' => $wallets['Wallet']['id']
+					),
+				)
+			);
+		$this->set('transactions', $this->paginate('Transaction'));
+		//pr($this->paginate('Transaction')); exit;
 		
+		$currentMonth = date('m');
+		$currentYear = date('Y');
+		$this->set(compact('currentMonth', 'currentYear'));
+		$inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currentMonth,
+					'year(create_date)'=> $currentYear,
+					'Category.category_type' => array('Thu Nhập','Nợ'),
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallets['Wallet']['id']
+					),
+			));
+		if(empty($inflow)){
+			$inflow = 0;
+		}
+		$this->set('inflow', $inflow);
+		$outflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $currentMonth,
+					'year(create_date)'=> $currentYear,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallets['Wallet']['id']
+					)
+			));
+		if(empty($outflow)){
+			$outflow = 0;
+		}
+		$this->set('outflow', $outflow);
+		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
+		$this->set('netIncome', $netIncome);
 	}
+
+/**
+*
+*
+*/
+	public function report( $slug, $month, $year){
+		$user_info = $this->get_user();
+		$wallet = $this->Wallet->findBySlug($slug);
+		$this->set('wallet', $wallet);
+
+		$this->loadModel('Transaction');
+		$inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
+					'Category.category_type' => array('Thu Nhập','Nợ'),
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallet['Wallet']['id']
+					)
+			));
+		if(empty($inflow)){
+			$inflow = 0;
+		}
+		$this->set('inflow', $inflow);
+
+		$outflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total'),
+				'conditions' => array(
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallet['Wallet']['id']
+					)
+			));
+		if(empty($outflow)){
+			$outflow = 0;
+		}
+		$this->set('outflow', $outflow);
+		
+		$netIncome = $inflow['0']['0']['Total'] - $outflow['0']['0']['Total']; //Thu nhập ròng
+		$this->set('netIncome', $netIncome);
+
+		$most_outflow = $this->Transaction->find('first', array(
+			'conditions' => array(
+				'month(create_date)' => $month,
+				'year(create_date)' => $year,
+				'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
+				'Transaction.user_id' => $user_info['id'],
+				'wallet_id' => $wallet['Wallet']['id']
+				),
+			'order' => array('amount' => 'desc')
+			));
+		$this->set('most_outflow', $most_outflow);
+
+		$details_outflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total', 'Category.category_name', 'Wallet.currency'),
+				'conditions' => array(
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
+					'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallet['Wallet']['id']
+					),
+				'group' => array('Category.category_name')
+			));
+		//pr($details_outflow); exit;
+		$this->set('details_outflow', $details_outflow);
+		//pr($details); exit;
+		$details_inflow = $this->Transaction->find('all', array(
+				'fields' => array('SUM(amount) AS Total', 'Category.category_name', 'Wallet.currency'),
+				'conditions' => array(
+					'month(create_date)' => $month,
+					'year(create_date)' => $year,
+					'Category.category_type' => array('Thu Nhập','Nợ'),
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallet['Wallet']['id']
+					),
+				'group' => array('Category.category_name')
+			));
+		//pr($detail_inflow); exit;
+		$this->set('details_inflow', $details_inflow);
+		if(!empty($this->request->data)){
+			//pr($this->request->data); exit;
+			$this->redirect('/bao-cao-hang-thang/'.$wallet['Wallet']['slug'].'/'.$this->request->data['Wallet']['date']['month'].'/'.$this->request->data['Wallet']['date']['year']);
+		}
+		$this->set('month', $month);
+		//pr($year); exit;
+		$this->set('year', $year);
+	}
+
 
 /**
  * add method

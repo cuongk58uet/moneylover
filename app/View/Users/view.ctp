@@ -37,34 +37,33 @@
               			<h3 class="panel-title"><?php echo __(' Thông tin cá nhân'); ?></h3>
             		</div>
 					<div class="panel-body">
-					<div class="table-responsive">
-						<table class="table">
-							<tr>
-								<td rowspan="5" style="width:200px"><?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle ')); ?></td>
-								<th style="width:30px"><?php echo __('Tài Khoản:'); ?></th>
-								<th><?php echo h($user['User']['username']); ?></th>
-							</tr>
-							<tr>
-								<th><?php echo __('Chủ tài khoản:'); ?></th>
-								<td><?php echo h($user['User']['fullname']); ?></td>
-							</tr>
-							<tr>
-								<th><?php echo __(' Địa chỉ:'); ?></th>
-								<td><?php echo h($user['User']['address']); ?></td>
-							</tr>
-							<tr>
-								<th><?php echo __('Email:'); ?></th>
-								<td><?php echo h($user['User']['email']); ?></td>
-							</tr>
-							
-							<tr>
-								<td><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?></td>
-								<td></td>
-							</tr>
-							
-						</table>
-					</div>
-						
+						<div class="table-responsive">
+							<table class="table">
+								<tr>
+									<td rowspan="5" style="width:200px"><?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle ')); ?></td>
+									<th style="width:30px"><?php echo __('Tài Khoản:'); ?></th>
+									<th><?php echo h($user['User']['username']); ?></th>
+								</tr>
+								<tr>
+									<th><?php echo __('Chủ tài khoản:'); ?></th>
+									<td><?php echo h($user['User']['fullname']); ?></td>
+								</tr>
+								<tr>
+									<th><?php echo __(' Địa chỉ:'); ?></th>
+									<td><?php echo h($user['User']['address']); ?></td>
+								</tr>
+								<tr>
+									<th><?php echo __('Email:'); ?></th>
+									<td><?php echo h($user['User']['email']); ?></td>
+								</tr>
+								
+								<tr>
+									<td><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?></td>
+									<td></td>
+								</tr>
+								
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
