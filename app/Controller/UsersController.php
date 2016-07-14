@@ -19,8 +19,8 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Flash', 'Session','Tool','GoogleRecaptcha.GoogleRecaptcha','ImageCropResize.Image');
-	public $helpers = array('Number', 'GoogleRecaptcha.GoogleRecaptcha','ImageCropResize.Image');
+	public $components = array('Paginator', 'Flash', 'Session','Tool','GoogleRecaptcha.GoogleRecaptcha');
+	public $helpers = array('Number', 'GoogleRecaptcha.GoogleRecaptcha');
 	
 
 /**
@@ -71,33 +71,29 @@ class UsersController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->User->create();
-				//if($this->GoogleRecaptcha->checkRecaptcha()){
-					if($this->User->validates()){
-						$register_code = md5($this->request->data['User']['username']);
-						if($this->User->save($this->request->data)) {
-							$this->User->saveField('avatar', '/img/default_avatar.png');
-							$this->User->saveField('register_code', $register_code);
-							$link_confirm = 'http://localhost/moneylover/users/verify/register:'.$register_code.'/user:'.$this->data['User']['username'];
-							
-							$email = new CakeEmail();
-							$email->config('smtp')
-								->to(array($this->data['User']['email'] => $this->data['User']['fullname']))
-								->subject('Đăng kí tài khoản thành công')
-								->send('Đăng kí thành công tài khoản '.$this->data['User']['username'].' trên hệ thống MoneyLover .Vui lòng truy cập link sau để kích hoạt tài khoản '.$link_confirm);
-							$this->Session->setFlash('Đăng kí tài khoản thành công. Vui lòng kiểm tra hộp thư để kích hoạt tài khoản. ', 'default', array('class' => 'alert alert-info'),'auth');
-							$this->redirect('/dang-nhap');
-						} else {
-							$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', null,'error');
-							unset($this->request->data['User']['password']);
-							unset($this->request->data['User']['confirm_password']);
+			if($this->User->validates()){
+				$register_code = md5($this->request->data['User']['username']);
+				if($this->User->save($this->request->data)) {
+					$this->User->saveField('avatar', '/img/default_avatar.png');
+					$this->User->saveField('register_code', $register_code);
+					$link_confirm = 'http://localhost/moneylover/users/verify/register:'.$register_code.'/user:'.$this->data['User']['username'];
+					
+					$email = new CakeEmail();
+					$email->config('smtp')
+						->to(array($this->data['User']['email'] => $this->data['User']['fullname']))
+						->subject('Đăng kí tài khoản thành công')
+						->send('Đăng kí thành công tài khoản '.$this->data['User']['username'].' trên hệ thống MoneyLover .Vui lòng truy cập link sau để kích hoạt tài khoản '.$link_confirm);
+					$this->Session->setFlash('Đăng kí tài khoản thành công. Vui lòng kiểm tra hộp thư để kích hoạt tài khoản. ', 'default', array('class' => 'alert alert-info'),'auth');
+					$this->redirect('/dang-nhap');
+				} else {
+					$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', null,'error');
+					unset($this->request->data['User']['password']);
+					unset($this->request->data['User']['confirm_password']);
 
-						}
-					} else{
-						$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', null,'error');
-					}
-				/*} else{
-						$this->Session->setFlash('Mã xác nhận không đúng. Vui lòng thử lại', 'default', array('class' => 'alert alert-danger'));
-					}*/
+				}
+			} else{
+				$this->Session->setFlash('Có lỗi xảy ra. Vui lòng kiểm tra lại các thông tin và thử lại', 'default', null,'error');
+			}
 		}
 	}
 
@@ -176,6 +172,20 @@ class UsersController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
+	public function delete_avatar(){
+		$user_info = $this->get_user();
+		$this->User->id = $user_info['id'];
+		$default_avatar = '/img/default_avatar.png';
+		if($this->User->saveField('avatar', $default_avatar)){
+			$this->Session->setFlash('Ảnh đại diện được đặt lại mặc định', 'default', null, 'success');
+			$this->redirect(array('action' => 'change_info'));
+		}else{
+			$this->Session->setFlash('Có lỗi xảy ra', 'default', null, 'error');
+			$this->redirect(array('action' => 'change_info'));
+		}
+	}
+		
+
 	public function beforeFilter() {
 		parent:: beforeFilter();
 		// Allow users to register and logout.
@@ -220,7 +230,8 @@ class UsersController extends AppController {
 						$save = false;
 					}
 				} else{
-				$this->request->data['User']['avatar'] = $avatar;
+					$user = $this->User->findById($user_info['id']);
+					$this->request->data['User']['avatar'] = $user['User']['avatar'];
 				}
 				//pr($this->request->data); exit;
 				$this->User->id = $user_info['id'];
@@ -328,12 +339,15 @@ class UsersController extends AppController {
 
 	public function contact(){
 		$user_info = $this->get_user();
+		$contact_detail = 'Phản hồi của khách hàng '.$user_info['fullname'].' từ tài khoản '.$user_info['username'].':
+		 ';
 		if(!empty($this->request->data)){
-			/*$email = new CakeEmail();
+			
+			$email = new CakeEmail();
 				$email->config('smtp')
-					->to(array('pixicumi@gmail.com'))
+					->to(array('cuongnm4215@gmail.com'))
 					->subject('Phản hồi của khách hàng')
-					->send($this->request->data['User']['email']);*/
+					->send($contact_detail.$this->request->data['User']['email']);
 			$this->Session->setFlash('Cảm ơn bạn đã gửi phản hồi', 'default', null, 'success');
 			$this->redirect('/lien-he');
 		}

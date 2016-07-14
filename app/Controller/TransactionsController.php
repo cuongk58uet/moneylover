@@ -23,14 +23,16 @@ class TransactionsController extends AppController {
  * @return void
  */
 	public function index() {
+		$this->loadModel('Wallet');
 		$currentMonth = date('m');
 		$currentYear = date('Y');
 		$this->set('currentMonth',$currentMonth);
 		$this->set('currentYear', $currentYear);
 		$user_info = $this->get_user();
+
 		$this->Transaction->recursive = 0;
 		$this->paginate = array(
-			'order' => array('Transaction.id' => 'desc'),
+			'order' => array('Transaction.create_date' => 'desc', 'Transaction.id' => 'desc'),
 			'limit' => 10,
 			'conditions' => array('Transaction.user_id' => $user_info['id']),
 			'paramType' => 'querystring'
@@ -38,15 +40,6 @@ class TransactionsController extends AppController {
 		$this->Paginator->settings = $this->paginate;
 		$this->set('transactions', $this->paginate());
 		
-		$this->loadModel('Wallet');
-		$wallet_data = $this->Wallet->find('all', array(
-			'conditions' => array('user_id' => $user_info['id'])
-			));
-		$this->set('wallet_data',$wallet_data);
-		//pr($wallets); exit;
-
-
-		//pr($currDateTime); exit;
 		$inflow = $this->Transaction->find('all', array(
 				'fields' => array('SUM(amount) AS Total'),
 				'conditions' => array(
@@ -56,18 +49,6 @@ class TransactionsController extends AppController {
 					'Transaction.user_id' => $user_info['id']
 					),
 			));
-		$inflow_each_wallet = $this->Transaction->find('all', array(
-				'fields' => array('SUM(amount) AS Total', 'wallet_id'),
-				'conditions' => array(
-					'month(create_date)' => $currentMonth,
-					'year(create_date)'=> $currentYear,
-					'Category.category_type' => array('Thu Nhập','Nợ'),
-					'Transaction.user_id' => $user_info['id']
-					),
-				'group' => array('Transaction.wallet_id')
-			));
-		$this->set('inflow_each_wallet', $inflow_each_wallet);
-		//pr($inflow_each_wallet); exit;
 		if(empty($inflow)){
 			$inflow = 0;
 		}
@@ -82,18 +63,6 @@ class TransactionsController extends AppController {
 					'Transaction.user_id' => $user_info['id']
 					)
 			));
-		$outflow_each_wallet = $this->Transaction->find('all', array(
-				'fields' => array('SUM(amount) AS Total', 'wallet_id'),
-				'conditions' => array(
-					'month(create_date)' => $currentMonth,
-					'year(create_date)'=> $currentYear,
-					'Category.category_type' => array('Chi Tiêu', 'Cho Vay'),
-					'Transaction.user_id' => $user_info['id']
-					),
-				'group' => array('Transaction.wallet_id')
-			));
-		$this->set('outflow_each_wallet', $outflow_each_wallet);
-		//pr($outflow_each_wallet); exit;
 		if(empty($outflow)){
 			$outflow = 0;
 		}
@@ -104,49 +73,52 @@ class TransactionsController extends AppController {
 		$this->set('netIncome', $netIncome);
 		//pr($netIncome); exit;
 		//pr($this->paginate()); exit;
-
+		$allowDisplayList = true;
+	/*
+		begin search function
+	*/
 		$wallets = $this->Wallet->find('list', array(
 			'conditions' => array('user_id' => $user_info['id'])
 			));
 		$this->set(compact('wallets'));
-		//pr($wallets); exit;
-
-		if(!empty($this->request->data['Transaction']['create_date'])){
-			$time = $this->get_date($this->request->data['Transaction']['create_date']);
-			//pr($this->request->data); exit;
-			if(empty($this->request->data['Transaction']['wallet_id'])){
-				 $search_result = $this->Transaction->find('all', array(
-					'order' => array('Transaction.id' => 'desc'),
+		//debug($this->request->query); exit;
+		if(!empty($this->request->query['create_date'])){
+			if(empty($this->request->query['wallet_id'])){
+				$this->Paginator->settings = array(
+					'order' => array('Transaction.create_date' => 'desc', 'Transaction.id' => 'desc'),
 					'conditions' => array(
 						'Transaction.user_id' => $user_info['id'],
-						'day(create_date)' => $time['0'],
-						'month(create_date)' => $time['1'],
-						'year(create_date)'=> $time['2'],
+						'day(create_date)' => $this->request->query['create_date']['day'],
+						'month(create_date)' => $this->request->query['create_date']['month'],
+						'year(create_date)'=> $this->request->query['create_date']['year'] ,
 						),
-					));
+					'paramType' => 'querystring'
+					);
+				$allowDisplayList = false;
 			} else{
-				$search_result = $this->Transaction->find('all', array(
-					'order' => array('Transaction.id' => 'desc'),
+				$this->Paginator->settings = array(
+					'order' => array('Transaction.create_date' => 'desc', 'Transaction.id' => 'desc'),
 					'conditions' => array(
 						'Transaction.user_id' => $user_info['id'],
-						'day(create_date)' => $time['0'],
-						'month(create_date)' => $time['1'],
-						'year(create_date)'=> $time['2'],
-						'wallet_id' => $this->request->data['Transaction']['wallet_id']
+						'day(create_date)' => $this->request->query['create_date']['day'],
+						'month(create_date)' => $this->request->query['create_date']['month'],
+						'year(create_date)'=> $this->request->query['create_date']['year'],
+						'wallet_id' => $this->request->query['wallet_id']
 						),
-					));
+					'paramType' => 'querystring'
+					);
+				$allowDisplayList = false;
 			}
 			
 			//pr($search_result); exit;
-			unset($this->request->data['Transaction']['create_date']);
-			$this->set('search_result', $search_result);
+			
+			$this->set('search_result', $this->Paginator->paginate());
 		}
+		$this->set('allowDisplayList', $allowDisplayList);
+	/*
+	end search function
+	*/
 		
-	}
-
-	private function get_date($string){
-		$result = explode('/',$string);
-		return $result;
 	}
 
 /**

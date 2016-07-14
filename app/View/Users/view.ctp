@@ -40,7 +40,7 @@
 						<div class="table-responsive">
 							<table class="table">
 								<tr>
-									<td rowspan="5" style="width:200px"><?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle ')); ?></td>
+									<td rowspan="6" style="width:200px"><?php echo $this->Html->image($user['User']['avatar'],array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle ')); ?></td>
 									<th style="width:30px"><?php echo __('Tài Khoản:'); ?></th>
 									<th><?php echo h($user['User']['username']); ?></th>
 								</tr>
@@ -56,7 +56,10 @@
 									<th><?php echo __('Email:'); ?></th>
 									<td><?php echo h($user['User']['email']); ?></td>
 								</tr>
-								
+								<tr>
+									<th><?php echo __('Số điện thoại:'); ?></th>
+									<td><?php echo h($user['User']['phone']); ?></td>
+								</tr>
 								<tr>
 									<td><?php echo $this->Html->link(__(' Chỉnh sửa thông tin'), '/cap-nhat-thong-tin', array('class' => 'btn btn-primary')); ?></td>
 									<td></td>

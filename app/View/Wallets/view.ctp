@@ -107,40 +107,43 @@
 					</td>
 				</tr>
 			</table>
-			<?php echo $this->Html->link(__('Chi tiết'), '/bao-cao-hang-thang/'.$wallet['Wallet']['slug'].'/'.$currentMonth.'/'.$currentYear , array('class' => 'btn btn-sm btn-primary')); ?>
+			<?php echo $this->Html->link(__('Chi tiết'), '/bao-cao-hang-thang/'.$wallet['Wallet']['slug'].'/'.$currentMonth.'/'.$currentYear , array('class' => 'btn  btn-primary')); ?>
 		</div>
 		<div class="related">
 			<h2><?php echo __('Giao dịch liên quan'); ?></h2>
-			<?php if (!empty($wallet['Transaction'])): ?>
+			<?php if (!empty($transactions)): ?>
 				<div class="table-responsive">
 				<table class="table table-striped">
-				<tr>
-					<th><?php echo __('Ngày giao dịch'); ?></th>
-					<th><?php echo __('Giá trị'); ?></th>
-					<th><?php echo __('Ghi chú'); ?></th>
-					<th><?php echo __(' ID Ví'); ?></th>
-					<th class="actions"><?php echo __('Tùy chọn'); ?></th>
-				</tr>
-				<?php foreach ($wallet['Transaction'] as $transaction): ?>
+				<thead>
 					<tr>
-						<td><?php echo date('d-m-Y',strtotime($transaction['create_date'])); ?></td>
-						<td><?php echo $this->Number->format($transaction['amount'],array(
+							<th><?php echo $this->Paginator->sort('Transaction.create_date','Ngày giao dịch'); ?></th>
+							<th><?php echo $this->Paginator->sort('Transaction.amount','Giá trị'); ?></th>
+							<th><?php echo $this->Paginator->sort('Transaction.note','Ghi chú'); ?></th>
+							<th><?php echo $this->Paginator->sort('Category.category_type','Danh mục'); ?></th>
+							<th style="color:#337ab7"><?php echo __('Tùy chọn'); ?></th>
+					</tr>
+				</thead>
+				<?php foreach ($transactions as $transaction): ?>
+					<tr>
+						<td><?php echo date('d-m-Y',strtotime($transaction['Transaction']['create_date'])); ?></td>
+						<td><?php echo $this->Number->format($transaction['Transaction']['amount'],array(
 						'places' => 0,
 						'before' => null,
 					    'escape' => false,
 					    'decimals' => '.',
 					    'thousands' => ','
 					    )); ?></td>
-						<td><?php echo $transaction['note']; ?></td>
-						<td><?php echo $transaction['wallet_id']; ?></td>
+						<td><?php echo $transaction['Transaction']['note']; ?></td>
+						<td><?php echo $transaction['Category']['category_type']; ?></td>
 						<td class="actions">
-							<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['slug'], array('class' => 'btn btn-sm btn-info')); ?>
-							<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['slug'], array('class' => 'btn btn-sm btn-success')); ?>
-							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $transaction['note']), 'class' => 'btn btn-sm btn-danger')); ?>
+							<?php echo $this->Html->link(__('Chi tiết'), '/chi-tiet-giao-dich/'.$transaction['Transaction']['slug'], array('class' => 'btn btn-sm btn-info')); ?>
+							<?php echo $this->Html->link(__('Sửa'), '/chinh-sua-giao-dich/'.$transaction['Transaction']['slug'], array('class' => 'btn btn-sm btn-success')); ?>
+							<?php echo $this->Form->postLink(__('Xóa'), array('controller' => 'transactions', 'action' => 'delete', $transaction['Transaction']['id']), array('confirm' => __(' Bạn có chắc chắn muốn xóa %s?', $transaction['Transaction']['note']), 'class' => 'btn btn-sm btn-danger')); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 				</table>
+				<?php echo $this->element('paginate', array('object' => 'giao dịch')); ?>
 				</div>
 			<?php else: ?>
 				<h4><strong> Ví này không có giao dịch nào. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'transactions', 'action' => 'add')) ; ?> để tạo giao dịch mới </strong></h4>

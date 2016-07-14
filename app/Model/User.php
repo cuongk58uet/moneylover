@@ -35,6 +35,10 @@ class User extends AppModel {
 				'rule' =>'isUnique',
 				'message' => 'Tên tài khoản đã tồn tại. Vui lòng thử lại'
 				),
+			'minlength' => array(
+				'rule' => array('minlength', 5),
+				'message' => 'Tên đăng nhập ít nhất 5 kí tự'
+				)
 			),
 		'password' => array(
 			'required' => array(
@@ -75,7 +79,11 @@ class User extends AppModel {
 	        'rule' => array('extension', array('gif', 'jpeg', 'png', 'jpg')),
 	        'message' => 'Vui lòng chọn file hình ảnh dạng gif/ jpg/ jpeg/ png',
 	        'allowEmpty' => true
-	    )
+	    ),
+	    'phone' => array(
+	    	'rule' => array('numeric'),
+	    	'message' => 'Vui lòng nhập số điện thoại của bạn'
+	    	)
 		);
 		
 

@@ -1,3 +1,4 @@
+
 <?php
 App::uses('AppController', 'Controller');
 /**
@@ -49,6 +50,7 @@ class WalletsController extends AppController {
 		$wallets = $this->Wallet->find('first', array(
 			'conditions' => array('Wallet.slug' => $slug),
 			));
+		//pr($wallets); exit;
 		$user_info = $this->get_user();
 		if (!$wallets) {
 			throw new NotFoundException(__('Không tìm thấy trang bạn yêu cầu'));
@@ -56,19 +58,19 @@ class WalletsController extends AppController {
 			$this->set('wallet', $wallets);
 		}
 		$this->loadModel('Transaction');
+		$this->Transaction->recursive = 0;
 		$this->Paginator->settings = array(
 			'Transaction' => array(
-				'order' => array('Transaction.id' => 'desc'),
+				'order' => array('Transaction.create_date' => 'desc' ,'Transaction.id' => 'desc'),
 				'limit' => 10,
-				'conditions' => array('Transaction.user_id' => $user_info['id']),
-				'Transaction.wallet_id' => $wallets['Wallet']['id'],
-				'paramType' => 'querystring'
-				),
-			'Wallet' => array(
 				'conditions' => array(
-					'Wallet.id' => $wallets['Wallet']['id']
+					'Transaction.user_id' => $user_info['id'],
+					'wallet_id' => $wallets['Wallet']['id']
 					),
-				)
+				'paramType' => 'querystring',
+				'contain' => 'Category'
+				),
+
 			);
 		$this->set('transactions', $this->paginate('Transaction'));
 		//pr($this->paginate('Transaction')); exit;

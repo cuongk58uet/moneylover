@@ -5,7 +5,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href=''>Trang chủ</a></li>
+            <li><a href='<?php echo $this->webroot.'dang-nhap';?>'>Trang chủ</a></li>
             <li><a href=''>Liên hệ</a></li>
             <li><a href=''> Về chúng tôi</a></li>
           </ul>

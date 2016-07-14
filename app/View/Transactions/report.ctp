@@ -146,25 +146,31 @@
 
 			</br></br><h4><b>Xem tổng quan của tháng khác: </b></h4>
 			<div class="categories form">
-				<?php echo $this->Form->create(); ?>
+				<?php echo $this->Form->create('Transaction'); ?>
 				<fieldset>
-						<?php echo $this->Form->input('date', array(
-							'type' => 'date',
-							'class'=>"form-control",
-							'div' => array('class' => 'form-inline'),
-							'between' => '<div class="form-group">',
-							'separator' => '</div><div class="form-group">',
-		        			'after' => '</div>',
-		        			'label' => 'Chọn thời gian: ',
+				<table>
+					<tr>
+						<th>Ngày giao dịch: </th>
+						<td style="padding:2px">
+							<?php echo $this->Form->month('date', array(
+								'class' => 'form-control',
+								'monthNames' => array('01' => 'Tháng 1', '02'=> 'Tháng 2', '03'=> 'Tháng 3', '04'=> 'Tháng 4', '05'=> 'Tháng 5', '06'=> 'Tháng 6', '07'=> 'Tháng 7', '08'=> 'Tháng 8', '09'=> 'Tháng 9', '10'=> 'Tháng 10', '11'=> 'Tháng 11', '12' => 'Tháng 12'),
+								'empty' => false,
+								'default' => date('m')
+							)); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->year('date', date('Y')-5, date('Y')+5, array(
+							'class' => 'form-control',
 							'empty' => false,
-							'dateFormat' => 'MY',
-							'maxYear' => date('Y') + 5,
-							'minYear' => date('Y') - 5,
-							));
-						?>
+							'default' => date('Y')
+							)); ?>
+						</td>
+					</tr>
+				</table>
 				</fieldset>
 				</br>
-				<?php echo $this->Form->button('Xem',array('type' => 'submit','class'=>'btn btn-primary')); ?>
+				<?php echo $this->Form->button('Xem chi tiết',array('type' => 'submit','class'=>'btn btn-primary')); ?>
 				<?php echo $this->Form->end(); ?>
 			</div>
 			</div>

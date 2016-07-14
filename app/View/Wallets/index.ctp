@@ -75,7 +75,7 @@
 					</div>
 					<?php echo $this->element('paginate', array('object' => 'ví')); ?>
 			<?php else: ?>
-					<h1>Opps!!!</h1>
+					<h1>Oh!!!</h1>
 					<h4><strong> Bạn chưa tạo ví. Nhấn vào <?php echo $this->Html->link('đây', array('controller'=> 'wallets', 'action' => 'add')) ; ?> để tạo ví mới </strong></h4>
 			<?php endif ?>
 			</div>

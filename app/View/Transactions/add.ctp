@@ -33,17 +33,35 @@
 				<legend><?php echo __('Thêm giao dịch mới'); ?></legend>
 			
 				<?php echo $this->Form->input('amount',array('label'=>'Giá trị','class'=>"form-control", 'placeholder' => 'Giá trị')); ?></br>
-				<?php echo $this->Form->input('create_date',array(
-					'label' => 'Ngày giao dịch : ',
-					'class'=>"form-control",
-					'type' => 'date',
-					'dateFormat' => 'DMY',
-					'placeholder' => 'Ngày',
-					'div' => array('class' => 'form-inline'),
-					'between' => '<div class="form-group">',
-					'separator' => '</div><div class="form-group">',
-        			'after' => '</div>'
-					)); ?>
+				<table>
+					<tr>
+						<th>Ngày giao dịch: </th>
+						<td style="padding:0px">
+							<?php echo $this->Form->day('create_date', array(
+								'class' => 'form-control',
+								'default' => date('d'),
+								'empty' => false
+							)); ?>
+						</td>
+						<td style="padding:2px">
+							<?php echo $this->Form->month('create_date', array(
+								'class' => 'form-control',
+								'monthNames' => array('01' => 'Tháng 1', '02'=> 'Tháng 2', '03'=> 'Tháng 3', '04'=> 'Tháng 4', '05'=> 'Tháng 5', '06'=> 'Tháng 6', '07'=> 'Tháng 7', '08'=> 'Tháng 8', '09'=> 'Tháng 9', '10'=> 'Tháng 10', '11'=> 'Tháng 11', '12' => 'Tháng 12'),
+								'default' => date('m'),
+								'empty' => false
+							)); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->year('create_date', date('Y')-5, date('Y')+5, array(
+							'class' => 'form-control',
+							'default' => date('Y'),
+							'empty' => false
+							)); ?>
+							 
+						</td>
+					</tr>
+				</table>
+				<?php echo $this->Form->error('create_date'); ?>
 				<?php echo $this->Form->input('note',array('label'=>'Ghi chú','class'=>"form-control", 'placeholder' => 'Ghi chú')); ?>
 				<?php echo $this->Form->input('wallet_id',array('label'=>' Ví','class'=>"form-control")); ?>
 				<?php echo $this->Form->input('category_id',array('label'=>'Danh mục','class'=>"form-control")); ?>

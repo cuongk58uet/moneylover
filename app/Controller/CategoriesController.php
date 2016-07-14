@@ -25,7 +25,8 @@ class CategoriesController extends AppController {
 		$this->Category->recursive = 0;
 		$this->paginate = array(
 						'order' => array('Category.id' => 'asc'),
-						'limit' => 10
+						'limit' => 10,
+						'paramType' => 'querystring'
 						);
 		$this->Paginator->settings = $this->paginate;
 		$this->set('categories', $this->paginate());

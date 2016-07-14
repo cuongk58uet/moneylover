@@ -34,8 +34,11 @@
 				<div class="table-responsive">
 					<table class="table">
 						<tr>
-							<td rowspan="6" style="width:200px"><?php echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle')); ?>
-							<?php echo $this->Form->input('avatar', array('label'=> 'Ảnh đại diện', 'class'=>'img-thumbnail', 'type' => 'file')); ?></td>
+							<td rowspan="7" style="width:200px">
+								<?php echo $this->Html->image($this->request->data['User']['avatar'], array('width'=>200, 'height' => 200, 'class' => 'img-rounded img-circle')); ?>
+								<?php echo $this->Form->input('avatar', array('label'=> 'Ảnh đại diện', 'class'=>'img-thumbnail', 'type' => 'file')); ?><br>
+								<?php echo $this->Html->link(__('Phục hồi ảnh mặc định'), array('action' => 'delete_avatar'), array('class'=>'btn btn-success')); ?>
+							</td>
 							<?php echo $this->Form->hidden('id'); ?>
 							<?php echo $this->Form->hidden('username'); ?>
 							
@@ -50,11 +53,14 @@
 							<td><?php echo $this->Form->input('email', array('label'=>'Email','class'=>"form-control")); ?></td>
 						</tr>
 						<tr>
+							<td><?php echo $this->Form->input('phone', array('label'=>'Số điện thoại','class'=>"form-control")); ?></td>
+						</tr>
+						<tr>
 							<?php echo $this->Form->input('role', array('label'=>' Quyền','class'=>"form-control", 'options' => array('admin' => 'Admin'), 'type' => 'hidden')); ?>
 						</tr>
 						<tr>
 							<td><?php echo $this->Form->button('Lưu thay đổi',array('type' => 'submit','class'=>'btn btn-primary')); ?>
-							<?php echo $this->Html->link('Hủy thay đổi', array('action' => 'view'), array('class' => 'btn  btn-default')) ?></td>
+							</td>
 						</tr>
 					</table>
 				</div>
